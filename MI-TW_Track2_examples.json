@@ -1,0 +1,690 @@
+{
+  "resourceType" : "Bundle",
+  "type" : "batch",
+  "entry" : [
+      {
+          "resource" : {
+              "resourceType" : "Patient",
+              "id" : "patient-tsti-test1-example",
+              "meta" : {
+                "profile" : ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore|0.1.1"]
+              },
+               "text" : {
+                "status" : "generated",
+                "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3><b>病人基本資料</b></h3></div>"
+              },
+              "identifier" : [{
+                "use" : "official",
+                "type" : {
+                  "coding" : [{
+                    "system" : "http://terminology.hl7.org/CodeSystem/v2-0203",
+                    "code" : "NNxxx",
+                    "_code" : {
+                      "extension" : [{
+                        "extension" : [{
+                          "url" : "suffix",
+                          "valueString" : "TWN"
+                        },
+                        {
+                          "url" : "valueSet",
+                          "valueCanonical" : "http://hl7.org/fhir/ValueSet/iso3166-1-3"
+                        }],
+                        "url" : "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/identifier-suffix"
+                      }]
+                    }
+                  }]
+                },
+                "system" : "http://www.moi.gov.tw/",
+                "value" : "A123456789"
+              },
+              {
+                "use" : "official",
+                "type" : {
+                  "coding" : [{
+                    "system" : "http://terminology.hl7.org/CodeSystem/v2-0203",
+                    "code" : "MR"
+                  }]
+                },
+                "system" : "https://www.tph.mohw.gov.tw/",
+                "value" : "8862168"
+              }],
+              "active" : true,
+              "name" : [{
+                "use" : "official",
+                "text" : "陳加玲"
+              }],
+              "telecom" : [{
+                "system" : "phone",
+                "value" : "0911327999",
+                "use" : "mobile"
+              }],
+              "gender" : "female",
+              "birthDate" : "1990-01-01",
+              "address" : [{
+                "text" : "臺北市大同區大有里19鄰承德路三段52巷6弄210號2樓B室"
+              }]
+            },
+          "request" : {
+            "method" : "PUT",
+            "url" : "/Patient/patient-tsti-test1-example"
+          }
+  },   
+  {
+    "resource" : {
+      "resourceType" : "Observation",
+      "meta" : {
+        "profile" : ["https://hapi.fhir.tw/fhir/StructureDefinition/Observation.SC1.BodyHeight"]
+      },
+      "text" : {
+          "status" : "generated",
+          "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3><b>檢驗檢查資料</b></h3></div>"
+      },
+      "status" : "final",
+      "category" : [{
+        "coding" : [{
+          "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code" : "vital-signs",
+          "display" : "Vital Signs"
+        }]
+      }],
+      "code" : {
+        "coding" : [{
+          "system" : "http://loinc.org",
+          "code" : "3137-7",
+          "display" : "Body height Measured"
+        }],
+        "text" : "Body height Measured"
+      },
+      "subject" : {
+        "reference" : "Patient/patient-tsti-test1-example"
+      },
+      "effectiveDateTime" : "2022-07-31",
+      "valueQuantity" : {
+        "value" : 160,
+        "unit" : "cm",
+        "system" : "http://unitsofmeasure.org",
+        "code" : "cm"
+      }
+    },
+    "request" : {
+      "method" : "POST",
+      "url" : "/Observation"
+    }
+  },
+  {
+      "resource" : {
+        "resourceType" : "Observation",
+        "meta" : {
+          "profile" : ["https://hapi.fhir.tw/fhir/StructureDefinition/Observation.SC1.BodyWeight"]
+        },
+        "text" : {
+          "status" : "generated",
+          "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3><b>檢驗檢查資料</b></h3></div>"
+      },
+        "status" : "final",
+        "category" : [{
+          "coding" : [{
+            "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
+            "code" : "vital-signs",
+            "display" : "Vital Signs"
+          }]
+        }],
+        "code" : {
+          "coding" : [{
+            "system" : "http://loinc.org",
+            "code" : "29463-7",
+            "display" : "Body Weight"
+          }],
+          "text" : "Body Weight"
+        },
+        "subject" : {
+          "reference" : "Patient/patient-tsti-test1-example"
+        },
+        "effectiveDateTime" : "2022-07-31",
+        "valueQuantity" : {
+          "value" : 50,
+          "unit" : "kg",
+          "system" : "http://unitsofmeasure.org",
+          "code" : "kg"
+        }
+      },
+      "request" : {
+        "method" : "POST",
+        "url" : "/Observation"
+      }
+  },
+  {
+      "resource" : {
+        "resourceType" : "Observation",
+        "meta" : {
+          "profile" : ["https://hapi.fhir.tw/fhir/StructureDefinition/Observation.SC1.CapillaryRefill"]
+        },
+        "text" : {
+          "status" : "generated",
+          "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3><b>檢驗檢查資料</b></h3></div>"
+      },
+        "status" : "final",
+        "category" : [{
+          "coding" : [{
+            "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
+            "code" : "exam",
+            "display" : "Exam"
+          }]
+        }],
+        "code" : {
+          "coding" : [{
+            "system" : "http://loinc.org",
+            "code" : "44963-7",
+            "display" : "Capillary refill [Time] of Nail bed"
+          }],
+          "text" : "Capillary refill [Time] of Nail bed"
+        },
+        "subject" : {
+          "reference" : "Patient/patient-tsti-test1-example"
+        },
+        "effectiveDateTime" : "2022-07-31",
+        "valueQuantity" : {
+          "value" : 100,
+          "unit" : "s",
+          "system" : "http://unitsofmeasure.org",
+          "code" : "s"
+        }
+      },
+      "request" : {
+        "method" : "POST",
+        "url" : "/Observation"
+      }
+    },
+    {
+      "resource" : {
+        "resourceType" : "Observation",
+        "meta" : {
+          "profile" : ["https://hapi.fhir.tw/fhir/StructureDefinition/Observation.SC1.BloodGlucose"]
+        },
+        "text" : {
+          "status" : "generated",
+          "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3><b>檢驗檢查資料</b></h3></div>"
+      },
+        "status" : "final",
+        "category" : [{
+          "coding" : [{
+            "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
+            "code" : "laboratory",
+            "display" : "Laboratory"
+          }]
+        }],
+        "code" : {
+          "coding" : [{
+            "system" : "http://loinc.org",
+            "code" : "2339-0",
+            "display" : "Glucose [Mass/volume] in Blood"
+          }],
+          "text" : "Glucose [Mass/volume] in Blood"
+        },
+        "subject" : {
+          "reference" : "Patient/patient-tsti-test1-example"
+        },
+        "effectiveDateTime" : "2022-07-31",
+        "valueQuantity" : {
+          "value" : 100,
+          "unit" : "mg/dL",
+          "system" : "http://unitsofmeasure.org",
+          "code" : "mg/dL"
+        }
+      },
+      "request" : {
+        "method" : "POST",
+        "url" : "/Observation"
+      }
+    },
+    {
+      "resource" : {
+        "resourceType" : "Observation",
+        "meta" : {
+          "profile" : [
+            "https://hapi.fhir.tw/fhir/StructureDefinition/Observation.SC1.BloodPressure"
+          ]
+        },
+        "text" : {
+            "status" : "generated",
+            "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3><b>檢驗檢查資料</b></h3></div>"
+        },
+        "status" : "final",
+        "category" : [
+          {
+            "coding" : [
+              {
+                "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code" : "vital-signs",
+                "display" : "Vital Signs"
+              }
+            ]
+          }
+        ],
+        "code" : {
+          "coding" : [
+            {
+              "system" : "http://loinc.org",
+              "code" : "35094-2",
+              "display" : "Blood Pressure Panel"
+            }
+          ],
+          "text" : "Blood Pressure Panel"
+        },
+        "subject" : {
+          "reference" : "Patient/patient-tsti-test1-example"
+        },
+        "effectiveDateTime" : "2022-07-31",
+        "component" : [
+          {
+            "code" : {
+              "coding" : [
+                {
+                  "system" : "http://loinc.org",
+                  "code" : "8480-6",
+                  "display" : "Systolic Blood Pressure"
+                }
+              ]
+            },
+            "valueQuantity" : {
+              "value" : 110,
+              "unit" : "mmHg",
+              "system" : "http://unitsofmeasure.org",
+              "code" : "mm[Hg]"
+            }
+          },
+          {
+            "code" : {
+              "coding" : [
+                {
+                  "system" : "http://loinc.org",
+                  "code" : "8462-4",
+                  "display" : "Diastolic Blood Pressure"
+                }
+              ]
+            },
+            "valueQuantity" : {
+              "value" : 56,
+              "unit" : "mmHg",
+              "system" : "http://unitsofmeasure.org",
+              "code" : "mm[Hg]"
+            }
+          }
+        ]
+      },
+      "request" : {
+        "method" : "POST",
+        "url" : "/Observation"
+      }
+    },
+    {
+      "resource" : {
+          "resourceType" : "Observation",
+          "meta" : {
+            "profile" : [
+              "https://hapi.fhir.tw/fhir/StructureDefinition/Observation.SC3.BoneDensity.DXATscoreFemurBody"
+            ]
+          },
+          "text" : {
+              "status" : "generated",
+              "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3><b>檢驗檢查資料</b></h3></div>"
+          },
+          "status" : "final",
+          "category" : [
+            {
+              "coding" : [
+                {
+                  "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
+                  "code" : "image",
+                  "display" : "Image"
+                }
+              ]
+            }
+          ],
+          "bodySite" : {
+              "coding" : [
+                {
+                  "system" : "https://mitw.dicom.org.tw/MITW%20WG2%20Vital%20Sign%20Code%20System.xlsx",
+                  "code" : "Femoral body",
+                  "display" : "股骨幹"
+                }
+              ],
+              "text" : "股骨幹"
+            },
+          "code" : {
+            "coding" : [
+              {
+                "system" : "http://loinc.org",
+                "code" : "38263-0",
+                "display" : "DXA Femur [T-score] Bone density"
+              }
+            ],
+            "text" : "DXA Femur [T-score] Bone density"
+          },
+          "subject" : {
+            "reference" : "Patient/patient-tsti-test1-example"
+          },
+          "effectiveDateTime" : "2022-07-31",
+                "valueQuantity" : {
+                  "value" : 50,
+                  "system" : "http://unitsofmeasure.org",
+                  "code" : "{T-score} "
+                }
+        },
+      "request" : {
+        "method" : "POST",
+        "url" : "/Observation"
+      }
+    },
+    {
+      "resource" : {
+        "resourceType": "Observation",
+        "meta": {
+            "profile": [
+                "https://hapi.fhir.tw/fhir/StructureDefinition/Observation.SC4.12LeadsECG"
+            ]
+        },
+        "status": "final",
+        "category": [
+            {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                        "code": "procedure",
+                        "display": "Procedure"
+                    }
+                ]
+            }
+        ],
+        "code": {
+            "coding": [
+                {
+                    "system": "urn:oid:2.16.840.1.113883.6.24",
+                    "code": "131328",
+                    "display": "MDC_ECG_ELEC_POTL"
+                },
+                {
+                  "system": "http://unitsofmeasure.org",
+                  "code": "mV",
+                  "display": "mV"
+                }
+            ]
+        },
+        "subject": {
+            "reference": "Patient/patient-tsti-test1-example"
+        },
+        "effectiveDateTime" : "2022-07-31",
+        "component": [
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131329",
+                            "display": "MDC_ECG_ELEC_POTL_I"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 2,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "2000 2000"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131330",
+                            "display": "MDC_ECG_ELEC_POTL_II"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 2,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "2000 2000"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131389",
+                            "display": "MDC_ECG_ELEC_POTL_III"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 2,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "2000 2000"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131390",
+                            "display": "MDC_ECG_ELEC_POTL_AVR"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 2,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "2000 2000"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131391",
+                            "display": "MDC_ECG_ELEC_POTL_AVL"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 2,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "2000 2000"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131392",
+                            "display": "MDC_ECG_ELEC_POTL_AVF"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 2,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "2000 2000"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131331",
+                            "display": "MDC_ECG_ELEC_POTL_V1"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 1,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "0"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131332",
+                            "display": "MDC_ECG_ELEC_POTL_V2"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 1,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "0"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131333",
+                            "display": "MDC_ECG_ELEC_POTL_V3"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 1,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "0"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131334",
+                            "display": "MDC_ECG_ELEC_POTL_V4"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 1,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "0"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131335",
+                            "display": "MDC_ECG_ELEC_POTL_V5"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 1,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "0"
+                }
+            },
+            {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "urn:oid:2.16.840.1.113883.6.24",
+                            "code": "131336",
+                            "display": "MDC_ECG_ELEC_POTL_V6"
+                        }
+                    ]
+                },
+                "valueSampledData": {
+                    "origin": {
+                        "value": 1500
+                    },
+                    "period": 1,
+                    "factor": 3,
+                    "lowerLimit": -3300,
+                    "upperLimit": 3300,
+                    "dimensions": 1,
+                    "data": "0"
+                }
+            }
+        ]
+      },
+      "request" : {
+        "method" : "POST",
+        "url" : "/Observation"
+      }
+    }
+  ]
+}

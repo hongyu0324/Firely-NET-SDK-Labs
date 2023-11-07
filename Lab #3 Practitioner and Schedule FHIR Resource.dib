@@ -1,0 +1,39 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+var client = new FhirClient("http://localhost:8080/fhir");
+
+#!csharp
+
+var q = new SearchParams().Where("date=2018-09-16").Where("service-type=124");
+
+Bundle schedules = await client.SearchAsync<Schedule>(q);
+
+foreach (var o in schedules.Entry){
+    var r = (Schedule)o.Resource;
+    Console.WriteLine(r.Id);
+    foreach (var s in r.Actor){
+        Console.WriteLine(s.Display);
+    }
+} 
+
+#!csharp
+
+foreach (var o in schedules.Entry){
+    var r = (Schedule)o.Resource;
+    var q = new SearchParams().Where("schedule=Schedule/"+r.Id);
+    Bundle slots = await client.SearchAsync<Slot>(q);
+    foreach (var ss in slots.Entry){
+        var s = (Slot)ss.Resource;
+        Console.WriteLine(s.Start + " ~ " + s.End + " : " + s.Status);
+    }
+} 

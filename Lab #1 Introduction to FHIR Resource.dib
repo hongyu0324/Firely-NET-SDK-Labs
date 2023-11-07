@@ -1,0 +1,182 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"languageName":"csharp","name":"csharp"}]}}
+
+#!markdown
+
+課程一：FHIR Resource介紹
+
+#!markdown
+
+1. 簡介
+
+1.1 Import Libraries
+ 
+首先，我們必須import FHIR SDK，本課程使用firely .NET SDK，詳細資料可參考https://docs.fire.ly/projects/Firely-NET-SDK/en/latest/
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:Firely.Fhir.Packages"
+#r "nuget:hl7.fhir.specification.Data.r4"
+
+#!markdown
+
+1.2 建立與FHIR Server的連結
+
+#!csharp
+
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+using Firely.Fhir.Packages;
+
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using Hl7.Fhir.Validation;
+
+var client = new FhirClient("http://localhost:8080/fhir");
+
+#!markdown
+
+1.3 TW Core IG Package解析
+
+#!csharp
+
+var tw_core = "./package.tgz";
+FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_core});
+//var names = resolver.ListCanonicalUris();
+//foreach (var n in names){
+//    if(n.Contains("StructureDefinition")){
+//        Console.WriteLine(n.ToString());
+//    }
+//}
+
+#!csharp
+
+//find resource by id or by canonical uris
+StructureDefinition tw_pat = await resolver.ResolveByUriAsync("StructureDefinition/Patient-twcore") as StructureDefinition;
+//var tw_pat = await resolver.ResolveByCanonicalUriAsync("https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/TWPatient") as StructureDefinition;
+Console.WriteLine(tw_pat.Kind);
+foreach(var n in tw_pat.Snapshot.Element){
+    var n_list = n.ElementId.Split(".");
+    if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
+        if(n.Min > 0){
+            Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
+        }  
+    }
+}
+
+#!markdown
+
+2. 從FHIR Server讀取資料
+
+2.1 讀取單一病患資料(已知technical id '9869')
+
+#!csharp
+
+var location_A = new Uri("http://localhost:8080/fhir/Patient/9869");
+var pat_A = new Patient();
+pat_A = await client.ReadAsync<Patient>(location:location_A);
+if (pat_A != null){
+    Console.WriteLine(pat_A.Name[0].Family + pat_A.Name[0].Given.First());
+}
+
+#!csharp
+
+Console.WriteLine(tw_pat.Description);
+
+#!markdown
+
+2.2 讀取全部資料(假設病患生日皆為1900後)
+
+#!csharp
+
+var q = new SearchParams().Where("birthdate=gt1900");
+Bundle patients = await client.SearchAsync<Patient>(q);
+
+Console.WriteLine("總計:" + patients.Total.ToString() + "人");
+foreach (var p in patients.Entry){
+    var r = (Patient)p.Resource;
+    Console.WriteLine(r.Name[0].Family + " "　+ r.Name[0].Given.First());
+} 
+
+#!markdown
+
+2.3 查詢結果排序
+
+#!csharp
+
+var q = new SearchParams().Where("birthdate=gt1900").OrderBy("birthdate");
+Bundle patients = await client.SearchAsync<Patient>(q);
+
+Console.WriteLine("總計:" + patients.Total.ToString() + "人");
+foreach (var p in patients.Entry){
+    var r = (Patient)p.Resource;
+    Console.WriteLine(r.BirthDate.ToString() +" " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
+} 
+
+#!markdown
+
+2.4 各種不同的搜尋條件與結果
+
+#!markdown
+
+3. 編輯Patient
+
+#!csharp
+
+// example Patient setup, fictional data only
+var pat = new Patient();
+
+var id = new Identifier();
+id.System = "http://hl7.org/fhir/sid/us-ssn";
+id.Value = "000-12-3456";
+pat.Identifier.Add(id);
+
+var name =  new HumanName().WithGiven("Christopher").WithGiven("C.H.").AndFamily("Parks");
+name.Prefix = new string[] { "Mr." };
+name.Use = HumanName.NameUse.Official;
+
+var nickname = new HumanName();
+nickname.Use = HumanName.NameUse.Nickname;
+nickname.GivenElement.Add(new FhirString("Chris"));
+
+pat.Name.Add(name);
+pat.Name.Add(nickname);
+
+pat.Gender = AdministrativeGender.Male;
+
+pat.BirthDate = "1983-04-23";
+
+var birthplace = new Extension();
+birthplace.Url = "http://hl7.org/fhir/StructureDefinition/birthPlace";
+birthplace.Value = new Address() { City = "Seattle" };
+pat.Extension.Add(birthplace);
+
+var birthtime = new Extension("http://hl7.org/fhir/StructureDefinition/patient-birthTime",new FhirDateTime("1983-04-23"));
+pat.BirthDateElement.Extension.Add(birthtime);
+
+var address = new Address()
+{
+        Line = new string[] { "3300 Washtenaw Avenue, Suite 227" },
+        City = "Ann Arbor",
+        State = "MI",
+        PostalCode = "48104",
+        Country = "USA"
+};
+pat.Address.Add(address);
+
+var contact = new Patient.ContactComponent();
+contact.Name = new HumanName();
+contact.Name.Given = new string[] { "Susan" };
+contact.Name.Family = "Parks";
+contact.Gender = AdministrativeGender.Female;
+contact.Relationship.Add(new CodeableConcept("http://hl7.org/fhir/v2/0131", "N"));
+contact.Telecom.Add(new ContactPoint(ContactPoint.ContactPointSystem.Phone, null, ""));
+pat.Contact.Add(contact);
+
+pat.Deceased = new FhirBoolean(false);
+
+#!csharp
+
+var created_pat = await client.CreateAsync<Patient>(pat);

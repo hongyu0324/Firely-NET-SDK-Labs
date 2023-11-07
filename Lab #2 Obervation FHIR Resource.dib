@@ -1,0 +1,109 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+var client = new FhirClient("http://localhost:8080/fhir");
+
+#!markdown
+
+2 從FHIR server讀取資料
+2.1 讀取全部資料(假設Effective日期皆為1900後)
+
+#!csharp
+
+var q = new SearchParams().Where("date=gt1900").LimitTo(10).OrderBy("date",SortOrder.Descending);
+Bundle observations = await client.SearchAsync<Observation>(q);
+
+foreach (var o in observations.Entry){
+    var r = (Observation)o.Resource;
+    Console.WriteLine( r.Effective + " " + r.Category[0].Coding[0].Code + " " + r.Code.Coding[0].System + " " +r.Code.Coding[0].Code);
+} 
+
+#!markdown
+
+3. 產生Observation紀錄
+Exercise: the patient weight is 85 kilograms, please, add this information as an observation using the temperature example above (remember using vital-signs structure definition, allowed vital sign result types and vital signs units).
+
+Include these codes as defined in http://loinc.org icon
+Code	Display
+85353-1 Vital signs, weight, height, head circumference, oxygen saturation and BMI panel
+9279-1 Respiratory rate
+8867-4 Heart rate
+2708-6 Oxygen saturation in Arterial blood
+8310-5 Body temperature
+8302-2 Body height
+9843-4 Head Occipital-frontal circumference
+29463-7 Body weight
+39156-5 Body mass index (BMI) [Ratio]
+85354-9 Blood pressure panel with all children optional
+8480-6 Systolic blood pressure
+8462-4 Diastolic blood pressure
+8478-0 Mean blood pressure
+
+Include these codes as defined in http://unitsofmeasure.org icon
+Code	Display
+%	percent
+cm	centimeter
+[in_i]	inch (international)
+kg	kilogram
+g	gram
+[lb_av]	pound (US and British)
+Cel	degree Celsius
+[degF]	degree Fahrenheit
+mm[Hg]	millimeter of mercury
+/min	per minute
+kg/m2	kilogram / (meter ^ 2)
+m2	square meter
+
+#!csharp
+
+var observation = new Observation();
+observation.Status = Hl7.Fhir.Model.ObservationStatus.Preliminary;
+var category = new CodeableConcept();
+var coding = new CodeableConcept();
+var o_value = new Hl7.Fhir.Model.Quantity();
+
+category.Add("http://hl7.org/fhir/observation-category","vital-signs");
+observation.Category.Add(category);
+coding.Add("http://loinc.org","29463-7","Body weight");
+observation.Code = coding;
+observation.Effective = new FhirDateTime("2023-04-19");
+o_value.Value = 85;
+o_value.System = "http://unitsofmeasure.org";
+o_value.Code = "kg";
+observation.Value = o_value;
+
+#!csharp
+
+var q = new SearchParams().Where("name=陳,name=鴻裕");
+Bundle result = await client.SearchAsync<Patient>(q);
+
+var patient = new Patient();
+patient = (Patient)result.Entry[0].Resource;
+Console.WriteLine(patient.Id)
+
+#!csharp
+
+var rr = new ResourceReference("Patient/" + patient.Id);
+
+observation.Subject = rr;
+
+var created = await client.CreateAsync<Observation>(observation);
+
+#!csharp
+
+var q = new SearchParams().Where("patient:id=" + patient.Id);
+Bundle observations = await client.SearchAsync<Observation>(q);
+
+foreach (var o in observations.Entry){
+    var r = (Observation)o.Resource;
+    Console.WriteLine( r.Effective + " " + r.Category[0].Coding[0].Code + " " + r.Code.Coding[0].System + " " +r.Code.Coding[0].Code);
+}

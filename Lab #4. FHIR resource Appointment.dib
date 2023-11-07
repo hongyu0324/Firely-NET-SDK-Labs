@@ -1,0 +1,118 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:Firely.Fhir.Packages"
+
+#!csharp
+
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+var client = new FhirClient("http://localhost:8080/fhir");
+
+#!markdown
+
+2. 讀取病患與醫護人員資訊
+
+#!csharp
+
+var q = new SearchParams().Where("name=陳").Where("name=鴻裕");
+Bundle patients = await client.SearchAsync<Patient>(q);
+Patient patient = (Patient)patients.Entry[0].Resource;
+Console.WriteLine(patient.Id);
+
+q = new SearchParams().Where("name=Kelly").Where("name=Smith");
+Bundle practitioners = await client.SearchAsync<Practitioner>(q);
+Practitioner practitioner = (Practitioner)practitioners.Entry[0].Resource;
+Console.WriteLine(practitioner.Id);
+
+q = new SearchParams().Where("actor=Practitioner/"+ practitioner.Id);
+Bundle schedules = await client.SearchAsync<Schedule>(q);
+foreach (var o in schedules.Entry){
+    var r = (Schedule)o.Resource;
+    Console.WriteLine(r.Id);
+    foreach (var s in r.Actor){
+        Console.WriteLine(s.Reference);
+    }
+} 
+
+#!csharp
+
+var FREE_SLOT_TIME = "start=2018-09-16T11:00:00";
+var slot = new Slot();
+foreach (var o in schedules.Entry){
+    var r = (Schedule)o.Resource;
+    var q = new SearchParams().Where("schedule=Schedule/"+r.Id).Where(FREE_SLOT_TIME);
+    Bundle slots = await client.SearchAsync<Slot>(q);
+    foreach (var ss in slots.Entry){
+        var s = (Slot)ss.Resource;
+        // slot = s;
+        if (slot.Status == Slot.SlotStatus.Free){
+            slot = s;
+            Console.WriteLine(slot.Start + " ~ " + slot.End + " : " + slot.Status);
+            slot.Status = Slot.SlotStatus.Busy;
+            var updated = await client.UpdateAsync<Slot>(slot);
+        }
+        else{
+            Console.WriteLine("重新選擇時間!可選擇時段如下：");
+            q = new SearchParams().Where("schedule=Schedule/"+r.Id);
+            slots = await client.SearchAsync<Slot>(q);
+            foreach (var sa in slots.Entry){
+                s = (Slot)sa.Resource;
+                if(s.Status != Slot.SlotStatus.Busy){
+                    Console.WriteLine(s.Start + " ~ " + s.End + " : " + s.Status);
+                }
+                
+            }
+        }
+        
+    }
+} 
+Console.WriteLine(slot.Id);
+
+#!csharp
+
+var a = new Appointment();
+var rr_slot = new ResourceReference("Slot/" + slot.Id);
+var rr_patient = new ResourceReference("Patient/" + patient.Id);
+
+var participant = new Appointment.ParticipantComponent();
+foreach (var o in schedules.Entry){
+    var r = (Schedule)o.Resource;
+    foreach (var s in r.Actor){
+        var participant = new Appointment.ParticipantComponent();
+        participant.Status = ParticipationStatus.NeedsAction;
+        participant.Actor = s;
+        a.Participant.Add(participant); 
+    }
+}
+participant = new Appointment.ParticipantComponent();
+participant.Status = ParticipationStatus.Accepted;
+participant.Actor = rr_patient;
+a.Participant.Add(participant);
+
+a.Status = Appointment.AppointmentStatus.Proposed;
+a.Start = slot.Start;
+a.End =  slot.End;
+a.Slot.Add(rr_slot);
+
+/*
+foreach(var p in a.Participant){
+    Console.WriteLine(p.Actor.Reference);
+}
+Console.WriteLine(a.Slot[0].Reference);
+Console.WriteLine(a.Start);
+Console.WriteLine(a.End);
+*/
+var created = await client.CreateAsync<Appointment>(a);
+
+#!csharp
+
+var q = new SearchParams().Where("date=2018-09-16");
+var appointments = await client.SearchAsync<Appointment>(q);
+foreach(var a in appointments.Entry){
+    Console.WriteLine(a.Resource.Id);
+}

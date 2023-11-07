@@ -1,0 +1,194 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!markdown
+
+0. 匯入firely NET SDK R4 
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+
+#!markdown
+
+1.1 連結FHIR
+
+#!csharp
+
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+var client = new FhirClient("http://localhost:8080/fhir");
+
+#!markdown
+
+1.2 建立常用library
+
+#!csharp
+
+// 建立一個方法，用於搜尋FHIR伺服器上的指定類型的資源，並回傳第一個符合條件的資源
+private async Task<T> SearchFirstResourceAsync<T>(SearchParams q) where T : Resource
+{
+    // 使用client物件的SearchAsync方法，將SearchParams物件傳送到FHIR伺服器，並回傳一個Bundle資源，其中包含了符合條件的資源
+    Bundle results = await client.SearchAsync<T>(q);
+    // 從Bundle資源中取出第一個Entry的Resource，並轉型為指定的類型，回傳該資源
+    return (T)results.Entry[0].Resource;
+}
+
+// 建立一個方法，用於搜尋FHIR伺服器上的指定類型的資源，並回傳其Id
+private async Task<string> SearchResourceIdAsync<T>(SearchParams q) where T : Resource
+{
+    // 使用SearchFirstResourceAsync方法，搜尋FHIR伺服器上的指定類型的資源，並回傳第一個符合條件的資源
+    T resource = await SearchFirstResourceAsync<T>(q);
+    // 回傳該資源的Id
+    return resource.Id;
+}
+
+#!markdown
+
+2.1 搜尋已存在的資料，Patient, Practitioner, Location與Appoinment
+
+#!csharp
+
+// 建立一個SearchParams物件，設定搜尋條件為name=陳和name=鴻裕，表示要搜尋姓名為陳鴻裕的病人
+var q = new SearchParams().Where("name=陳").Where("name=鴻裕");
+// 使用SearchResourceIdAsync方法，搜尋FHIR伺服器上的Patient資源，並回傳其Id
+Patient patient = await SearchFirstResourceAsync<Patient>(q);
+// 輸出病人的Id
+Console.WriteLine(patient.Id);
+
+// 建立一個SearchParams物件，設定搜尋條件為name=Kelly和name=Smith，表示要搜尋姓名為Kelly Smith的醫師
+q = new SearchParams().Where("name=Kelly").Where("name=Smith");
+// 使用SearchResourceIdAsync方法，搜尋FHIR伺服器上的Practitioner資源，並回傳其Id
+Practitioner practitioner = await SearchFirstResourceAsync<Practitioner>(q);
+// 輸出醫師的Id
+Console.WriteLine(practitioner.Id);
+
+// 建立一個SearchParams物件，設定搜尋條件為name=Hahnemann University Hospital，表示要搜尋名稱為Hahnemann University Hospital的地點
+q = new SearchParams().Where("name=Hahnemann University Hospital");
+// 使用SearchResourceIdAsync方法，搜尋FHIR伺服器上的Location資源，並回傳其Id
+Location location = await SearchFirstResourceAsync<Location>(q);
+// 輸出地點的Id
+Console.WriteLine(location.Id);
+
+// 建立一個SearchParams物件，設定搜尋條件為actor=Patient/patientId，表示要搜尋與指定病人相關的預約
+q = new SearchParams().Where("actor=Patient/" + patient.Id);
+// 使用SearchResourceIdAsync方法，搜尋FHIR伺服器上的Appointment資源，並回傳其Id
+Appointment appointment = await SearchFirstResourceAsync<Appointment>(q);
+// 輸出預約的Id
+Console.WriteLine(appointment.Id);
+
+#!markdown
+
+2.2 產生Condition物件，判定病患狀態為高血壓。
+
+#!csharp
+
+// 建立一個Condition物件，並使用Object Initializer設定其屬性
+var condition = new Condition
+{
+    // 將Condition物件的Code屬性設為一個CodeableConcept物件，並使用Object Initializer設定其屬性
+    Code = new CodeableConcept
+    {
+        // 為CodeableConcept物件加入一個Coding，表示這個Condition的代碼是高血壓，其系統是SNOMED CT，其代碼是38341003，其顯示名稱是Hypertension
+        Coding = { new Coding("http://snomed.info/sct","38341003","Hypertension") }
+    },
+    // 將Condition物件的Subject屬性設為一個ResourceReference物件，指向一個Patient資源，其Id是patient.Id，表示這個Condition是關於這個病人的
+    Subject = new ResourceReference("Patient/" + patient.Id)
+};
+
+// 使用client物件的CreateAsync方法，將Condition物件傳送到FHIR伺服器，並回傳一個新建立的Condition資源
+var created_condition = await client.CreateAsync<Condition>(condition);
+
+#!markdown
+
+2.3 產生Encounter物件，將既有之Patient, Appoinment, Practitioner, Location與Condition等相關資料記錄在Encounter之中
+
+#!csharp
+
+// 建立一個Encounter物件，並使用Object Initializer設定其屬性
+var encounter = new Encounter
+{
+    // 將Encounter物件的Status屬性設為InProgress，表示這個Encounter正在進行中
+    Status = Encounter.EncounterStatus.InProgress,
+    // 將Encounter物件的Subject屬性設為rr_patient，表示這個Encounter是關於這個病人的
+    Subject = new ResourceReference("Patient/" + patient.Id),
+    // 為Encounter物件的Appointment屬性加入一個ResourceReference物件，指向一個Appointment資源，其Id是appointment.Id，表示這個Encounter是根據這個預約安排的
+    Appointment = { new ResourceReference("Appointment/" + appointment.Id) }
+};
+
+// 建立一個SearchParams物件，設定搜尋條件為patient=Patient/patient.Id，表示要搜尋與這個病人相關的資源
+var q = new SearchParams().Where("patient=Patient/"+patient.Id);
+
+// 使用client物件的SearchAsync方法，將SearchParams物件傳送到FHIR伺服器，並回傳一個Bundle資源，其中包含了符合條件的Condition資源
+Bundle conditions = await client.SearchAsync<Condition>(q);
+
+// 從Bundle資源中取出第一個Entry的Resource，並轉型為Condition物件，表示這個病人的高血壓狀況
+condition = (Condition)conditions.Entry[0].Resource;
+
+// 為Encounter物件的Diagnosis屬性加入一個Encounter.DiagnosisComponent物件，並使用Object Initializer設定其屬性
+encounter.Diagnosis.Add(new Encounter.DiagnosisComponent
+{
+    // 將Encounter.DiagnosisComponent物件的Condition屬性設為一個ResourceReference物件，指向一個Condition資源，其Id是condition.Id，表示這個Encounter的診斷結果是這個Condition
+    Condition = new ResourceReference("Condition/"+ condition.Id)
+});
+
+// 為Encounter物件的Location屬性加入一個Encounter.LocationComponent物件，並使用Object Initializer設定其屬性
+encounter.Location.Add(new Encounter.LocationComponent
+{
+    // 將Encounter.LocationComponent物件的Location屬性設為一個ResourceReference物件，指向一個Location資源，其Id是location.Id，表示這個Encounter發生的地點是這個Location
+    Location = new ResourceReference("Location/" + location.Id),
+    // 將Encounter.LocationComponent物件的Status屬性設為Active，表示這個Encounter在這個地點仍然進行中
+    Status = Encounter.EncounterLocationStatus.Active
+});
+
+// 為Encounter物件的Participant屬性加入一個Encounter.ParticipantComponent物件，並使用Object Initializer設定其屬性
+encounter.Participant.Add(new Encounter.ParticipantComponent
+{
+    // 將Encounter.ParticipantComponent物件的Individual屬性設為一個ResourceReference物件，指向一個Practitioner資源，其Id是practitioner.Id，表示這個Encounter的參與者是這個Practitioner
+    Individual = new ResourceReference("Practitioner/"+ practitioner.Id),
+    // 為Encounter.ParticipantComponent物件的Type屬性加入一個CodeableConcept物件，並使用Object Initializer設定其屬性
+    Type = { new CodeableConcept
+    {
+        // 為CodeableConcept物件加入一個Coding，表示這個參與者的類型是PPRF（primary performer），其系統是HL7 v3 ParticipationType，其代碼是PPRF，其顯示名稱是Hypertension
+        Coding = { new Coding("http://hl7.org/fhir/v3/ParticipationType","PPRF","Hypertension") }
+    }}
+});
+
+// 使用client物件的CreateAsync方法，將Encounter物件傳送到FHIR伺服器，並回傳一個新建立的Encounter資源
+var created = await client.CreateAsync<Encounter>(encounter);
+
+#!markdown
+
+2.4 產生Observation資料，並連結剛產生之Encounter資料
+
+#!csharp
+
+// 建立一個Observation物件，並設定其屬性 
+// 使用了C#語言的物件初始設定器（object initializer）的語法，讓您可以在建立物件的同時，設定其屬性和集合的值，而不需要使用多個指派運算子或Add方法。
+var temperature_observation = new Observation { Status = Hl7.Fhir.Model.ObservationStatus.Preliminary, // Observation的狀態是初步的 
+    Category = { 
+        new CodeableConcept().Add("http://hl7.org/fhir/observation-category","vital-signs") 
+    }, // Observation的類別是生命徵象 
+    Code = new CodeableConcept().Add("http://loinc.org","8310-5","Body temperature"), // Observation的代碼是LOINC的8310-5，表示體溫 
+    Effective = new FhirDateTime("2023-04-19"), // Observation的有效日期是2023-04-19 
+    Value = new Hl7.Fhir.Model.Quantity // Observation的值是一個數量 
+    {   
+        Value = (decimal)96.8, // 數量的值是96.8 
+        System = "http://unitsofmeasure.org", // 數量的系統是unitsofmeasure.org 
+        Code = "degF" // 數量的單位是華氏度 
+    } 
+};
+
+// 從FHIR伺服器搜尋與這個預約相關的Encounter資源 
+var q = new SearchParams().Where("appointment=Appointment/"+appointment.Id); 
+Bundle encounters = await client.SearchAsync<Encounter>(q);
+
+// 取出第一個Encounter資源，表示這個預約的診斷過程 
+var encounter = (Encounter)encounters.Entry[0].Resource;
+
+// 將Observation物件的Encounter屬性設為一個ResourceReference物件，指向這個Encounter資源 
+temperature_observation.Encounter = new ResourceReference("Encounter/" + encounter.Id);
+
+// 將Observation物件傳送到FHIR伺服器，並回傳一個新建立的Observation資源 
+var created = await client.CreateAsync<Observation>(temperature_observation);
