@@ -11,7 +11,11 @@
 using Hl7.Fhir.Model; 
 using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
+using Hl7.Fhir.FhirPath;
+using Hl7.Fhir.ElementModel;
 using System.IO;
+using P = Hl7.Fhir.ElementModel.Types;
+
 
 var client = new FhirClient("http://localhost:8080/fhir");
 
@@ -49,12 +53,21 @@ finally
 #!csharp
 
 var parser = new FhirJsonParser();
+var pat_A = new Patient();
 try
 {
     var bundle = parser.Parse<Bundle>(json);
     Console.WriteLine(bundle.Entry.Count.ToString());
     foreach(var r in bundle.Entry){
-        Console.WriteLine(r.Resource.TypeName);
+        if (r.Resource.TypeName.Equals("Patient") ){
+            pat_A = (Patient)r.Resource;
+            Console.WriteLine(pat_A.Name[0].Text + "@" + pat_A.Address[0].Text);
+        }
+        else{
+            var o = (Observation)r.Resource;
+            Console.WriteLine( o.Effective + " " + o.Category[0].Coding[0].Code + " " + o.Code.Coding[0].System + " " +o.Code.Coding[0].Code);
+        };
+
     }
 }
 catch (FormatException fe)
@@ -62,14 +75,30 @@ catch (FormatException fe)
     Console.WriteLine("Exception: " + fe.Message);
 }
 
+#!markdown
+
+Firely NET SDK中支援兩種FHIRPath的使用方法：POCO Object和ITypedElement-base Data
+    1. Select() - Returns the nodes produced by the expression.回傳之物件若非單純之型態，必須根據定義做型別轉換
+    2. Scalar() - Returns a single scalar value produced by the expression.
+    3. Predicate() - Returns true if the expression evaluates to true or {} (empty) and false otherwise.
+    4. IsTrue() - Returns true if the expression evaluates to true and false otherwise.
+    5. IsBoolean() - Determines whether the expression evaluates to a given boolean value.
+
 #!csharp
 
-var location_A = new Uri("http://localhost:8080/fhir/Patient/9869");
-var pat_A = new Patient();
-pat_A = await client.ReadAsync<Patient>(location:location_A);
-if (pat_A != null){
-    Console.WriteLine(pat_A.Name[0].Family + pat_A.Name[0].Given.First());
+var gender = pat_A.Select("Resource.gender");
+foreach(var g in gender){
+    Console.WriteLine(g);
 }
+var telecom = pat_A.Select("Resource.telecom");
+
+foreach(var t in telecom){
+    var con = (ContactPoint)t;
+    Console.WriteLine(con.System + " " + con.Value + " " + con.Use);
+}
+
+//var nav = pat_A.ToTypedElement();
+//var n_gender = nav.Select("Resource.gender");
 
 #!csharp
 

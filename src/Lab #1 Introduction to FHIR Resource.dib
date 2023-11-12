@@ -10,15 +10,15 @@
 
 1. 簡介
 
+課程目標：了解如何連結FHIR Server、查詢單筆/多筆資料、FHIR Searsh與產生一筆完整的Patient資料。
+
 1.1 Import Libraries
- 
-首先，我們必須import FHIR SDK，本課程使用firely .NET SDK，詳細資料可參考https://docs.fire.ly/projects/Firely-NET-SDK/en/latest/
+首先，我們必須import FHIR SDK，本課程使用firely .NET SDK，詳細資料可參考https://docs.fire.ly/projects/Firely-NET-SDK/en/latest/。目前最新的版本是5.4, 如果需要使用較舊的版本(例如5.3)，則指令修改為
+#r "nuget:hl7.fhir.r4 , 5.3"
 
 #!csharp
 
 #r "nuget:hl7.fhir.r4"
-#r "nuget:Firely.Fhir.Packages"
-#r "nuget:hl7.fhir.specification.Data.r4"
 
 #!markdown
 
@@ -28,43 +28,8 @@
 
 using Hl7.Fhir.Model; 
 using Hl7.Fhir.Rest;
-using Firely.Fhir.Packages;
-
-using Hl7.Fhir.Specification;
-using Hl7.Fhir.Specification.Source;
-using Hl7.Fhir.Validation;
 
 var client = new FhirClient("http://localhost:8080/fhir");
-
-#!markdown
-
-1.3 TW Core IG Package解析
-
-#!csharp
-
-var tw_core = "./package.tgz";
-FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_core});
-//var names = resolver.ListCanonicalUris();
-//foreach (var n in names){
-//    if(n.Contains("StructureDefinition")){
-//        Console.WriteLine(n.ToString());
-//    }
-//}
-
-#!csharp
-
-//find resource by id or by canonical uris
-StructureDefinition tw_pat = await resolver.ResolveByUriAsync("StructureDefinition/Patient-twcore") as StructureDefinition;
-//var tw_pat = await resolver.ResolveByCanonicalUriAsync("https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/TWPatient") as StructureDefinition;
-Console.WriteLine(tw_pat.Kind);
-foreach(var n in tw_pat.Snapshot.Element){
-    var n_list = n.ElementId.Split(".");
-    if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
-        if(n.Min > 0){
-            Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
-        }  
-    }
-}
 
 #!markdown
 
@@ -80,10 +45,6 @@ pat_A = await client.ReadAsync<Patient>(location:location_A);
 if (pat_A != null){
     Console.WriteLine(pat_A.Name[0].Family + pat_A.Name[0].Given.First());
 }
-
-#!csharp
-
-Console.WriteLine(tw_pat.Description);
 
 #!markdown
 

@@ -1,0 +1,103 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.validation.legacy.r4"
+
+#!csharp
+
+// 匯入firely NET SDK套件
+using Hl7.Fhir.Specification.Source;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization;
+using Hl7.Fhir.Model;
+using System.IO;
+
+#!csharp
+
+// 建立一個ZipSource物件，讀取TW Core IG的zip檔
+var zipSource = new ZipSource("..\\profile\\full-ig.zip");
+
+#!csharp
+
+IResourceResolver resolver = new CachedResolver(
+    // create a multi-resolver, which can resolve resources from more than one source
+    new MultiResolver(
+    // create the default FHIR specification resolver (specification.zip included in HL7.fhir.specification.r4)
+        zipSource,
+        // create the directory source resolver, which points to our profiles directory
+        new DirectorySource("..\\profile", new DirectorySourceSettings()
+        {
+            IncludeSubDirectories = true,
+        })
+    )
+);
+Console.Write(resolver.Display());
+// create a resource validator, which uses our cached resolver
+Validator validator = new Validator(new ValidationSettings()
+    {
+        ResourceResolver = resolver
+    }
+);
+
+#!csharp
+
+var resolver = new DirectorySource("C:\\Project\\fhir\\polygolt_book", new DirectorySourceSettings()
+{
+    IncludeSubDirectories = true,
+});
+var settings = ValidationSettings.CreateDefault();
+settings.ResourceResolver = new CachedResolver(resolver);
+var validator = new Validator(settings);
+
+#!csharp
+
+// 讀取一個Patient資源的檔案，例如patient.json
+var patient = File.ReadAllText("..\\data\\Patient-pat-example.json");
+
+// 將Patient資源的檔案轉換為Patient資源的物件
+var patientResource = new FhirJsonParser().Parse<Patient>(patient);
+
+// 使用validator的Validate方法，傳入Patient資源的物件，並指定TW Core Patient Profile的URL
+var outcome = validator.Validate(patientResource);
+
+// 輸出驗證結果
+Console.WriteLine(outcome.ToString());
+
+#!markdown
+
+Hello again, 
+I am getting back to this issue several months later because it took me several days of debugging to solve the above-mentioned issue. I believe a lot of people who might share the similar issue can benefit from reading this. 
+I am working on MacOS and therefore, the suggested fix did not really help me so I came up with my own fix.
+The problem was the following: Even despite following the instructions carefully, my validator did not really "see"/recognize a specification folder and it was giving me this error: "Unable to resolve reference to profile 'http://hl7.org/fhir/StructureDefinition/Patient'"
+The situation became even more confusing when I shared the code with my teammates and the same code was working (successfully validating the resource) on their machines (also Macs) while I was still getting the same error. I am still not 100% sure what was happening but I believe this issue was because the cache was getting corrupted after several validation requests. 
+Here is the fix that I found: 
+
+Instead of using ZipSource.CreateValidationSource(), manually extract specification folder from specification.zip and put it in the project folder. Then, set directory resolver for this specification instead of zipsource:
+var resolver = new DirectorySource(specificationPath, true);
+Finally, use this resolver in the CachedResolver like this: settings.ResourceResolver = new CachedResolver(resolver);
+
+Full code: 
+var jsonSerializationSettings = new FhirJsonSerializationSettings { Pretty = true };
+patient.ToJson(jsonSerializationSettings);
+var resolver = new DirectorySource(specificationPath, true);
+var settings = ValidationSettings.CreateDefault();
+settings.ResourceResolver = new CachedResolver(resolver);
+var validator = new Validator(settings);
+var outcome = validator.Validate(patient);
+Console.WriteLine($"Success: {outcome.Success} \n{outcome.ToJson(jsonSerializationSettings)}");
+
+
+In case you are interested in importing us core profiles and/or other profiles, manually download them in the project and wrap them in the MultiResolver similar this: 
+
+var resolver = new DirectorySource(specificationPath, true);
+var usCoreResolver = new DirectorySource(usCorePath, true);
+var settings = ValidationSettings.CreateDefault();
+settings.ResourceResolver = new CachedResolver(new MultiResolver(resolver, usCoreResolver));
+
+var validator = new Validator(settings);
+
+
+Thank you and hope this help

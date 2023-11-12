@@ -2,6 +2,13 @@
 
 {"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
 
+#!markdown
+
+課程二：Observation Resource介紹
+
+1. 簡介
+課程目標：了解如何產生Obaservation資料，整合既有之Code System標準(如LOINC)並透過ResourceReference連結Patient與Observation資料
+
 #!csharp
 
 #r "nuget:hl7.fhir.r4"
@@ -81,6 +88,10 @@ o_value.System = "http://unitsofmeasure.org";
 o_value.Code = "kg";
 observation.Value = o_value;
 
+#!markdown
+
+4.透過FHIR Search取的FHIR Server既有之Patient資料
+
 #!csharp
 
 var q = new SearchParams().Where("name=陳,name=鴻裕");
@@ -88,15 +99,23 @@ Bundle result = await client.SearchAsync<Patient>(q);
 
 var patient = new Patient();
 patient = (Patient)result.Entry[0].Resource;
-Console.WriteLine(patient.Id)
+Console.WriteLine(patient.Id);
+
+#!markdown
+
+5. 使用ResourceReference將Patient與Observation連結在一起
 
 #!csharp
 
 var rr = new ResourceReference("Patient/" + patient.Id);
 
-observation.Subject = rr;
+observation.Subject = new ResourceReference("Patient/" + patient.Id);
 
 var created = await client.CreateAsync<Observation>(observation);
+
+#!markdown
+
+6. 驗證相關資料
 
 #!csharp
 

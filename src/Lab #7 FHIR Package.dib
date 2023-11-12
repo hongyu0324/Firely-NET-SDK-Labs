@@ -1,0 +1,63 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!markdown
+
+課程七：FHIR Package介紹
+
+FHIR IG(Implementation Guide)FHIR 實施指南是一組在特定醫療保健環境中實施 FHIR 標準的說明，目前衛福部所制定的臺灣核心實作指引(TW Core IG)相關資料可以從以下網址取得：
+https://twcore.mohw.gov.tw/ig/twcore/downloads.html
+
+要解析Package相關的資料，必須使用Firely.Fhir.Packages與hl7.fhir.specification.Data兩個Package。由於目前Firely.Fhir.Packages所使用的版本未即時更新，必須將hl7.fhir.r4與hl7.fhir.specification.Data.r4兩個Package的版本降為5.3(目前最新版本是5.4)
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4,5.3"
+#r "nuget:hl7.fhir.specification.Data.r4,5.3"
+#r "nuget:Firely.Fhir.Packages"
+
+#!csharp
+
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Model; 
+
+#!markdown
+
+1. 建立FHIR Package的Resover
+
+可使用ListCanonicalEris和ListResourceUris列出Package中的詳細定義
+
+#!csharp
+
+var tw_core = "./package.tgz";
+FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_core});
+var names = resolver.ListResourceUris();
+//var names = resolver.ListCanonicalUris();
+foreach (var n in names){
+    if(n.Contains("StructureDefinition")){
+        Console.WriteLine(n.ToString());
+    }
+}
+
+#!markdown
+
+2. 建立Resource/Logical Model的物件並顯示相關訊息
+
+一般而言，解析Package的目的是希望知道Profile所定義的限制，以下範例顯示TW Core IG Patient Profile之必填欄位與異動說明
+
+#!csharp
+
+//find resource by id or by canonical uris
+StructureDefinition tw_pat = await resolver.ResolveByUriAsync("StructureDefinition/Patient-twcore") as StructureDefinition;
+//var tw_pat = await resolver.ResolveByCanonicalUriAsync("https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/TWPatient") as StructureDefinition;
+Console.WriteLine(tw_pat.Kind);
+foreach(var n in tw_pat.Snapshot.Element){
+    var n_list = n.ElementId.Split(".");
+    if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
+        if(n.Min > 0){
+            Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
+        }  
+    }
+}
+Console.WriteLine(tw_pat.Description);
