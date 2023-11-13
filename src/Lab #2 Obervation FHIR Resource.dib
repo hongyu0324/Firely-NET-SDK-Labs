@@ -4,10 +4,10 @@
 
 #!markdown
 
-課程二：Observation Resource介紹
+#### 課程二：Observation Resource介紹
 
-1. 簡介
-課程目標：了解如何產生Obaservation資料，整合既有之Code System標準(如LOINC)並透過ResourceReference連結Patient與Observation資料
+##### 1. 簡介
+##### 課程目標：了解如何產生Obaservation資料，整合既有之Code System標準(如LOINC)並透過ResourceReference連結Patient與Observation資料
 
 #!csharp
 
@@ -21,8 +21,8 @@ var client = new FhirClient("http://localhost:8080/fhir");
 
 #!markdown
 
-2 從FHIR server讀取資料
-2.1 讀取全部資料(假設Effective日期皆為1900後)
+##### 2 從FHIR server讀取資料
+##### 2.1 讀取全部資料(假設Effective日期皆為1900後)
 
 #!csharp
 
@@ -36,39 +36,8 @@ foreach (var o in observations.Entry){
 
 #!markdown
 
-3. 產生Observation紀錄
-Exercise: the patient weight is 85 kilograms, please, add this information as an observation using the temperature example above (remember using vital-signs structure definition, allowed vital sign result types and vital signs units).
-
-Include these codes as defined in http://loinc.org icon
-Code	Display
-85353-1 Vital signs, weight, height, head circumference, oxygen saturation and BMI panel
-9279-1 Respiratory rate
-8867-4 Heart rate
-2708-6 Oxygen saturation in Arterial blood
-8310-5 Body temperature
-8302-2 Body height
-9843-4 Head Occipital-frontal circumference
-29463-7 Body weight
-39156-5 Body mass index (BMI) [Ratio]
-85354-9 Blood pressure panel with all children optional
-8480-6 Systolic blood pressure
-8462-4 Diastolic blood pressure
-8478-0 Mean blood pressure
-
-Include these codes as defined in http://unitsofmeasure.org icon
-Code	Display
-%	percent
-cm	centimeter
-[in_i]	inch (international)
-kg	kilogram
-g	gram
-[lb_av]	pound (US and British)
-Cel	degree Celsius
-[degF]	degree Fahrenheit
-mm[Hg]	millimeter of mercury
-/min	per minute
-kg/m2	kilogram / (meter ^ 2)
-m2	square meter
+##### 3. 產生Observation紀錄
+##### 練習：患者體重為 85 公斤，請使用上面的溫度範例添加此資訊作為觀察結果（使用vital-signs structure definition、vital sign result types和vital signs units）。
 
 #!csharp
 
@@ -90,7 +59,7 @@ observation.Value = o_value;
 
 #!markdown
 
-4.透過FHIR Search取的FHIR Server既有之Patient資料
+##### 4.透過FHIR Search取的FHIR Server既有之Patient資料
 
 #!csharp
 
@@ -103,7 +72,7 @@ Console.WriteLine(patient.Id);
 
 #!markdown
 
-5. 使用ResourceReference將Patient與Observation連結在一起
+##### 5. 使用ResourceReference將Patient與Observation連結在一起
 
 #!csharp
 
@@ -115,7 +84,7 @@ var created = await client.CreateAsync<Observation>(observation);
 
 #!markdown
 
-6. 驗證相關資料
+##### 6. 驗證相關資料
 
 #!csharp
 
