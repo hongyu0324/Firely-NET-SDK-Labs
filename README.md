@@ -8,4 +8,4 @@
 ### Lab 5 : Encounter
 ### Lab 6 : Parsing & Serialization
 ### Lab 7 : FHIR Package開發與使用案例
-### Lab 8 : FHIR Validation(開發中 ---)
+### Lab 8 : FHIR Validation
