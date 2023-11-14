@@ -5,9 +5,8 @@
 #!csharp
 
 #r "nuget:hl7.fhir.validation.legacy.r4"
-#r "nuget:hl7.fhir.specification.r4,5.3"
-#r "nuget:hl7.fhir.specification.data.r4,5.3"
-#r "nuget:hl7.fhir.r4,5.3"
+#r "nuget:hl7.fhir.specification.data.r4"
+#r "nuget:hl7.fhir.r4"
 
 #!csharp
 
@@ -15,6 +14,7 @@
 
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.Specification.Source;
+using static Hl7.Fhir.Specification.Source.ZipSource;
 using Hl7.Fhir.Validation;
 using Hl7.Fhir.Model;
 using System.IO;
@@ -22,15 +22,16 @@ using System.IO;
 #!csharp
 
 // 建立一個ZipSource物件，讀取TW Core IG的zip檔
-var zipSource = new ZipSource("..\\profile\\fhir-spec.zip");
+var zipSource = new ZipSource("..\\profile\\specification.zip");
 
 #!csharp
 
 IResourceResolver resolver = new CachedResolver(
     // create a multi-resolver, which can resolve resources from more than one source
     new MultiResolver(
-    // create the default FHIR specification resolver (specification.zip included in HL7.fhir.specification.r4)
+    // create the default FHIR specification resolver (specification.zip included in HL7.fhir.specification.data.r4)
         zipSource,
+        //ZipSource.CreateValidationSource(),
         // create the directory source resolver, which points to our profiles directory
         new DirectorySource("..\\profile", new DirectorySourceSettings()
         {
@@ -38,7 +39,6 @@ IResourceResolver resolver = new CachedResolver(
         })
     )
 );
-Console.Write(resolver.Display());
 // create a resource validator, which uses our cached resolver
 Validator validator = new Validator(new ValidationSettings()
     {
@@ -55,7 +55,7 @@ var patient = File.ReadAllText("..\\data\\Patient-pat-example.json");
 var patientResource = new FhirJsonParser().Parse<Patient>(patient);
 
 // 使用validator的Validate方法，傳入Patient資源的物件，並指定TW Core Patient Profile的URL
-var outcome = validator.Validate(patientResource,"https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/TWPatient");
+var outcome = validator.Validate(patientResource);
 
 // 輸出驗證結果
 Console.WriteLine(outcome.ToString());
