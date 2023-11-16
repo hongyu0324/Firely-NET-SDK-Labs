@@ -13,6 +13,7 @@ using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.FhirPath;
 using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Validation;
 using System.IO;
 using P = Hl7.Fhir.ElementModel.Types;
 
@@ -21,39 +22,9 @@ var client = new FhirClient("http://localhost:8080/fhir");
 
 #!csharp
 
-String line;
-String json =""; 
-try
-{
-    //Pass the file path and file name to the StreamReader constructor
-    StreamReader sr = new StreamReader("C:\\Project\\fhir\\polygolt_book\\MI-TW_Track2_examples.json");
-    //Read the first line of text
-    line = sr.ReadLine();
-    //Continue to read until you reach end of file
-    while (line != null)
-    {
-        //write the line to console window
-        json = json + line;
-        //Read the next line
-        line = sr.ReadLine();
-    }
-    //close the file
-    sr.Close();
-    // Console.WriteLine(json);
-}
-catch(Exception e)
-{
-    Console.WriteLine("Exception: " + e.Message);
-}
-finally
-{
-    Console.WriteLine("Executing finally block.");
-}
-
-#!csharp
-
 var parser = new FhirJsonParser();
 var pat_A = new Patient();
+String json = File.ReadAllText("C:\\Project\\fhir\\polygolt_book\\data\\MI-TW_Track2_examples.json"); 
 try
 {
     var bundle = parser.Parse<Bundle>(json);
@@ -78,11 +49,11 @@ catch (FormatException fe)
 #!markdown
 
 Firely NET SDK中支援兩種FHIRPath的使用方法：POCO Object和ITypedElement-base Data
-    1. Select() - Returns the nodes produced by the expression.回傳之物件若非單純之型態，必須根據定義做型別轉換
-    2. Scalar() - Returns a single scalar value produced by the expression.
-    3. Predicate() - Returns true if the expression evaluates to true or {} (empty) and false otherwise.
-    4. IsTrue() - Returns true if the expression evaluates to true and false otherwise.
-    5. IsBoolean() - Determines whether the expression evaluates to a given boolean value.
+1. Select() - Returns the nodes produced by the expression.回傳之物件若非單純之型態，必須根據定義做型別轉換
+2. Scalar() - Returns a single scalar value produced by the expression.  
+3. Predicate() - Returns true if the expression evaluates to true or {} (empty) and false otherwise. 
+4. IsTrue() - Returns true if the expression evaluates to true and false otherwise. 
+5. IsBoolean() - Determines whether the expression evaluates to a given boolean value. 
 
 #!csharp
 
@@ -97,9 +68,6 @@ foreach(var t in telecom){
     Console.WriteLine(con.System + " " + con.Value + " " + con.Use);
 }
 
-//var nav = pat_A.ToTypedElement();
-//var n_gender = nav.Select("Resource.gender");
-
 #!csharp
 
 // create a FHIR JSON serializer, using pretty-printing (nice formatting)
@@ -108,4 +76,11 @@ FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
     Pretty = true,
 });
 string pat_Json = serializer.SerializeToString(pat_A);
-Console.WriteLine(pat_Json);
+
+//ISourceNode
+ISourceNode pat_Node = FhirJsonNode.Parse(pat_Json);
+Console.WriteLine(pat_Node.Children("identifier").Children("use").First().Text);
+
+//Typed Element的用法似乎已經在新版中被移除(ToTypedElement)
+var ite = pat_Node.ToTypedElement();
+Console.WriteLine(ite.Children("identifier").Children("use").ToFhirValues().First());

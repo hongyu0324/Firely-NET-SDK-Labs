@@ -20,7 +20,10 @@ https://twcore.mohw.gov.tw/ig/twcore/downloads.html
 #!csharp
 
 using Firely.Fhir.Packages;
-using Hl7.Fhir.Model; 
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using System.IO;
 
 #!markdown
 
@@ -30,10 +33,10 @@ using Hl7.Fhir.Model;
 
 #!csharp
 
-var tw_core = "./package.tgz";
+var tw_core = "..\\profile\\package.tgz";
 FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_core});
-var names = resolver.ListResourceUris();
-//var names = resolver.ListCanonicalUris();
+//var names = resolver.ListResourceUris();
+var names = resolver.ListCanonicalUris();
 foreach (var n in names){
     if(n.Contains("StructureDefinition")){
         Console.WriteLine(n.ToString());
@@ -61,3 +64,19 @@ foreach(var n in tw_pat.Snapshot.Element){
     }
 }
 Console.WriteLine(tw_pat.Description);
+
+#!csharp
+
+// 讀取一個Patient資源的檔案，例如patient.json
+var patientJson = File.ReadAllText("..\\data\\Patient-pat-example.json");
+
+// 將Patient資源的檔案轉換為Patient資源的物件
+var patient = new FhirJsonParser().Parse<Patient>(patientJson);
+
+try {
+    // 驗證Patient資源的物件是否符合結構定義
+    patient.Validate(recurse: true, narrativeValidation : NarrativeValidationKind.FhirXhtml);
+}
+catch (Exception ex) {
+    Console.WriteLine(ex.Message);
+};
