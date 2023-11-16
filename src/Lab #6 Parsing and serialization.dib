@@ -2,6 +2,18 @@
 
 {"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
 
+#!markdown
+
+課程六：Parsing, Serialization和FHIRPath 
+課程目標： 
+- 學習如何處理JSON(或XML)格式的FHIR Data 
+- 學習如何使用FHIRPath(POCO) 
+- 學習如何使用IsourceNode與ITypeElement
+
+#!markdown
+
+1. 匯入Package與NameSpace
+
 #!csharp
 
 #r "nuget:hl7.fhir.r4"
@@ -13,12 +25,17 @@ using Hl7.Fhir.Rest;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.FhirPath;
 using Hl7.Fhir.ElementModel;
-using Hl7.Fhir.Validation;
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using static Hl7.Fhir.Specification.Source.ZipSource;
 using System.IO;
-using P = Hl7.Fhir.ElementModel.Types;
 
 
 var client = new FhirClient("http://localhost:8080/fhir");
+
+#!markdown
+
+2. 讀取JSON格式的FHIR Data並將部分內容列印出來
 
 #!csharp
 
@@ -48,12 +65,12 @@ catch (FormatException fe)
 
 #!markdown
 
-Firely NET SDK中支援兩種FHIRPath的使用方法：POCO Object和ITypedElement-base Data
-1. Select() - Returns the nodes produced by the expression.回傳之物件若非單純之型態，必須根據定義做型別轉換
-2. Scalar() - Returns a single scalar value produced by the expression.  
-3. Predicate() - Returns true if the expression evaluates to true or {} (empty) and false otherwise. 
-4. IsTrue() - Returns true if the expression evaluates to true and false otherwise. 
-5. IsBoolean() - Determines whether the expression evaluates to a given boolean value. 
+3. FHIRPath的使用方法：POCO Object
+- Select() - Returns the nodes produced by the expression.回傳之物件若非單純之型態，必須根據定義做型別轉換
+- Scalar() - Returns a single scalar value produced by the expression.  
+- Predicate() - Returns true if the expression evaluates to true or {} (empty) and false otherwise. 
+- IsTrue() - Returns true if the expression evaluates to true and false otherwise. 
+- IsBoolean() - Determines whether the expression evaluates to a given boolean value. 
 
 #!csharp
 
@@ -68,6 +85,10 @@ foreach(var t in telecom){
     Console.WriteLine(con.System + " " + con.Value + " " + con.Use);
 }
 
+#!markdown
+
+4. 展示IsourceNode與ITypedElement的用法
+
 #!csharp
 
 // create a FHIR JSON serializer, using pretty-printing (nice formatting)
@@ -79,8 +100,9 @@ string pat_Json = serializer.SerializeToString(pat_A);
 
 //ISourceNode
 ISourceNode pat_Node = FhirJsonNode.Parse(pat_Json);
-Console.WriteLine(pat_Node.Children("identifier").Children("use").First().Text);
+Console.WriteLine("Data read from ISoureNode:" + pat_Node.Children("identifier").Children("use").First().Text);
 
-//Typed Element的用法似乎已經在新版中被移除(ToTypedElement)
-var ite = pat_Node.ToTypedElement();
-Console.WriteLine(ite.Children("identifier").Children("use").ToFhirValues().First());
+//ITypedElement
+IResourceResolver zipSource = ZipSource.CreateValidationSource("..\\profile\\specification.zip");
+ITypedElement pat_Ite = pat_Node.ToTypedElement(new StructureDefinitionSummaryProvider(zipSource, null));
+Console.WriteLine("Data read from ITypedElement:" + pat_Ite.Children("identifier").Children("use").ToFhirValues().First());
