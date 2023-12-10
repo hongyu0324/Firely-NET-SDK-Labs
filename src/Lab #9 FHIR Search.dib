@@ -1,0 +1,91 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+var client = new FhirClient("http://localhost:8080/fhir");
+
+#!csharp
+
+// Forward Chaining example
+// Encounter?date=2023-02-03&patient.name=Sanford861, Maile198
+
+var query = new SearchParams()
+    .Where("date=2023-02-03")
+    .Where("patient.name=Sanford861, Maile198");
+
+Bundle bundle = await client.SearchAsync<Encounter>(query);
+
+foreach (var o in bundle.Entry)
+{
+     Console.WriteLine(o.Resource.TypeName + "/" + o.Resource.Id);
+}
+
+#!csharp
+
+// Reverse Chaining example
+// Patient?_has:Condition:patient:code=314529007
+
+var query = new SearchParams()
+    .Where("_has:Condition:patient:code=314529007");
+
+Bundle bundle = await client.SearchAsync<Patient>(query);
+
+foreach (var o in bundle.Entry)
+{
+     Console.WriteLine(o.Resource.TypeName + "/" + o.Resource.Id);
+}
+
+#!csharp
+
+// Reverse include example
+// http://localhost:8080/fhir/Patient?name=Sanford861&_revinclude=Encounter:patient&_revinclude=Condition:encounter
+
+var q = new SearchParams()
+        .Where("name=Sanford861")
+        .ReverseInclude("Encounter:patient", IncludeModifier.None)
+        .ReverseInclude("Condition:patient", IncludeModifier.None);
+
+Bundle bundle = await client.SearchAsync<Patient>(q);
+
+while (bundle != null)
+{
+    foreach (var o in bundle.Entry)
+    {
+        Console.WriteLine(o.Resource.TypeName + "/" + o.Resource.Id);
+    }
+    bundle = await client.ContinueAsync(bundle);
+}
+
+#!csharp
+
+// GET [base]/Condition?code=314529007&_include =Condition:patient
+// 取得Condition的code為314529007的Condition資料，並且包含patient資料
+var q = new SearchParams()
+        .Where("code=314529007")
+        .Include("Condition:patient", IncludeModifier.Recurse)
+        .OrderBy("patient", SortOrder.Descending);
+
+Bundle bundle = await client.SearchAsync<Condition>(q);
+
+while (bundle != null){
+    foreach (var o in bundle.Entry){
+        // print resource reference
+        if (o.Resource.TypeName.Equals("Condition")){
+            Condition c = (Condition)o.Resource;
+            Console.WriteLine(o.Resource.TypeName + "/" + o.Resource.Id + " " + c.Subject.Reference);
+        }
+        else if (o.Resource.TypeName.Equals("Patient")){
+            Patient p = (Patient)o.Resource;
+            Console.WriteLine(o.Resource.TypeName + "/" + o.Resource.Id + " " + p.Name[0].GivenElement[0].ToString());
+        }
+    }
+    bundle = client.Continue(bundle, PageDirection.Next);
+}
