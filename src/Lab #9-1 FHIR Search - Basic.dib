@@ -1,0 +1,117 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+var client = new FhirClient("http://localhost:8080/fhir");
+
+#!csharp
+
+// search value Prefix example:eq
+var q = new SearchParams().Where("birthdate=eq1969-03-24");
+var bundle = client.Search<Patient>(q);
+foreach (var o in bundle.Entry){
+    Patient p = (Patient)o.Resource;
+    Console.WriteLine(p.Name[0].Family + " "　+ p.Name[0].Given.First() + " - " + p.BirthDate);
+} 
+
+#!csharp
+
+// search value Prefix example:
+var q = new SearchParams().Where("birthdate=gt1969-03-24");
+var bundle = client.Search<Patient>(q);
+foreach (var o in bundle.Entry){
+    Patient p = (Patient)o.Resource;
+    Console.WriteLine(p.Name[0].Family + " "　+ p.Name[0].Given.First() + " - " + p.BirthDate);
+} 
+
+#!csharp
+
+// search value Prefix example: le
+var q = new SearchParams().Where("birthdate=le1969-03-24");
+var bundle = client.Search<Patient>(q);
+foreach (var o in bundle.Entry){
+    Patient p = (Patient)o.Resource;
+    Console.WriteLine(p.Name[0].Family + " "　+ p.Name[0].Given.First() + " - " + p.BirthDate);
+}
+
+#!csharp
+
+// search value Prefix example: gt
+var q = new SearchParams().Where("birthdate=gt1969-03-24");
+var bundle = client.Search<Patient>(q);
+foreach (var o in bundle.Entry){
+    Patient p = (Patient)o.Resource;
+    Console.WriteLine(p.Name[0].Family + " "　+ p.Name[0].Given.First() + " - " + p.BirthDate);
+}
+
+#!csharp
+
+// search value Prefix example: lt
+var q = new SearchParams().Where("birthdate=lt1969-03-24");
+var bundle = client.Search<Patient>(q);
+foreach (var o in bundle.Entry){
+    Patient p = (Patient)o.Resource;
+    Console.WriteLine(p.Name[0].Family + " "　+ p.Name[0].Given.First() + " - " + p.BirthDate);
+}
+
+#!csharp
+
+// search modifier example: contains
+var q = new SearchParams().Where("name:contains=Al");
+var bundle = client.Search<Patient>(q);
+foreach (var o in bundle.Entry){
+    Patient p = (Patient)o.Resource;
+    Console.WriteLine(p.Name[0].Family + " "　+ p.Name[0].Given.First() + " - " + p.BirthDate);
+}
+
+#!csharp
+
+// search modifier example: exact
+var q = new SearchParams().Where("name:exact=Sanford861");
+var bundle = client.Search<Patient>(q);
+foreach (var o in bundle.Entry){
+    Patient p = (Patient)o.Resource;
+    Console.WriteLine(p.Name[0].Family + " "　+ p.Name[0].Given.First() + " - " + p.BirthDate);
+}
+
+#!csharp
+
+// search modifier example: below
+var q = new SearchParams().Where("name:text=Sanford861");
+var bundle = client.Search<Patient>(q);
+foreach (var o in bundle.Entry){
+    Patient p = (Patient)o.Resource;
+    Console.WriteLine(p.Name[0].Family + " "　+ p.Name[0].Given.First() + " - " + p.BirthDate);
+}
+
+#!csharp
+
+// search modifier example: 身高高於160公分的人，並依照身高排序
+var q = new SearchParams()
+    .Where("value-quantity=gt180.0")
+    .Where("code=8302-2")
+    .OrderBy("value-quantity")
+    .OrderBy("date");
+
+var bundle = client.Search<Observation>(q);
+
+while (bundle != null)
+{
+   foreach (var obs in bundle.Entry){
+        Observation o = (Observation)obs.Resource;
+        Quantity q = (Quantity)o.Value;
+        CodeableConcept c = (CodeableConcept)o.Code;
+        ResourceReference p = (ResourceReference)o.Subject;
+        Patient patient = await client.ReadAsync<Patient>(p.Reference);
+        Console.WriteLine(patient.Name[0].Family + " " + patient.Name[0].Given.First() + " - " + q.Value + " " + q.Unit + " " + c.Text + " on " + o.Effective.ToString());
+    }
+    bundle = client.Continue(bundle, PageDirection.Next);
+}
