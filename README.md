@@ -9,3 +9,4 @@
 ### Lab 6 : Parsing & Serialization
 ### Lab 7 : FHIR Package開發與使用案例
 ### Lab 8 : FHIR Validation
+### Lab 9 : FHIR Search - Basic & Advanced
