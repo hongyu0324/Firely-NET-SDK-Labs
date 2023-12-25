@@ -1,0 +1,56 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+using System.Net.Http;
+using System.Text;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.IO;
+
+HttpClient cqlClient = new HttpClient();
+string URI = "http://localhost:8081/cql/translator?locators=true&signatures=Overloads&result-types=true";
+
+string cql = "";
+string cqlFile = "";
+
+#!csharp
+
+//read cql from file
+cqlFile = "Exercises10Key";
+var cqlContent = new MultipartFormDataContent();
+
+string cqlBase = System.IO.File.ReadAllText(@"C:\Project\sqf-exercises\cqf-exercises\input\cql\" + cqlFile + ".cql");
+var stringContentA = new StringContent(cqlBase, Encoding.UTF8, "application/cql");
+stringContentA.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+{
+    Name = cqlFile
+};
+stringContentA.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
+cqlContent.Add(stringContentA, cqlFile);
+
+string cqlCommon = System.IO.File.ReadAllText(@"C:\Project\sqf-exercises\cqf-exercises\input\cql\FHIRCommon.cql");
+var stringContentB = new StringContent(cqlCommon, Encoding.UTF8, "application/cql");
+// set Content-Disposition header to "form-data" to match server expectation
+stringContentB.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+{
+    Name = "FHIRCommon"
+};
+stringContentB.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
+cqlContent.Add(stringContentB);
+
+// send the request
+HttpResponseMessage cqlResponse = await cqlClient.PostAsync(URI, cqlContent);
+
+try
+{
+    cqlResponse.EnsureSuccessStatusCode();
+}
+catch (HttpRequestException e)
+{
+    Console.WriteLine("\nException Caught!");
+    Console.WriteLine("Message : {0} ",e.Message);
+}
+Console.WriteLine(cqlResponse.Content.ReadAsStringAsync().Result);
