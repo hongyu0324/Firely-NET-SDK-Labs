@@ -1,0 +1,20 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!pwsh
+
+cd C:\Project\Firely-NET-SDK-Labs\firely-cql
+dir
+
+#!pwsh
+
+dotnet tool install Hl7.Cql.Packager --global --version 1.0.0-rc2
+
+#!pwsh
+
+cql-package.exe --cql ./cql --elm ./elm/json --fhir ./fhir --cs ./cs 
+
+#!pwsh
+
+dotnet tool uninstall Hl7.Cql.Packager --global

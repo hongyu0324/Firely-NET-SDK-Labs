@@ -1,0 +1,56 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+using System.Net.Http;
+using System.Text;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+
+HttpClient cqlClient = new HttpClient();
+string URI = "http://localhost:8081/cql/translator?locators=true&signatures=Overloads&result-types=true";
+
+string cql = "";
+string cqlFile = "Exercises07Key";
+
+#!csharp
+
+//read cql from file 
+cql = System.IO.File.ReadAllText(@"C:\Project\sqf-exercises\cqf-exercises\input\cql\" + cqlFile + ".cql");
+
+/*
+    POST http://localhost:8081/cql/translator HTTP/1.1
+    Content-Type: application/cql
+    Accept: application/elm+json
+*/
+StringContent cqlContent= new StringContent(cql, Encoding.UTF8,"application/cql");
+
+#!csharp
+
+// add Content-Type: multipart/form-data
+cqlClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/elm+json"));
+
+//send cql to cql translator service
+HttpResponseMessage cqlResponse = await cqlClient.PostAsync(URI, cqlContent);
+
+try
+{
+    cqlResponse.EnsureSuccessStatusCode();
+}
+catch (HttpRequestException e)
+{
+    Console.WriteLine("\nException Caught!");
+    Console.WriteLine("Message : {0} ",e.Message);
+}
+
+//read response from cql translator service
+string elmJson = await cqlResponse.Content.ReadAsStringAsync();
+
+// print elm json
+Console.WriteLine(elmJson);
+
+//write elm json to file 
+System.IO.File.WriteAllText(@"C:\Project\Firely-NET-SDK-Labs\firely-cql\cql\"+ cqlFile +".cql", cql);
+System.IO.File.WriteAllText(@"C:\Project\Firely-NET-SDK-Labs\firely-cql\elm\json\"+ cqlFile +".json", elmJson);
