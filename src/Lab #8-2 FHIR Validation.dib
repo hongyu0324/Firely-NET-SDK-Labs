@@ -1,0 +1,51 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:Firely.Fhir.Validation"
+#r "nuget:Firely.Fhir.Validation.R4"
+#r "nuget:Firely.Fhir.Validation.Compilation"
+#r "nuget:hl7.fhir.r4"
+#r "nuget:Firely.Fhir.Packages"
+
+#!csharp
+
+using Firely.Fhir.Packages;
+using Firely.Fhir.Validation;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Serialization;
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using Hl7.Fhir.Specification.Terminology;
+using Hl7.Fhir.Support;
+using Hl7.Fhir.Utility;
+using System.IO;
+
+#!csharp
+
+var packageSource = FhirPackageSource.CreateCorePackageSource(ModelInfo.ModelInspector, FhirRelease.R4, "https://packages.simplifier.net");
+IAsyncResourceResolver  _coreSource = new CachedResolver(packageSource);
+var directorySource = new CachedResolver(new DirectorySource("C:\\Project\\Firely-NET-SDK-Labs\\profile",
+                            new DirectorySourceSettings { IncludeSubDirectories = true }));
+
+var profileSource = new MultiResolver(directorySource, _coreSource);
+var terminologySource = new LocalTerminologyService(profileSource);
+
+var validator = new Validator(profileSource, terminologySource);
+
+#!csharp
+
+// 讀取一個Patient資源的檔案，例如patient.json
+var patient = File.ReadAllText("C:\\Project\\Firely-NET-SDK-Labs\\data\\Patient-pat-example.json");
+
+// 將Patient資源的檔案轉換為Patient資源的物件
+var patientResource = new FhirJsonParser().Parse<Patient>(patient);
+
+// 使用validator的Validate方法，傳入Patient資源的物件，並指定TW Core Patient Profile的URL
+var outcome = validator.Validate(patientResource);
+
+// 輸出驗證結果
+Console.WriteLine(outcome.ToString());
