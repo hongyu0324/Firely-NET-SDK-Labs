@@ -17,7 +17,7 @@
 
 using Hl7.Fhir.Model; 
 using Hl7.Fhir.Rest;
-var client = new FhirClient("http://localhost:8080/fhir");
+var client = new FhirClient("http://localhost/fhir");
 
 #!markdown
 

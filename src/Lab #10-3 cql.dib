@@ -1,0 +1,52 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.Cql,1.0.0-rc2"
+
+#!csharp
+
+using Hl7.Fhir.Model;
+using Hl7.Cql.Fhir;
+using Hl7.Cql.Primitives;
+using Hl7.Cql.Packaging;
+using Hl7.Cql.Operators;
+using Hl7.Cql.Runtime;
+using Hl7.Cql.Abstractions;
+using Hl7.Cql.ValueSets;
+using Hl7.Cql.Iso8601;
+using System.IO;
+
+#!csharp
+
+private readonly IDictionary<string, object> MY2023 =
+            new Dictionary<string, object>
+            {
+                {
+                    "Measurement Period",
+                    new CqlInterval<CqlDateTime>(
+                        new CqlDateTime(2023, 1, 1, 0, 0, 0, 0, 0, 0),
+                        new CqlDateTime(2023, 12, 31, 0, 0, 0, 0, 0, 0),
+                        true,
+                        true)
+                }
+            };
+
+var patientEverything = new Bundle();  // add some data
+Hl7.Cql.Runtime.CqlContext context = FhirCqlContext.ForBundle(patientEverything, MY2023);
+var bcs = new BCSEHEDISMY2022_1_0_0(context);
+//var numerator = bcs.Numerator();
+
+#!csharp
+
+var lib = "BCSEHEDISMY2022";
+var version = "1.0.0";
+var dir = new DirectoryInfo("Resources");
+var asmContext = LibraryPackager.LoadResources(dir, lib, version);
+
+var patientEverything = new Bundle();   // Add data
+var valueSets = Enumerable.Empty<ValueSet>().ToValueSetDictionary();  // Add valuesets
+var context = FhirCqlContext.ForBundle(patientEverything, null, valueSets);
