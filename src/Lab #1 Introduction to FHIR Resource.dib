@@ -29,7 +29,7 @@
 using Hl7.Fhir.Model; 
 using Hl7.Fhir.Rest;
 
-var client = new FhirClient("http://localhost/fhir");
+var client = new FhirClient("http://localhost:8081/fhir");
 
 #!markdown
 
@@ -39,7 +39,7 @@ var client = new FhirClient("http://localhost/fhir");
 
 #!csharp
 
-var location_A = new Uri("http://localhost:8080/fhir/Patient/9869");
+var location_A = new Uri("http://localhost:8081/fhir/Patient/5811");
 var pat_A = new Patient();
 pat_A = await client.ReadAsync<Patient>(location:location_A);
 if (pat_A != null){
@@ -55,10 +55,10 @@ if (pat_A != null){
 var q = new SearchParams().Where("birthdate=gt1900");
 Bundle patients = await client.SearchAsync<Patient>(q);
 
-Console.WriteLine("總計:" + patients.Total.ToString() + "人");
+Console.WriteLine("總計:" + patients.Entry.Count + "人");
 foreach (var p in patients.Entry){
     var r = (Patient)p.Resource;
-    Console.WriteLine(r.Name[0].Family + " "　+ r.Name[0].Given.First());
+    Console.WriteLine(r.Id + " : " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
 } 
 
 #!markdown

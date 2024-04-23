@@ -1,0 +1,251 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Serialization;
+using Hl7.Fhir.FhirPath;
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using System.IO;
+
+var client = new FhirClient("http://localhost:8081/fhir");
+var pathEP = "D:\\Hongyu\\Project\\data\\fhir-example\\ep\\";
+
+#!csharp
+
+//read Patient Data from "D:\Hongyu\Project\data\fhir-example\ep\Patient-pat.json"
+var patientFile = pathEP + "Patient-pat.json";
+var parser = new FhirJsonParser();
+var pat = new Patient();
+String json = File.ReadAllText(patientFile);
+
+// parsing Pateint Data from json
+pat = parser.Parse<Patient>(json);
+
+//printing Patient Data 
+Console.WriteLine(pat.Name[0].Text);
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\Observation-obs.json"
+
+var obsFile = pathEP + "Observation-obs.json";
+var obs = new Observation();
+json = File.ReadAllText(obsFile);
+
+// parsing Observation Data from json
+obs = parser.Parse<Observation>(json);
+
+//printing Observation Data
+Console.WriteLine(obs.Code.Coding[0].Display);
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\Encounter-enc.json"
+
+var encFile = pathEP + "Encounter-enc.json";
+var enc = new Encounter();
+json = File.ReadAllText(encFile);
+
+// parsing Encounter Data from json
+enc = parser.Parse<Encounter>(json);
+
+//printing Encounter Data
+Console.WriteLine(enc.Status);
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\Condition-con.json"
+
+var conFile = pathEP + "Condition-con.json";
+var con = new Condition();
+json = File.ReadAllText(conFile);
+
+// parsing Condition Data from json
+con = parser.Parse<Condition>(json);
+
+//printing Condition Data
+Console.WriteLine(con.Code.Coding[0].Display);
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\Medication-med-1.json"
+
+var medFile = pathEP + "Medication-med-01.json";
+var med = new Medication();
+json = File.ReadAllText(medFile);
+
+// parsing Medication Data from json
+med = parser.Parse<Medication>(json);
+
+//printing Medication Data
+Console.WriteLine(med.Code.Text);
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\MedicationRequest-med-req-1.json"
+
+var medReqFile = pathEP + "MedicationRequest-med-req-01.json";
+var medReq = new MedicationRequest();
+json = File.ReadAllText(medReqFile);
+
+// parsing MedicationRequest Data from json
+medReq = parser.Parse<MedicationRequest>(json);
+
+//printing MedicationRequest Data
+Console.WriteLine(medReq.Status);
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\coverage.json"
+
+var covFile = pathEP + "Coverage-cov.json";
+var cov = new Coverage();
+json = File.ReadAllText(covFile);
+
+// parsing Coverage Data from json
+cov = parser.Parse<Coverage>(json);
+
+//printing Coverage Data
+Console.WriteLine(cov.Type.Coding[0].Display);
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\Organization-org.json"
+
+var orgFile = pathEP + "Organization-org.json";
+var org = new Organization();
+json = File.ReadAllText(orgFile);
+
+// parsing Organization Data from json
+org = parser.Parse<Organization>(json);
+
+//printing Organization Data
+Console.WriteLine(org.Name);
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\Practitioner-pra.json"
+
+var praFile = pathEP + "Practitioner-pra.json";
+var pra = new Practitioner();
+json = File.ReadAllText(praFile);
+
+// parsing Practitioner Data from json
+pra = parser.Parse<Practitioner>(json);
+
+//printing Practitioner Data
+Console.WriteLine(pra.Name[0].Text);
+
+#!csharp
+
+var composition = new Composition();
+
+// type is Prescription for medication
+composition.Type = new CodeableConcept("http://loinc.org", "57833-6", "Prescription for medication");
+
+// subject is the patient
+composition.Subject = new ResourceReference("Patient/pat");
+
+// encounter is the encounter   
+composition.Encounter = new ResourceReference("Encounter/enc");
+
+// author is the practitioner and Organization
+composition.Author = new List<ResourceReference> { new ResourceReference("Practitioner/pra"), new ResourceReference("Organization/org") };
+
+// section is the medication, condition, observation and coverage
+composition.Section = new List<Composition.SectionComponent> {
+    new Composition.SectionComponent {
+        Title = "Medication",
+        Entry = new List<ResourceReference> { new ResourceReference("Medication/med-01"), new ResourceReference("MedicationRequest/med-req-01") }
+    },
+    new Composition.SectionComponent {
+        Title = "Condition",
+        Entry = new List<ResourceReference> { new ResourceReference("Condition/con") }
+    },
+    new Composition.SectionComponent {
+        Title = "Observation",
+        Entry = new List<ResourceReference> { new ResourceReference("Observation/obs") }
+    },
+    new Composition.SectionComponent {
+        Title = "Coverage",
+        Entry = new List<ResourceReference> { new ResourceReference("Coverage/cov") }
+    }
+};
+
+FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
+{
+    Pretty = true,
+});
+//Serialization of Composition
+var jsonComposition = serializer.SerializeToString(composition);
+
+//printing Composition Data
+Console.WriteLine(jsonComposition);
+
+#!csharp
+
+// create Bundle
+var bundle = new Bundle();
+
+// type is Document
+bundle.Type = Bundle.BundleType.Document;
+
+// entry is the composition, patient, encounter, condition, observation, medication, medicationRequest, coverage, organization and practitioner
+bundle.Entry = new List<Bundle.EntryComponent> {
+    new Bundle.EntryComponent {
+        Resource = composition,
+        FullUrl = "Composition/com"
+    },
+    new Bundle.EntryComponent {
+        Resource = pat,
+        FullUrl = "Patient/pat"
+    },
+    new Bundle.EntryComponent {
+        Resource = enc,
+        FullUrl = "Encounter/enc"
+    },
+    new Bundle.EntryComponent {
+        Resource = con,
+        FullUrl = "Condition/con"
+    },
+    new Bundle.EntryComponent {
+        Resource = obs,
+        FullUrl = "Observation/obs"
+    },
+    new Bundle.EntryComponent {
+        Resource = med,
+        FullUrl = "Medication/med-01"
+    },
+    new Bundle.EntryComponent {
+        Resource = medReq,
+        FullUrl = "MedicationRequest/med-req-01"
+    },
+    new Bundle.EntryComponent {
+        Resource = cov,
+        FullUrl = "Coverage/cov"
+    },
+    new Bundle.EntryComponent {
+        Resource = org,
+        FullUrl = "Organization/org"
+    },
+    new Bundle.EntryComponent {
+        Resource = pra,
+        FullUrl = "Practitioner/pra"
+    }
+};
+
+//Serialization of Bundle
+var jsonBundle = serializer.SerializeToString(bundle);
+
+//printing Bundle Data
+Console.WriteLine(jsonBundle);
