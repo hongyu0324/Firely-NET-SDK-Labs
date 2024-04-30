@@ -17,7 +17,7 @@ using Hl7.Fhir.Specification;
 using Hl7.Fhir.Specification.Source;
 using System.IO;
 
-var client = new FhirClient("http://localhost:8081/fhir");
+var client = new FhirClient("http://localhost:8080/fhir");
 var pathEP = "D:\\Hongyu\\Project\\data\\fhir-example\\ep\\";
 
 #!csharp

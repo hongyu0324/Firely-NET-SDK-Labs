@@ -28,7 +28,7 @@ using System.IO;
 
 var packageSource = FhirPackageSource.CreateCorePackageSource(ModelInfo.ModelInspector, FhirRelease.R4, "https://packages.simplifier.net");
 IAsyncResourceResolver  _coreSource = new CachedResolver(packageSource);
-var directorySource = new CachedResolver(new DirectorySource("C:\\Project\\Firely-NET-SDK-Labs\\profile",
+var directorySource = new CachedResolver(new DirectorySource("D:\\Hongyu\\Project\\data\\profiles\\tw-core-ig\\v0.2.1\\package",
                             new DirectorySourceSettings { IncludeSubDirectories = true }));
 
 var profileSource = new MultiResolver(directorySource, _coreSource);
@@ -39,7 +39,7 @@ var validator = new Validator(profileSource, terminologySource);
 #!csharp
 
 // 讀取一個Patient資源的檔案，例如patient.json
-var patient = File.ReadAllText("C:\\Project\\Firely-NET-SDK-Labs\\data\\Patient-pat-example.json");
+var patient = File.ReadAllText("D:\\Hongyu\\Project\\data\\fhir-example\\Patient-pat-example.json");
 
 // 將Patient資源的檔案轉換為Patient資源的物件
 var patientResource = new FhirJsonParser().Parse<Patient>(patient);
