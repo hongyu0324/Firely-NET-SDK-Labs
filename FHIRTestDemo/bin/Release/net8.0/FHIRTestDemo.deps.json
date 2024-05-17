@@ -1,0 +1,154 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "FHIRTestDemo/1.0.0": {
+        "dependencies": {
+          "Hl7.Fhir.R4": "5.8.1",
+          "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.19.6",
+          "QRCoder": "1.5.1"
+        },
+        "runtime": {
+          "FHIRTestDemo.dll": {}
+        }
+      },
+      "Fhir.Metrics/1.2.2": {
+        "runtime": {
+          "lib/netstandard2.0/Fhir.Metrics.dll": {
+            "assemblyVersion": "1.2.2.0",
+            "fileVersion": "1.2.2.0"
+          }
+        }
+      },
+      "Hl7.Fhir.Base/5.8.1": {
+        "dependencies": {
+          "Fhir.Metrics": "1.2.2",
+          "Newtonsoft.Json": "13.0.3",
+          "System.ComponentModel.Annotations": "5.0.0",
+          "System.Reflection.Emit.Lightweight": "4.7.0"
+        },
+        "runtime": {
+          "lib/net8.0/Hl7.Fhir.Base.dll": {
+            "assemblyVersion": "5.8.1.0",
+            "fileVersion": "5.8.1.0"
+          }
+        }
+      },
+      "Hl7.Fhir.Conformance/5.8.1": {
+        "dependencies": {
+          "Hl7.Fhir.Base": "5.8.1"
+        },
+        "runtime": {
+          "lib/net8.0/Hl7.Fhir.Conformance.dll": {
+            "assemblyVersion": "5.8.1.0",
+            "fileVersion": "5.8.1.0"
+          }
+        }
+      },
+      "Hl7.Fhir.R4/5.8.1": {
+        "dependencies": {
+          "Hl7.Fhir.Conformance": "5.8.1"
+        },
+        "runtime": {
+          "lib/net8.0/Hl7.Fhir.R4.dll": {
+            "assemblyVersion": "5.8.1.0",
+            "fileVersion": "5.8.1.0"
+          }
+        }
+      },
+      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.19.6": {},
+      "Newtonsoft.Json/13.0.3": {
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.3.27908"
+          }
+        }
+      },
+      "QRCoder/1.5.1": {
+        "runtime": {
+          "lib/net6.0/QRCoder.dll": {
+            "assemblyVersion": "1.5.1.0",
+            "fileVersion": "1.5.1.0"
+          }
+        }
+      },
+      "System.ComponentModel.Annotations/5.0.0": {},
+      "System.Reflection.Emit.Lightweight/4.7.0": {}
+    }
+  },
+  "libraries": {
+    "FHIRTestDemo/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Fhir.Metrics/1.2.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-600yqTbqREfogkwWH+MrXwq7fFI/gO5xn1+f7EYHlN69kXZhEpyG3V574PJiErfMQS1IpDNs4QT0aAu3KGlGFQ==",
+      "path": "fhir.metrics/1.2.2",
+      "hashPath": "fhir.metrics.1.2.2.nupkg.sha512"
+    },
+    "Hl7.Fhir.Base/5.8.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+K1+sOJw9pJjjIhJJKIUH8AmjnB18dzd7RRiaOXZmMeKx618xKSbODT6cLiR8ili/DSUCEjIz4JeS2bsk4W/xg==",
+      "path": "hl7.fhir.base/5.8.1",
+      "hashPath": "hl7.fhir.base.5.8.1.nupkg.sha512"
+    },
+    "Hl7.Fhir.Conformance/5.8.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7bTn+jV8J3fyQ5HDpaOHrmfoIhUcPsukijhLlHo3YgozTX9NW3UROBtOZ5DrQErLW/E/jzWeiii8/gpCnjHoQw==",
+      "path": "hl7.fhir.conformance/5.8.1",
+      "hashPath": "hl7.fhir.conformance.5.8.1.nupkg.sha512"
+    },
+    "Hl7.Fhir.R4/5.8.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bmhRnly4ByH1LdxDeIDHlXarZXzX9Did+88zyrHpIM+KpGpG9ucJsryPfWdquWFwTUA7qHUT4pS6EH+eGg4LUw==",
+      "path": "hl7.fhir.r4/5.8.1",
+      "hashPath": "hl7.fhir.r4.5.8.1.nupkg.sha512"
+    },
+    "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.19.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7GOQdMzQcH7o/bPFL/I2kQEgMnq2pYZ+exhGb9nNqs624K9w2jB2zieh4sOH9+a01i/G9iTWfeUI3IGMF7SKNg==",
+      "path": "microsoft.visualstudio.azure.containers.tools.targets/1.19.6",
+      "hashPath": "microsoft.visualstudio.azure.containers.tools.targets.1.19.6.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "path": "newtonsoft.json/13.0.3",
+      "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
+    },
+    "QRCoder/1.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+v8VntytuDw4R1nCNJkSA7SWSizJoQfiByV1+nUjOwrDZEuaxefG73aKuuQjpaGtoZ7qlXpRbK70C23m1h3WLw==",
+      "path": "qrcoder/1.5.1",
+      "hashPath": "qrcoder.1.5.1.nupkg.sha512"
+    },
+    "System.ComponentModel.Annotations/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dMkqfy2el8A8/I76n2Hi1oBFEbG1SfxD2l5nhwXV3XjlnOmwxJlQbYpJH4W51odnU9sARCSAgv7S3CyAFMkpYg==",
+      "path": "system.componentmodel.annotations/5.0.0",
+      "hashPath": "system.componentmodel.annotations.5.0.0.nupkg.sha512"
+    },
+    "System.Reflection.Emit.Lightweight/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-a4OLB4IITxAXJeV74MDx49Oq2+PsF6Sml54XAFv+2RyWwtDBcabzoxiiJRhdhx+gaohLh4hEGCLQyBozXoQPqA==",
+      "path": "system.reflection.emit.lightweight/4.7.0",
+      "hashPath": "system.reflection.emit.lightweight.4.7.0.nupkg.sha512"
+    }
+  }
+}

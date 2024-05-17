@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "71/ul1Wv4c6e4Yxablueew2Fd3HlgUzoPn7KZy9JPSzSVTPGDYN8R9PyxYQwiclLs5/UoGgDSKXiWTeh3S5emA==",
+  "success": true,
+  "projectFilePath": "D:\\Hongyu\\Project\\FHIRTestDemo\\FHIRTestDemo\\FHIRTestDemo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\hongyu\\.nuget\\packages\\fhir.metrics\\1.2.2\\fhir.metrics.1.2.2.nupkg.sha512",
+    "C:\\Users\\hongyu\\.nuget\\packages\\hl7.fhir.base\\5.8.1\\hl7.fhir.base.5.8.1.nupkg.sha512",
+    "C:\\Users\\hongyu\\.nuget\\packages\\hl7.fhir.conformance\\5.8.1\\hl7.fhir.conformance.5.8.1.nupkg.sha512",
+    "C:\\Users\\hongyu\\.nuget\\packages\\hl7.fhir.r4\\5.8.1\\hl7.fhir.r4.5.8.1.nupkg.sha512",
+    "C:\\Users\\hongyu\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.6\\microsoft.visualstudio.azure.containers.tools.targets.1.19.6.nupkg.sha512",
+    "C:\\Users\\hongyu\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\hongyu\\.nuget\\packages\\qrcoder\\1.5.1\\qrcoder.1.5.1.nupkg.sha512",
+    "C:\\Users\\hongyu\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
+    "C:\\Users\\hongyu\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

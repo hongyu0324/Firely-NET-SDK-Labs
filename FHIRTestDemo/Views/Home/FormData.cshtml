@@ -1,0 +1,35 @@
+﻿@model FHIRTest.Models.FormDataViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+
+    @if (Model.status == "Y")
+    {
+        <table border="1">
+            <tbody>
+                <tr style="max-height:25vh;">
+                    <td style="text-align:left;">
+                        <h2>處方箋 QR code</h2>
+                        <h3>就醫日期：@Model.strOPDDate</h3>
+                        <h3>科別：@Model.DptName</h3>
+                        <h3>姓名：@Model.PatName</h3>
+                        <h3>院所：@Model.HospName</h3>
+                    </td>
+                    @foreach (var itm in Model.lstQRCode)
+                    {
+                        <td>
+                            <img src="data:image/png;base64,@itm" alt="QR Code" style="max-height:7cm;min-height:3.75cm;">
+                        </td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>查無處方箋資料</h1>
+    }
+</div>

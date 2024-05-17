@@ -1,0 +1,73 @@
+﻿@model FHIRTest.Models.FHIRViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    @* <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
+
+    <div class="row">
+        @using (Html.BeginForm("FormData", "Home", FormMethod.Post, new { @class = "form-inline", @id = "frmData", @autocomplete = "off" }))
+        {
+            <div class="m-1">
+                <label>病人姓名</label>
+                @Html.TextBoxFor(m=>m.PatName)
+            </div>
+            <div class="m-1">
+                <label>醫師姓名</label>
+                @Html.TextBoxFor(m =>m.EmpName)
+            </div>
+            <div class="m-1">
+                <button type="button" id="btnRun">電子處方箋</button>                
+            </div>
+            <div class="m-1">                
+                <img id="loadingImage" src="~/image/waiting.gif" alt="Loading..." style="display:none;" />
+            </div>
+        }
+    </div>
+
+    <div id="divMsg" class="m-2 p-1">
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#btnRun').on('click', function () {
+            showLoadingImage();
+            $('#divMsg').html('');
+            GetQRData();
+        });
+    });
+
+    function GetQRData() {
+
+        var data = $('#frmData').serialize();
+
+        $.ajax({
+            url: '@Url.Action("FormData", "Home")',
+            type: 'GET',
+            data: data ,
+            success: function (response) {
+                $('#divMsg').html(response);
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+            },
+            complete: function () {
+                hideLoadingImage();
+            }
+           
+        });
+    }
+
+    function showLoadingImage() {
+        $('#loadingImage').show();        
+    }
+
+    function hideLoadingImage() {
+        $('#loadingImage').hide();        
+    }
+
+</script>

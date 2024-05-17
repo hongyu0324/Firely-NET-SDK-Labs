@@ -1,0 +1,127 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\FHIRTestDemo\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|d:\\fhirtestdemo\\fhirtestdemo\\service\\fhirservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|solutionrelative:fhirtestdemo\\service\\fhirservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|d:\\fhirtestdemo\\fhirtestdemo\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|solutionrelative:fhirtestdemo\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|d:\\fhirtestdemo\\fhirtestdemo\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|solutionrelative:fhirtestdemo\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|d:\\fhirtestdemo\\fhirtestdemo\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|solutionrelative:fhirtestdemo\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|d:\\fhirtestdemo\\fhirtestdemo\\views\\home\\formdata.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{959616FD-75B5-4BC9-A61A-D0D3656ADCEB}|FHIRTestDemo\\FHIRTestDemo.csproj|solutionrelative:fhirtestdemo\\views\\home\\formdata.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:11:0:{2456bd12-ecf7-4988-a4a6-67d49173f565}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:12:0:{2456bd12-ecf7-4988-a4a6-67d49173f565}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{99b8fa2f-ab90-4f57-9c32-949f146f1914}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FormData.cshtml",
+              "DocumentMoniker": "D:\\FHIRTestDemo\\FHIRTestDemo\\Views\\Home\\FormData.cshtml",
+              "RelativeDocumentMoniker": "FHIRTestDemo\\Views\\Home\\FormData.cshtml",
+              "ToolTip": "D:\\FHIRTestDemo\\FHIRTestDemo\\Views\\Home\\FormData.cshtml",
+              "RelativeToolTip": "FHIRTestDemo\\Views\\Home\\FormData.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-09T08:36:13.708Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\FHIRTestDemo\\FHIRTestDemo\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "FHIRTestDemo\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\FHIRTestDemo\\FHIRTestDemo\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "FHIRTestDemo\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAACQAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-09T08:26:56.98Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\FHIRTestDemo\\FHIRTestDemo\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "FHIRTestDemo\\Views\\Home\\Index.cshtml",
+              "ToolTip": "D:\\FHIRTestDemo\\FHIRTestDemo\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "FHIRTestDemo\\Views\\Home\\Index.cshtml",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAAUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-09T08:25:14.546Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Dockerfile",
+              "DocumentMoniker": "D:\\FHIRTestDemo\\FHIRTestDemo\\Dockerfile",
+              "RelativeDocumentMoniker": "FHIRTestDemo\\Dockerfile",
+              "ToolTip": "D:\\FHIRTestDemo\\FHIRTestDemo\\Dockerfile",
+              "RelativeToolTip": "FHIRTestDemo\\Dockerfile",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-05-09T06:57:37.876Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FHIRService.cs",
+              "DocumentMoniker": "D:\\FHIRTestDemo\\FHIRTestDemo\\Service\\FHIRService.cs",
+              "RelativeDocumentMoniker": "FHIRTestDemo\\Service\\FHIRService.cs",
+              "ToolTip": "D:\\FHIRTestDemo\\FHIRTestDemo\\Service\\FHIRService.cs",
+              "RelativeToolTip": "FHIRTestDemo\\Service\\FHIRService.cs",
+              "ViewState": "AQIAACAAAAAAAAAAAIAzwAQBAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-09T03:17:43.319Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:13:0:{2456bd12-ecf7-4988-a4a6-67d49173f565}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:14:0:{2456bd12-ecf7-4988-a4a6-67d49173f565}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
