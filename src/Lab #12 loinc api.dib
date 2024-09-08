@@ -5,12 +5,20 @@
 #!csharp
 
 #r "nuget:DocumentFormat.OpenXml"
+#r "nuget:Hl7.Fhir.r4"
 
 #!csharp
 
 // read contect from Excel file "D:\Hongyu\OneDrive\文件\大同醫護\秀林檢驗細項資料_v2.xlsx
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Serialization;
+
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 #!csharp
 
@@ -35,19 +43,44 @@ static int GetColumnIndexFromCellReference(string cellReference)
     return cellReference[0] - 'A'; // Assuming single-letter column names
 }
 
+string GetLOINCDisplay(string content){
+    // using json to parse the content
+
+
+    string valueString = "";
+    var json = JsonSerializer.Deserialize<JsonElement>(content);
+
+    // dispaly json.parameters[0].Name
+    // define parameters as array of parameters
+
+    var parameters = json.GetProperty("parameter");
+    foreach (var parameter in parameters.EnumerateArray())
+    {
+        string name = parameter.GetProperty("name").GetString().ToLower().Trim();
+        if (name == "display"){
+            valueString = parameter.GetProperty("valueString").GetString();
+            break;
+        }
+    }
+    return valueString;
+}
+
 #!csharp
 
-var fileName = @"D:\Hongyu\OneDrive\文件\大同醫護\秀林檢驗細項資料_v2.xlsx";
-var sheetName = "T06-尿液檢查";
-var sheetIndex = 1;
-var loincCodes = new List<string>();
-// display the content of the Excel file
-using (var document = SpreadsheetDocument.Open(fileName, false))
+List<string> GetLOINCList(int sheetIndex, WorkbookPart workbookPart)
 {
-    var workbookPart = document.WorkbookPart;
-    var sheet = workbookPart.Workbook.Descendants<Sheet>().ElementAt(sheetIndex);
+    var loincCodes = new List<string>();
+    // display the content of the Excel file
+    
+    // 取得 Worksheets 集合
+    var worksheets = workbookPart.Workbook.Sheets.Elements<Sheet>();
+    // 取得指定索引的工作表
+    var sheet = worksheets.ElementAt(sheetIndex);
+    // 取得工作表名稱
+    var sheetName = sheet.Name;
+    // 取得工作表內容
     var worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
-    var sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
+    var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
     var rows = sheetData.Elements<Row>();
 
     // Find the column indexes for "檢驗代碼" and "LOINC"
@@ -75,16 +108,17 @@ using (var document = SpreadsheetDocument.Open(fileName, false))
 
             if (columnIndex == testCodeColumnIndex)
             {
-                Console.WriteLine("testCode value: " + GetCellValue(cell, workbookPart));
+                //Console.WriteLine("testCode value: " + GetCellValue(cell, workbookPart));
             }
             else if (columnIndex == loincColumnIndex)
             {
                 string LOINC = GetCellValue(cell, workbookPart);
-                Console.WriteLine("LOINC value: " + LOINC);
+                //Console.WriteLine("LOINC value: " + LOINC);
                 loincCodes.Add(LOINC);
             }
         }
     }
+    return loincCodes;
 }
 
 #!csharp
@@ -95,19 +129,48 @@ using (var document = SpreadsheetDocument.Open(fileName, false))
 using System.Net.Http;
 using System.Threading.Tasks;
 
-var url = "https://fhir.loinc.org/";
-url = url + "CodeSystem/$lookup?system=http://loinc.org";
-url = url + "&" + "code="+ loincCodes[0];
-url = url + "&" + "&property=METHOD_TYP&&property=VersionFirstReleased";
-// url = url + "&" + "version=2.78";
+var fileName = @"D:\Hongyu\OneDrive\文件\大同醫護\秀林檢驗細項資料_v2.xlsx";
+SpreadsheetDocument document = SpreadsheetDocument.Open(fileName, false);
+
+// 取得 Workbook Part
+WorkbookPart workbookPart = document.WorkbookPart;
+// 取得工作表數量
+var sheets = workbookPart.Workbook.Sheets.Cast<Sheet>();
+// 取得工作表數量
+var sheetCount = sheets.Count();
+
+
 var client = new HttpClient();
 // using basic Authorization for user name & password
 client.DefaultRequestHeaders.Add("Authorization","Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes("hongyu0324:Hsinjuku-55")));
-
-var response = await client.GetAsync(url);
-var content = await response.Content.ReadAsStringAsync();
-
-#!csharp
-
-// using FHIR API to get the LOINC code information
-using 
+for (int i = 0; i < sheetCount; i++)
+{
+    var sheet = sheets.ElementAt(i);
+    Console.WriteLine($"Sheet {i}: {sheet.Name}");
+    var loincCodes = new List<string>();
+    loincCodes = GetLOINCList(i, workbookPart);
+    if (loincCodes.Count == 0)
+    {
+        Console.WriteLine("No LOINC codes found in this sheet.");
+        continue;
+    }
+    for (int j = 0; j < loincCodes.Count-1; j++)
+    {
+        var url = "https://fhir.loinc.org/";
+        url = url + "CodeSystem/$lookup?system=http://loinc.org";
+        url = url + "&" + "code="+ loincCodes[j];
+        url = url + "&" + "&property=METHOD_TYP&&property=VersionFirstReleased";
+        // url = url + "&" + "version=2.78";
+        try
+        {
+            var response = await client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            string loinc = GetLOINCDisplay(content);
+            Console.WriteLine(loincCodes[j] + ":"+ loinc);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+}
