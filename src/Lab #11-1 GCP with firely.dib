@@ -1,0 +1,84 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:Hl7.Fhir.r4"
+#r "nuget:Google.Apis.Auth"
+#r "nuget:Google.Apis.Iam.v1"
+#r "nuget:Google.Apis.IAMCredentials.v1"
+
+#!csharp
+
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+
+// Load the service account key file
+var path = "D:\\Hongyu\\Project\\data\\key\\Google\\sasabot\\";
+var jsonPath = path + "sasabot-0ee5855ec32e.json";
+GoogleCredential credential = GoogleCredential.FromFileAsync(jsonPath, System.Threading.CancellationToken.None).Result;
+
+credential = credential.CreateScoped(new string[] { "https://www.googleapis.com/auth/cloud-platform" });
+
+var u_cred = credential.UnderlyingCredential;
+
+var token = await u_cred.GetAccessTokenForRequestAsync("",  System.Threading.CancellationToken.None);
+
+#!csharp
+
+// 產生 FHIR 服務
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Serialization;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Threading;
+using Google.Apis.Iam.v1;
+using Google.Apis.Iam.v1.Data;
+using Google.Apis.IAMCredentials.v1;
+using Google.Apis.IAMCredentials.v1.Data;
+
+var api_version = "v1";
+var service_name = "healthcare";
+
+//# TODO(developer): Uncomment these lines and replace with your values.
+var project_id = "sasabot";
+var location = "asia-east1";
+var dataset_id = "SasaHealthData";
+var fhir_store_id = "sasa-healthcare";
+
+var base_url = "https://healthcare.googleapis.com/v1";
+
+var url = base_url + "/projects/" + project_id + "/locations/" + location + "/datasets/" + dataset_id + "/fhirStores/" + fhir_store_id + "/fhir";
+
+#!csharp
+
+public class AuthorizationMessageHandler : HttpClientHandler
+{
+        public System.Net.Http.Headers.AuthenticationHeaderValue Authorization { get; set; }
+        protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+                if (Authorization != null)
+                        request.Headers.Authorization = Authorization;
+                return await base.SendAsync(request, cancellationToken);
+        }
+}
+
+#!csharp
+
+var handler = new AuthorizationMessageHandler();
+handler.Authorization = new AuthenticationHeaderValue("Bearer", token);
+var client = new FhirClient(url,null,handler);
+
+#!csharp
+
+try
+{
+    var result = await client.ReadAsync<Patient>("Patient/3219f9b7-0ed8-cc42-683a-c2a06fafab0a");
+    Console.WriteLine(result.Id);
+}
+catch (Exception e)
+{
+    Console.WriteLine(e.Message);
+}

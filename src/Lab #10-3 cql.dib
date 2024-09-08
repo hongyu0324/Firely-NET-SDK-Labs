@@ -5,7 +5,7 @@
 #!csharp
 
 #r "nuget:hl7.fhir.r4"
-#r "nuget:hl7.Cql,1.0.0-rc2"
+#r "nuget:hl7.Cql,2.0.0-alpha"
 
 #!csharp
 

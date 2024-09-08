@@ -17,22 +17,62 @@ using Hl7.Fhir.Specification;
 using Hl7.Fhir.Specification.Source;
 using System.IO;
 
-var client = new FhirClient("http://localhost:8080/fhir");
+var client = new FhirClient("https://hapi-kky3mvnabq-de.a.run.app/fhir");
 var pathEP = "D:\\Hongyu\\Project\\data\\fhir-example\\ep\\";
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\Organization-org.json"
+var json = File.ReadAllText(pathEP + "Organization-org.json");
+var parser = new FhirJsonParser();
+var org = parser.Parse<Organization>(json);
+
+//create a new resource
+var orgResponse = await client.CreateAsync<Organization>(org);
+var orgId = orgResponse.Id;
+
+//print the Organization name and Id
+Console.WriteLine("Orgination name :"+ org.Name);
+Console.WriteLine("Orgination id :" + orgId);
+
+#!csharp
+
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\Practitioner-pra.json"
+
+var praFile = pathEP + "Practitioner-pra.json";
+var pra = new Practitioner();
+json = File.ReadAllText(praFile);
+
+// parsing Practitioner Data from json
+pra = parser.Parse<Practitioner>(json);
+
+//save Practitioner Data to FHIR Server
+var praResponse = await client.CreateAsync<Practitioner>(pra);
+var praId = praResponse.Id;
+
+//printing Practitioner name and Id
+Console.WriteLine("Practitioner Name: " + pra.Name[0].Text);
+Console.WriteLine("Practitioner Id: " + praId);
 
 #!csharp
 
 //read Patient Data from "D:\Hongyu\Project\data\fhir-example\ep\Patient-pat.json"
 var patientFile = pathEP + "Patient-pat.json";
-var parser = new FhirJsonParser();
 var pat = new Patient();
-String json = File.ReadAllText(patientFile);
+json = File.ReadAllText(patientFile);
 
 // parsing Pateint Data from json
 pat = parser.Parse<Patient>(json);
 
-//printing Patient Data 
-Console.WriteLine(pat.Name[0].Text);
+//save patient data to server
+var patResponse = await client.CreateAsync<Patient>(pat);
+
+//keep the patient Id
+var patId = patResponse.Id;
+
+//printing Patient name and Id
+Console.WriteLine(patResponse.Id);
+Console.WriteLine("Patient Name: " + pat.Name[0].Text);
 
 #!csharp
 
@@ -48,6 +88,14 @@ obs = parser.Parse<Observation>(json);
 //printing Observation Data
 Console.WriteLine(obs.Code.Coding[0].Display);
 
+//replace the reference with the actual Id
+obs.Subject.Reference = "Patient/" + patId;
+obs.Performer[0].Reference = "Practitioner/" + praId;
+
+//save observation data to server
+var obsResponse = await client.CreateAsync<Observation>(obs);
+Console.WriteLine(obsResponse.Id);
+
 #!csharp
 
 //read data from "D:\Hongyu\Project\data\fhir-example\ep\Encounter-enc.json"
@@ -59,8 +107,15 @@ json = File.ReadAllText(encFile);
 // parsing Encounter Data from json
 enc = parser.Parse<Encounter>(json);
 
-//printing Encounter Data
-Console.WriteLine(enc.Status);
+//replace the reference with the actual Id
+enc.Subject.Reference = "Patient/" + patId;
+
+//save Encounter data to server
+var encResponse = await client.CreateAsync<Encounter>(enc);
+Console.WriteLine(encResponse.Id);
+
+// save the reference Ids
+var encId = encResponse.Id;
 
 #!csharp
 
@@ -76,6 +131,13 @@ con = parser.Parse<Condition>(json);
 //printing Condition Data
 Console.WriteLine(con.Code.Coding[0].Display);
 
+//replace the reference with the actual Id
+con.Subject.Reference = "Patient/" + patId;
+
+//save Condition data to server
+var conResponse = await client.CreateAsync<Condition>(con);
+Console.WriteLine(conResponse.Id);
+
 #!csharp
 
 //read data from "D:\Hongyu\Project\data\fhir-example\ep\Medication-med-1.json"
@@ -87,22 +149,12 @@ json = File.ReadAllText(medFile);
 // parsing Medication Data from json
 med = parser.Parse<Medication>(json);
 
-//printing Medication Data
-Console.WriteLine(med.Code.Text);
+//save Medication data to server
+var medResponse = await client.CreateAsync<Medication>(med);
+Console.WriteLine(medResponse.Id);
 
-#!csharp
-
-//read data from "D:\Hongyu\Project\data\fhir-example\ep\MedicationRequest-med-req-1.json"
-
-var medReqFile = pathEP + "MedicationRequest-med-req-01.json";
-var medReq = new MedicationRequest();
-json = File.ReadAllText(medReqFile);
-
-// parsing MedicationRequest Data from json
-medReq = parser.Parse<MedicationRequest>(json);
-
-//printing MedicationRequest Data
-Console.WriteLine(medReq.Status);
+//keep the reference Id
+var medId = medResponse.Id;
 
 #!csharp
 
@@ -115,137 +167,36 @@ json = File.ReadAllText(covFile);
 // parsing Coverage Data from json
 cov = parser.Parse<Coverage>(json);
 
-//printing Coverage Data
-Console.WriteLine(cov.Type.Coding[0].Display);
+//replace the reference with the actual Id
+cov.Beneficiary.Reference = "Patient/" + patId;
+cov.Payor[0].Reference = "Patient/" + patId;
+
+//save Coverage data to server
+var covResponse = await client.CreateAsync<Coverage>(cov);
+Console.WriteLine(covResponse.Id);
+
+//keep the reference Id
+var covId = covResponse.Id;
 
 #!csharp
 
-//read data from "D:\Hongyu\Project\data\fhir-example\ep\Organization-org.json"
+//read data from "D:\Hongyu\Project\data\fhir-example\ep\MedicationRequest-med-req-1.json"
 
-var orgFile = pathEP + "Organization-org.json";
-var org = new Organization();
-json = File.ReadAllText(orgFile);
+var medReqFile = pathEP + "MedicationRequest-med-req-01.json";
+var medReq = new MedicationRequest();
+json = File.ReadAllText(medReqFile);
 
-// parsing Organization Data from json
-org = parser.Parse<Organization>(json);
+// parsing MedicationRequest Data from json
+medReq = parser.Parse<MedicationRequest>(json);
 
-//printing Organization Data
-Console.WriteLine(org.Name);
+//replace the reference with the actual Id
+medReq.Subject.Reference = "Patient/" + patId;
+medReq.Insurance[0].Reference = "Coverage/" + covId;
+//medReq.Encounter.Reference = "Encounter/" + encId;
 
-#!csharp
+//new reference object
+medReq.Medication = new ResourceReference("Medication/" + medId);
 
-//read data from "D:\Hongyu\Project\data\fhir-example\ep\Practitioner-pra.json"
-
-var praFile = pathEP + "Practitioner-pra.json";
-var pra = new Practitioner();
-json = File.ReadAllText(praFile);
-
-// parsing Practitioner Data from json
-pra = parser.Parse<Practitioner>(json);
-
-//printing Practitioner Data
-Console.WriteLine(pra.Name[0].Text);
-
-#!csharp
-
-var composition = new Composition();
-
-// type is Prescription for medication
-composition.Type = new CodeableConcept("http://loinc.org", "57833-6", "Prescription for medication");
-
-// subject is the patient
-composition.Subject = new ResourceReference("Patient/pat");
-
-// encounter is the encounter   
-composition.Encounter = new ResourceReference("Encounter/enc");
-
-// author is the practitioner and Organization
-composition.Author = new List<ResourceReference> { new ResourceReference("Practitioner/pra"), new ResourceReference("Organization/org") };
-
-// section is the medication, condition, observation and coverage
-composition.Section = new List<Composition.SectionComponent> {
-    new Composition.SectionComponent {
-        Title = "Medication",
-        Entry = new List<ResourceReference> { new ResourceReference("Medication/med-01"), new ResourceReference("MedicationRequest/med-req-01") }
-    },
-    new Composition.SectionComponent {
-        Title = "Condition",
-        Entry = new List<ResourceReference> { new ResourceReference("Condition/con") }
-    },
-    new Composition.SectionComponent {
-        Title = "Observation",
-        Entry = new List<ResourceReference> { new ResourceReference("Observation/obs") }
-    },
-    new Composition.SectionComponent {
-        Title = "Coverage",
-        Entry = new List<ResourceReference> { new ResourceReference("Coverage/cov") }
-    }
-};
-
-FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
-{
-    Pretty = true,
-});
-//Serialization of Composition
-var jsonComposition = serializer.SerializeToString(composition);
-
-//printing Composition Data
-Console.WriteLine(jsonComposition);
-
-#!csharp
-
-// create Bundle
-var bundle = new Bundle();
-
-// type is Document
-bundle.Type = Bundle.BundleType.Document;
-
-// entry is the composition, patient, encounter, condition, observation, medication, medicationRequest, coverage, organization and practitioner
-bundle.Entry = new List<Bundle.EntryComponent> {
-    new Bundle.EntryComponent {
-        Resource = composition,
-        FullUrl = "Composition/com"
-    },
-    new Bundle.EntryComponent {
-        Resource = pat,
-        FullUrl = "Patient/pat"
-    },
-    new Bundle.EntryComponent {
-        Resource = enc,
-        FullUrl = "Encounter/enc"
-    },
-    new Bundle.EntryComponent {
-        Resource = con,
-        FullUrl = "Condition/con"
-    },
-    new Bundle.EntryComponent {
-        Resource = obs,
-        FullUrl = "Observation/obs"
-    },
-    new Bundle.EntryComponent {
-        Resource = med,
-        FullUrl = "Medication/med-01"
-    },
-    new Bundle.EntryComponent {
-        Resource = medReq,
-        FullUrl = "MedicationRequest/med-req-01"
-    },
-    new Bundle.EntryComponent {
-        Resource = cov,
-        FullUrl = "Coverage/cov"
-    },
-    new Bundle.EntryComponent {
-        Resource = org,
-        FullUrl = "Organization/org"
-    },
-    new Bundle.EntryComponent {
-        Resource = pra,
-        FullUrl = "Practitioner/pra"
-    }
-};
-
-//Serialization of Bundle
-var jsonBundle = serializer.SerializeToString(bundle);
-
-//printing Bundle Data
-Console.WriteLine(jsonBundle);
+//save MedicationRequest data to server
+var medReqResponse = await client.CreateAsync<MedicationRequest>(medReq);
+Console.WriteLine(medReqResponse.Id);

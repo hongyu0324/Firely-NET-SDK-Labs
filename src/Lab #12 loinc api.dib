@@ -1,0 +1,113 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:DocumentFormat.OpenXml"
+
+#!csharp
+
+// read contect from Excel file "D:\Hongyu\OneDrive\文件\大同醫護\秀林檢驗細項資料_v2.xlsx
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+
+#!csharp
+
+// finction to get the value of a cell
+string GetCellValue(Cell cell, WorkbookPart workbookPart)
+{
+    var value = cell.InnerText;
+    if (cell.DataType != null && cell.DataType == CellValues.SharedString)
+    {
+        var stringTable = workbookPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
+        if (stringTable != null)
+        {
+            value = stringTable.SharedStringTable.ElementAt(int.Parse(value)).InnerText;
+        }
+    }
+    return value.Trim();
+}
+
+// Helper function to extract column index from cell reference (e.g., "A1" -> 0, "B1" -> 1)
+static int GetColumnIndexFromCellReference(string cellReference)
+{
+    return cellReference[0] - 'A'; // Assuming single-letter column names
+}
+
+#!csharp
+
+var fileName = @"D:\Hongyu\OneDrive\文件\大同醫護\秀林檢驗細項資料_v2.xlsx";
+var sheetName = "T06-尿液檢查";
+var sheetIndex = 1;
+var loincCodes = new List<string>();
+// display the content of the Excel file
+using (var document = SpreadsheetDocument.Open(fileName, false))
+{
+    var workbookPart = document.WorkbookPart;
+    var sheet = workbookPart.Workbook.Descendants<Sheet>().ElementAt(sheetIndex);
+    var worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
+    var sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
+    var rows = sheetData.Elements<Row>();
+
+    // Find the column indexes for "檢驗代碼" and "LOINC"
+    int testCodeColumnIndex = -1;
+    int loincColumnIndex = -1;
+
+    foreach (var cell in rows.First().Elements<Cell>())
+    {
+        var headerValue = GetCellValue(cell, workbookPart);
+        if (headerValue == "檢驗代碼")
+        {
+            testCodeColumnIndex = GetColumnIndexFromCellReference(cell.CellReference.Value);
+        }
+        else if (headerValue == "LOINC")
+        {
+            loincColumnIndex = GetColumnIndexFromCellReference(cell.CellReference.Value);
+        }
+    }
+    // Process data rows
+    foreach (var row in rows.Skip(1)) // Skip the header row
+    {
+        foreach (var cell in row.Elements<Cell>())
+        {
+            int columnIndex = GetColumnIndexFromCellReference(cell.CellReference.Value);
+
+            if (columnIndex == testCodeColumnIndex)
+            {
+                Console.WriteLine("testCode value: " + GetCellValue(cell, workbookPart));
+            }
+            else if (columnIndex == loincColumnIndex)
+            {
+                string LOINC = GetCellValue(cell, workbookPart);
+                Console.WriteLine("LOINC value: " + LOINC);
+                loincCodes.Add(LOINC);
+            }
+        }
+    }
+}
+
+#!csharp
+
+// Http request
+// use the token to make a request
+
+using System.Net.Http;
+using System.Threading.Tasks;
+
+var url = "https://fhir.loinc.org/";
+url = url + "CodeSystem/$lookup?system=http://loinc.org";
+url = url + "&" + "code="+ loincCodes[0];
+url = url + "&" + "&property=METHOD_TYP&&property=VersionFirstReleased";
+// url = url + "&" + "version=2.78";
+var client = new HttpClient();
+// using basic Authorization for user name & password
+client.DefaultRequestHeaders.Add("Authorization","Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes("hongyu0324:Hsinjuku-55")));
+
+var response = await client.GetAsync(url);
+var content = await response.Content.ReadAsStringAsync();
+
+#!csharp
+
+// using FHIR API to get the LOINC code information
+using 

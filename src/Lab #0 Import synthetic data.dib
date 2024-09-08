@@ -1,0 +1,68 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+// read fhir data from D:\Hongyu\Project\data\synthea-data\fhir directory
+
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
+
+var client = new FhirClient("http://localhost:8080/fhir");
+
+#!csharp
+
+using System.IO;
+using Hl7.Fhir.Serialization;
+
+
+var path = @"D:\Hongyu\Project\data\synthea-data\fhir";
+var files = Directory.GetFiles(path, "*.json");
+var parser = new FhirJsonParser();
+
+foreach (var file in files)
+{
+    if (file.Contains("hospital") || file.Contains("practitioner")){
+        try
+        {
+            Bundle bundle = parser.Parse<Bundle>(File.ReadAllText(file));
+
+            var response = client.Transaction(bundle);
+
+            Console.WriteLine($"Processed {file}");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error processing {file}: {e.Message}");
+        }
+    }
+}
+
+
+foreach (var file in files)
+{
+    if (file.Contains("hospital")){
+        continue;
+    }
+    if (file.Contains("practitioner")){
+        continue;
+    }
+    try
+    {
+        Bundle bundle = parser.Parse<Bundle>(File.ReadAllText(file));
+
+        var response = client.Transaction(bundle);
+
+        Console.WriteLine($"Processed {file}");
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine($"Error processing {file}: {e.Message}");
+    }
+   
+}

@@ -28,24 +28,39 @@ using System.IO;
 
 var packageSource = FhirPackageSource.CreateCorePackageSource(ModelInfo.ModelInspector, FhirRelease.R4, "https://packages.simplifier.net");
 IAsyncResourceResolver  _coreSource = new CachedResolver(packageSource);
-var directorySource = new CachedResolver(new DirectorySource("D:\\Hongyu\\Project\\data\\profiles\\tw-core-ig\\v0.2.1\\package",
+var directorySource1 = new CachedResolver(new DirectorySource("D:\\Hongyu\\Project\\data\\profiles\\tw-core-ig\\v0.2.1\\package",
+                            new DirectorySourceSettings { IncludeSubDirectories = true }));
+                            
+var directorySource2 = new CachedResolver(new DirectorySource("D:\\Hongyu\\Project\\data\\profiles\\EMR\\package",
                             new DirectorySourceSettings { IncludeSubDirectories = true }));
 
-var profileSource = new MultiResolver(directorySource, _coreSource);
+var profileSource = new MultiResolver(directorySource1,directorySource2, _coreSource);
 var terminologySource = new LocalTerminologyService(profileSource);
 
 var validator = new Validator(profileSource, terminologySource);
 
 #!csharp
 
-// 讀取一個Patient資源的檔案，例如patient.json
-var patient = File.ReadAllText("D:\\Hongyu\\Project\\data\\fhir-example\\Patient-pat-example.json");
+// read a bundle object from a file
+var esBuldle = File.ReadAllText("D:\\Hongyu\\Project\\data\\fhir-example\\ep\\處方箋1130509.txt");
 
-// 將Patient資源的檔案轉換為Patient資源的物件
-var patientResource = new FhirJsonParser().Parse<Patient>(patient);
+var bundle = new FhirJsonParser().Parse<Bundle>(esBuldle);
 
-// 使用validator的Validate方法，傳入Patient資源的物件，並指定TW Core Patient Profile的URL
-var outcome = validator.Validate(patientResource);
+var result = validator!.Validate(bundle);
 
-// 輸出驗證結果
-Console.WriteLine(outcome.ToString());
+// print the result 
+foreach (var issue in result.Issue)
+{
+    Console.WriteLine($"{issue.Severity} - {issue.Details.Text}");
+}
+
+// Validate each resource in the bundle
+foreach (var entry in bundle.Entry)
+{
+    var resource = entry.Resource;
+    var resourceResult = validator!.Validate(resource);
+    foreach (var issue in resourceResult.Issue)
+    {
+        Console.WriteLine($"{issue.Severity} - {issue.Details.Text}");
+    }
+}

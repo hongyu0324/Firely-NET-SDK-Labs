@@ -1,0 +1,164 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Serialization;
+using Hl7.Fhir.FhirPath;
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using System.IO;
+
+var client = new FhirClient("http://localhost:8080/fhir");
+var pathEP = "D:\\Hongyu\\Project\\data\\fhir-example\\ep\\";
+
+#!csharp
+
+// Read Organization from FHIR Server by Name
+Bundle orgBundle = await client.SearchAsync<Organization>(new string[] { "name=洪文武診所" });
+Organization org = (Organization)orgBundle.Entry[0].Resource;
+
+// Read Practitioner from FHIR Server by Name
+Bundle pracBundle = await client.SearchAsync<Practitioner>(new string[] { "name=洪文武" });
+Practitioner prac = (Practitioner)pracBundle.Entry[0].Resource;
+
+// Read Patient from FHIR Server by Name
+Bundle patBundle = await client.SearchAsync<Patient>(new string[] { "name=甄○康" });
+Patient pat = (Patient)patBundle.Entry[0].Resource;
+
+//print out the Organization, Practitioner and Patient Id
+Console.WriteLine($"Organization Id: {org.Id}");
+Console.WriteLine($"Practitioner Id: {prac.Id}");
+Console.WriteLine($"Patient Id: {pat.Id}");
+
+#!csharp
+
+// read Coverage from FHIR Server by Patient Id
+Bundle covBundle = await client.SearchAsync<Coverage>(new string[] { $"beneficiary=Patient/{pat.Id}" });    
+Coverage cov = (Coverage)covBundle.Entry[0].Resource;
+
+//read encounter from FHIR Server by Patient Id order by date
+Bundle encBundle = await client.SearchAsync<Encounter>(new string[] { $"subject=Patient/{pat.Id}", "_sort=date" });
+Encounter enc = (Encounter)encBundle.Entry[0].Resource;
+
+//Read condition from FHIR Server by Patient Id
+Bundle conBundle = await client.SearchAsync<Condition>(new string[] { $"subject=Patient/{pat.Id}" });
+Condition con = (Condition)conBundle.Entry[0].Resource;
+
+//read observation from FHIR Server by Patient Id 
+Bundle obsBundle = await client.SearchAsync<Observation>(new string[] { $"subject=Patient/{pat.Id}" });
+Observation obs = (Observation)obsBundle.Entry[0].Resource;
+
+//read medicationRequest from FHIR Server by Patient Id
+Bundle medReqBundle = await client.SearchAsync<MedicationRequest>(new string[] { $"subject=Patient/{pat.Id}" });
+MedicationRequest medReq = (MedicationRequest)medReqBundle.Entry[0].Resource;
+
+//MedicationRequest.Medication is a ResourceReference, so we need to get the Medication Id by reading the Medication Resource
+var medRef = medReq.Medication as ResourceReference;
+var med = await client.ReadAsync<Medication>(medRef.Reference);
+
+//print out the Coverage, Encounter, Condition, Observation, MedicationRequest and Medication Id
+Console.WriteLine($"Coverage Id: {cov.Id}");
+Console.WriteLine($"Encounter Id: {enc.Id}");
+Console.WriteLine($"Condition Id: {con.Id}");
+Console.WriteLine($"Observation Id: {obs.Id}");
+Console.WriteLine($"MedicationRequest Id: {medReq.Id}");
+Console.WriteLine($"Medication Id: {med.Id}");
+
+#!csharp
+
+// using the read FHIR resources to  create a new Composition
+var composition = new Composition
+{
+    Status = CompositionStatus.Final,
+    Type = new CodeableConcept("http://loinc.org", "29551-9", "Medication prescribed Narrative"),
+    Subject = new ResourceReference("Patient/" + pat.Id),
+    Author = new List<ResourceReference> { new ResourceReference("Organization/" +org.Id) },
+    Custodian = new ResourceReference("Organization/" +org.Id),
+    Encounter = new ResourceReference("Encounter/" +enc.Id),
+    //Date = new FhirDateTime(DateTimeOffset.Now),
+    Title = "電子處方箋",
+    Section = new List<Composition.SectionComponent>
+    {
+        new Composition.SectionComponent
+        {
+            Title = "Medication",
+            Entry = new List<ResourceReference> { new ResourceReference(medReq.Id) }
+        },
+        new Composition.SectionComponent
+        {
+            Title = "Observation",
+            Entry = new List<ResourceReference> { new ResourceReference(obs.Id) }
+        }
+    }
+}; 
+
+
+FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
+{
+    Pretty = true,
+});
+//Serialization of Composition
+var jsonComposition = serializer.SerializeToString(composition);
+
+//print out the Composition
+Console.WriteLine(jsonComposition);
+
+#!csharp
+
+// create a new bundle from the read FHIR Data
+var bundle = new Bundle
+{
+    Type = Bundle.BundleType.Document,
+    Entry = new List<Bundle.EntryComponent>
+    {
+        new Bundle.EntryComponent
+        {
+            Resource = org
+        },
+        new Bundle.EntryComponent
+        {
+            Resource = prac
+        },
+        new Bundle.EntryComponent
+        {
+            Resource = pat
+        },
+        new Bundle.EntryComponent
+        {
+            Resource = cov
+        },
+        new Bundle.EntryComponent
+        {
+            Resource = enc
+        },
+        new Bundle.EntryComponent
+        {
+            Resource = con
+        },
+        new Bundle.EntryComponent
+        {
+            Resource = obs
+        },
+        new Bundle.EntryComponent
+        {
+            Resource = medReq
+        },
+        new Bundle.EntryComponent
+        {
+            Resource = med
+        },
+        new Bundle.EntryComponent
+        {
+            Resource = composition
+        }
+    }
+};

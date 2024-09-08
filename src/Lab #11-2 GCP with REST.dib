@@ -1,0 +1,90 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:Hl7.Fhir.r4"
+#r "nuget:Google.Apis.Auth"
+#r "nuget:Google.Apis.Iam.v1"
+#r "nuget:Google.Apis.IAMCredentials.v1"
+
+#!csharp
+
+var api_version = "v1beta1";
+var service_name = "healthcare";
+
+//# TODO(developer): Uncomment these lines and replace with your values.
+var project_id = "sasabot";
+var location = "asia-east1";
+var dataset_id = "SasaHealthData";
+var fhir_store_id = "sasa-healthcare";
+
+var base_url = "https://healthcare.googleapis.com/v1beta1";
+
+var url = base_url + "/projects/" + project_id + "/locations/" + location + "/datasets/" + dataset_id + "/fhirStores/" + fhir_store_id + "/fhir"; ;
+
+#!csharp
+
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+
+// Load the service account key file
+var path = "D:\\Hongyu\\Project\\data\\key\\Google\\sasabot\\";
+var jsonPath = path + "sasabot-0ee5855ec32e.json";
+GoogleCredential credential = GoogleCredential.FromFileAsync(jsonPath, System.Threading.CancellationToken.None).Result;
+
+credential = credential.CreateScoped(new string[] { "https://www.googleapis.com/auth/cloud-platform" });
+
+var token = await credential.UnderlyingCredential.GetAccessTokenForRequestAsync("",  System.Threading.CancellationToken.None);
+
+#!csharp
+
+// Http request
+// use the token to make a request
+
+using System.Net.Http;
+using System.Threading.Tasks;
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Serialization;
+
+var client = new HttpClient();
+client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+var response = await client.GetAsync(url+"/metadata");
+var content = await response.Content.ReadAsStringAsync();
+
+content
+
+#!csharp
+
+// Http request
+// use the token to make a request
+
+using System.Net.Http;
+using System.Threading.Tasks;
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Serialization;
+
+var client = new HttpClient();
+client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+var response = await client.GetAsync(url+"/Patient/e2551e8f-c1b4-a79f-0a02-f8ac5a6cfa83");
+var content = await response.Content.ReadAsStringAsync();
+
+#!csharp
+
+using System.Text.Json;
+var json = JsonDocument.Parse(content);
+
+var parser = new FhirJsonParser();
+
+Patient patient = parser.Parse<Patient>(content);
+
+patient.Name[0].GivenElement[0].Value
+
+#!csharp
+
+var response = await client.GetAsync(url+"/.well-known/smart-configuration");
+var content = await response.Content.ReadAsStringAsync();
+Console.WriteLine(content);
