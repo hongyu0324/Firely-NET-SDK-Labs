@@ -35,6 +35,7 @@ var directorySource2 = new CachedResolver(new DirectorySource("D:\\Hongyu\\Proje
                             new DirectorySourceSettings { IncludeSubDirectories = true }));
 
 var profileSource = new MultiResolver(directorySource1,directorySource2, _coreSource);
+
 var terminologySource = new LocalTerminologyService(profileSource);
 
 var validator = new Validator(profileSource, terminologySource);
