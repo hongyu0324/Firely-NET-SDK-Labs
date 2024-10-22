@@ -1,0 +1,191 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:Hl7.Fhir.r4"
+
+#!csharp
+
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+
+var fhir_url = "https://127.0.0.1/apis/default/fhir";
+var token_url = "https://127.0.0.1/oauth2/default/token";
+var api_url = "https://127.0.0.1/apis/default/api/";
+
+#!csharp
+
+//read "D:\Hongyu\OpenEMR\refresh_token.json"
+
+using System;
+using System.IO;
+using System.Text.Json;
+
+
+var json = File.ReadAllText(@"D:\Hongyu\OpenEMR\refresh_token.json");
+var CLIENT_ID = "oQjjWSihLaTyCv7pQome1dxc05lCV1k2uudZg0GtjBE";
+
+//parsing json string to object
+var jsonDoc = JsonDocument.Parse(json);
+
+var refresh_token = jsonDoc.RootElement.GetProperty("refresh_token").GetString();
+var access_token = jsonDoc.RootElement.GetProperty("access_token").GetString();
+
+// check if the access token is expired based on expiration
+var expiration = jsonDoc.RootElement.GetProperty("expiration");
+
+// convert string "mm/dd/yyyy hh:mm:ss AM/PM" to DateTime
+var expirationDateTime = DateTime.Parse(expiration.GetString());
+var isExpired = expirationDateTime < DateTime.Now;
+
+if (isExpired)
+{
+    Console.WriteLine("Access token is expired");
+    
+}
+else
+{
+    Console.WriteLine(access_token);
+}
+
+#!csharp
+
+if (isExpired)
+{
+    var handler = new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    };
+    var client = new HttpClient(handler);
+
+    var collection = new List<KeyValuePair<string, string>>();
+    collection.Add(new KeyValuePair<string, string>("grant_type", "refresh_token"));
+    collection.Add(new KeyValuePair<string, string>("refresh_token", refresh_token));
+    collection.Add(new KeyValuePair<string, string>("client_id", CLIENT_ID));
+
+    var content = new FormUrlEncodedContent(collection);
+
+    var response = await client.PostAsync(token_url, content);
+    var responseString = await response.Content.ReadAsStringAsync();
+
+    Console.WriteLine(responseString);
+    //parsing json string to object
+    var jsonRefresh = JsonDocument.Parse(responseString);
+
+    refresh_token = jsonRefresh.RootElement.GetProperty("refresh_token").GetString();
+    access_token = jsonRefresh.RootElement.GetProperty("access_token").GetString();
+
+    // compute the expiration time = now + expires_in
+    var expires_in = jsonRefresh.RootElement.GetProperty("expires_in").GetInt32();
+    var expiration = DateTime.Now.AddSeconds(expires_in);
+
+    var new_json = "{\"refresh_token\":\"" + refresh_token + "\",\"access_token\":\"" + access_token + "\",\"expiration\":\"" + expiration + "\"}";
+
+    // write to file
+    var path = @"D:\Hongyu\OpenEMR\refresh_token.json";
+    File.WriteAllText(path, new_json);
+}
+
+#!csharp
+
+var handler = new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+};
+var client = new HttpClient(handler);
+
+client.DefaultRequestHeaders.Add("Authorization", $"Bearer {access_token}");
+
+var response = await client.GetAsync(fhir_url + "/Patient");
+var content = await response.Content.ReadAsStringAsync();
+// print content in pretty format
+Console.WriteLine(JsonSerializer.Serialize(JsonSerializer.Deserialize<Dictionary<string, object>>(content), new JsonSerializerOptions { WriteIndented = true }));
+
+#!csharp
+
+var response = await client.GetAsync(api_url + "/patient");
+var content = await response.Content.ReadAsStringAsync();
+// print content in pretty format
+Console.WriteLine(JsonSerializer.Serialize(JsonSerializer.Deserialize<Dictionary<string, object>>(content), new JsonSerializerOptions { WriteIndented = true }));
+
+#!csharp
+
+var puuid = "9d2d60e9-a13c-40c4-ab80-3103bcc102dc";
+var response = await client.GetAsync(api_url + "/patient/" + puuid);
+var content = await response.Content.ReadAsStringAsync();
+// print content in pretty format
+Console.WriteLine(JsonSerializer.Serialize(JsonSerializer.Deserialize<Dictionary<string, object>>(content), new JsonSerializerOptions { WriteIndented = true }));
+
+#!csharp
+
+var allergy = "{\"title\":\"Iodine\",\"begdate\":null,\"enddate\":null}";
+
+var httpContent = new StringContent(allergy, Encoding.UTF8, "application/json");
+var response = await client.PostAsync(api_url + "/patient/" + puuid+ "/allergy" + "?puuid=" + puuid , httpContent);
+var content = await response.Content.ReadAsStringAsync();
+// print content in pretty format
+Console.WriteLine(JsonSerializer.Serialize(JsonSerializer.Deserialize<Dictionary<string, object>>(content), new JsonSerializerOptions { WriteIndented = true }));
+
+#!csharp
+
+var puuid = "9d2d60e9-a13c-40c4-ab80-3103bcc102dc";
+//puuid = "1";
+var response = await client.GetAsync(api_url + "/patient/"+ puuid + "/appointment?pid=" + puuid);
+var content = await response.Content.ReadAsStringAsync();
+// print content in pretty format
+Console.WriteLine(JsonSerializer.Serialize(JsonSerializer.Deserialize<Dictionary<string, object>>(content), new JsonSerializerOptions { WriteIndented = true }));
+
+#!csharp
+
+using System.IO;
+using Hl7.Fhir.Serialization;
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Model;
+
+
+var path = @"D:\Hongyu\Project\data\synthea-data\fhir";
+var files = Directory.GetFiles(path, "*.json");
+var parser = new FhirJsonParser();
+var serizer = new FhirJsonSerializer();
+
+
+foreach (var file in files)
+{
+    Bundle bundle = parser.Parse<Bundle>(File.ReadAllText(file));
+    if (file.Contains("hospital")){
+        var organization = bundle.Entry[0].Resource as Organization;
+        //Console.WriteLine($"Organization: {organization.Name}");
+        continue;
+    }
+    if (file.Contains("practitioner")){
+        var practitioner = bundle.Entry[0].Resource as Practitioner;
+        //Console.WriteLine($"Practitioner: {practitioner.Name[0].GivenElement[0].Value} {practitioner.Name[0].FamilyElement.Value}");
+        // Serialization to JSON
+        var json = serizer.SerializeToString(practitioner);
+        //Console.WriteLine(json);
+        // post to server using FHIR API
+        //var content = new StringContent(json, Encoding.UTF8, "application/json");
+        //var response = await client.PostAsync(url + "/Practitioner", content);
+        //Console.WriteLine(response.StatusCode);
+        continue;
+    }
+    try
+    {
+        var patient = bundle.Entry[0].Resource as Patient;
+        //Console.WriteLine($"Patient: {patient.Name[0].GivenElement[0].Value} {patient.Name[0].FamilyElement.Value}");
+        // Serialization to JSON
+        var json = serizer.SerializeToString(patient);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await client.PostAsync(url + "/Patient", content);
+        Console.WriteLine(response.StatusCode);
+        //Console.WriteLine(json);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine($"Error processing {file}: {e.Message}");
+    }
+   
+}
