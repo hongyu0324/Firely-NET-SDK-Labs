@@ -24,7 +24,6 @@ using System;
 using System.IO;
 using System.Text.Json;
 
-
 var json = File.ReadAllText(@"D:\Hongyu\OpenEMR\refresh_token.json");
 var CLIENT_ID = "oQjjWSihLaTyCv7pQome1dxc05lCV1k2uudZg0GtjBE";
 
