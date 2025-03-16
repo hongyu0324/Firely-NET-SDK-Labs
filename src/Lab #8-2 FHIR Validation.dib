@@ -1,6 +1,6 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+{"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
 
 #!csharp
 
@@ -28,7 +28,7 @@ using System.IO;
 
 var packageSource = FhirPackageSource.CreateCorePackageSource(ModelInfo.ModelInspector, FhirRelease.R4, "https://packages.simplifier.net");
 IAsyncResourceResolver  _coreSource = new CachedResolver(packageSource);
-var directorySource1 = new CachedResolver(new DirectorySource("D:\\Hongyu\\Project\\data\\profiles\\tw-core-ig\\v0.2.1\\package",
+var directorySource1 = new CachedResolver(new DirectorySource("D:\\Hongyu\\Project\\data\\profiles\\tw-core-ig\\v0.3.2\\package",
                             new DirectorySourceSettings { IncludeSubDirectories = true }));
                             
 var directorySource2 = new CachedResolver(new DirectorySource("D:\\Hongyu\\Project\\data\\profiles\\EMR\\package",
@@ -39,6 +39,24 @@ var profileSource = new MultiResolver(directorySource1,directorySource2, _coreSo
 var terminologySource = new LocalTerminologyService(profileSource);
 
 var validator = new Validator(profileSource, terminologySource);
+
+#!csharp
+
+// read patient resource from file
+var patientJson = File.ReadAllText("D:\\Hongyu\\Project\\data\\fhir-example\\Patient-pat-example.json");
+
+var patient = new FhirJsonParser().Parse<Resource>(patientJson) as Patient;
+
+var result = validator.Validate(patient);
+
+foreach (var issue in result.Issue)
+{
+    Console.WriteLine($"{issue.Severity} - {issue.Details.Text}");
+}
+
+#!csharp
+
+result
 
 #!csharp
 

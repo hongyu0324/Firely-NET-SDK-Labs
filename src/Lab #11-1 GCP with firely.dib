@@ -1,6 +1,6 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+{"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
 
 #!csharp
 
@@ -56,12 +56,23 @@ var url = base_url + "/projects/" + project_id + "/locations/" + location + "/da
 
 public class AuthorizationMessageHandler : HttpClientHandler
 {
-        public System.Net.Http.Headers.AuthenticationHeaderValue Authorization { get; set; }
+
+        public AuthenticationHeaderValue Authorization { get; set; }
+        
+        
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-                if (Authorization != null)
-                        request.Headers.Authorization = Authorization;
-                return await base.SendAsync(request, cancellationToken);
+            if (Authorization != null) {
+                request.Headers.Authorization = Authorization;
+            }
+            
+            var res = await base.SendAsync(request, cancellationToken);
+            if (!res.IsSuccessStatusCode)
+            {
+                Console.Write(res.StatusCode + "\n");
+            }
+            return res;
+
         }
 }
 
@@ -69,14 +80,23 @@ public class AuthorizationMessageHandler : HttpClientHandler
 
 var handler = new AuthorizationMessageHandler();
 handler.Authorization = new AuthenticationHeaderValue("Bearer", token);
-var client = new FhirClient(url,null,handler);
+
+// Create client
+var settings = new FhirClientSettings
+{
+    PreferredFormat = ResourceFormat.Json
+};
+
+var client = new FhirClient(url, settings,handler);
 
 #!csharp
 
 try
 {
+     
     var result = await client.ReadAsync<Patient>("Patient/3219f9b7-0ed8-cc42-683a-c2a06fafab0a");
-    Console.WriteLine(result.Id);
+    // Print the patient's name
+    Console.WriteLine(result.Name[0].GivenElement[0].Value + " " +　result.Name[0].FamilyElement);
 }
 catch (Exception e)
 {

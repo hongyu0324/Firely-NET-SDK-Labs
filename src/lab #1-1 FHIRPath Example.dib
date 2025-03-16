@@ -2,87 +2,17 @@
 
 {"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
 
-#!markdown
-
-課程一：FHIR Resource介紹
-
-#!markdown
-
-1. 簡介
-
-課程目標：了解如何連結FHIR Server、查詢單筆/多筆資料、FHIR Searsh與產生一筆完整的Patient資料。
-
-1.1 Import Libraries
-首先，我們必須import FHIR SDK，本課程使用firely .NET SDK，詳細資料可參考https://docs.fire.ly/projects/Firely-NET-SDK/en/latest/。目前最新的版本是5.4, 如果需要使用較舊的版本(例如5.3)，則指令修改為
-#r "nuget:hl7.fhir.r4 , 5.3"
-
 #!csharp
 
 #r "nuget:hl7.fhir.r4"
 
-#!markdown
-
-1.2 建立與FHIR Server的連結
-
 #!csharp
 
-using Hl7.Fhir.Model; 
-using Hl7.Fhir.Rest;
-
-var client = new FhirClient("http://localhost:8080/fhir");
-
-#!markdown
-
-2. 從FHIR Server讀取資料
-
-2.1 讀取單一病患資料(已知technical id '9869')
-
-#!csharp
-
-var location_A = new Uri("http://localhost:8080/fhir/Patient/102");
-var pat_A = new Patient();
-pat_A = await client.ReadAsync<Patient>(location:location_A);
-if (pat_A != null){
-    Console.WriteLine(pat_A.Name[0].Family + pat_A.Name[0].Given.First());
-}
-
-#!markdown
-
-2.2 讀取全部資料(假設病患生日皆為1900後)
-
-#!csharp
-
-var q = new SearchParams().Where("birthdate=gt1900");
-Bundle patients = await client.SearchAsync<Patient>(q);
-
-Console.WriteLine("總計:" + patients.Entry.Count + "人");
-foreach (var p in patients.Entry){
-    var r = (Patient)p.Resource;
-    Console.WriteLine(r.Id + " : " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
-} 
-
-#!markdown
-
-2.3 查詢結果排序
-
-#!csharp
-
-var q = new SearchParams().Where("birthdate=gt1900").OrderBy("birthdate");
-Bundle patients = await client.SearchAsync<Patient>(q);
-
-Console.WriteLine("總計:" + patients.Total.ToString() + "人");
-foreach (var p in patients.Entry){
-    var r = (Patient)p.Resource;
-    Console.WriteLine(r.BirthDate.ToString() +" " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
-} 
-
-#!markdown
-
-2.4 各種不同的搜尋條件與結果
-
-#!markdown
-
-3. 編輯Patient
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.FhirPath;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Specification.Source;
+using Hl7.Fhir.Specification.Terminology;
 
 #!csharp
 
@@ -150,15 +80,10 @@ pat.Deceased = new FhirBoolean(false);
 
 #!csharp
 
-using Hl7.Fhir.Serialization;
+var nav = pat.ToTypedElement();
 
-FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
-{
-    Pretty = true,
-});
-string pat_Json = serializer.SerializeToString(pat);
-Console.WriteLine(pat_Json);
+var name = nav.Children("name");
 
-#!csharp
+var number = name.Count();
 
-var created_pat = await client.CreateAsync<Patient>(pat);
+number
