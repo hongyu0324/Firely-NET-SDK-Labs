@@ -1,0 +1,110 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+
+#!csharp
+
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using System.IO;
+
+#!csharp
+
+var tw_pas = "..\\..\\data\\profiles\\PAS\\V1.0.1\\package.tgz";
+FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_pas});
+//var names = resolver.ListResourceUris();
+var names = resolver.ListCanonicalUris();
+var profiles = new List<String>();
+foreach (var n in names){
+    if(n.StartsWith("https://twcore.mohw.gov.tw/ig/pas/StructureDefinition")){
+        var profile = n.Split("/").Last();
+        profiles.Add(profile);
+    }
+}
+
+#!csharp
+
+foreach (var p in profiles){
+    Console.WriteLine(p);
+    StructureDefinition twpas_profile = await resolver.ResolveByUriAsync("StructureDefinition/" + p) as StructureDefinition;
+
+   
+    foreach(var n in twpas_profile.Snapshot.Element){
+        var n_list = n.ElementId.Split(".");
+        if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
+            if(n.Min > 0){
+                Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
+            }  
+        }
+    }
+    Console.WriteLine(twpas_profile.Description);
+}
+
+#!csharp
+
+var profileList = new List<Tuple<string,int,List<string>>>();
+foreach (var p in profiles){
+
+    StructureDefinition twpas_profile = await resolver.ResolveByUriAsync("StructureDefinition/" + p) as StructureDefinition;
+
+    int count = 0;
+    List<string> refList = new List<string>();  
+
+    foreach(var n in twpas_profile.Snapshot.Element){
+        
+        // find resource refernce for each profile
+        if(n.Min > 0 && n.Type.Count() > 0){
+            if(n.Type[0].Code == "Reference"){
+                refList.Add(n.Path + "  " + n.Type[0].TargetProfile.First().Split("/").Last());
+                count++;
+                //Console.WriteLine(n.Path + "  " + n.Type[0].TargetProfile.First().Split("/").Last());
+            }
+        }
+    }
+    profileList.Add(new Tuple<string,int,List<string>>(p,count,refList));
+}
+
+foreach(var p in profileList){
+    Console.WriteLine(p.Item1 + "  " + p.Item2);
+    foreach(var r in p.Item3){
+        Console.WriteLine(r);
+    }
+}
+
+#!csharp
+
+foreach (var p in profiles){
+    Console.WriteLine("\n"+p);
+    StructureDefinition twpas_profile = await resolver.ResolveByUriAsync("StructureDefinition/" + p) as StructureDefinition;
+    int count = 0;
+    foreach(var n in twpas_profile.Snapshot.Element){
+        if (n.Min > 0 && n.Type.Count() > 0 && n.Type[0].Code == "Reference"){
+            Console.WriteLine(n.ElementId + "  " + n.Type[0].TargetProfileElement[0].ToString().Split("/").Last());
+            count++;
+        }
+    }
+    Console.WriteLine(p + ":" +count.ToString());
+}
+
+#!csharp
+
+//find resource by id or by canonical uris
+StructureDefinition twpas_bundle = await resolver.ResolveByUriAsync("StructureDefinition/Bundle-twpas") as StructureDefinition;
+Console.WriteLine(twpas_bundle.Kind);
+foreach(var n in twpas_bundle.Snapshot.Element){
+    var n_list = n.ElementId.Split(".");
+    if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
+        if(n.Min > 0){
+            Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
+        }  
+    }
+}
+Console.WriteLine(twpas_bundle.Description);

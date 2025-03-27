@@ -15,7 +15,7 @@ var client = new FhirClient("http://localhost:8080/fhir");
 #!csharp
 
 // search value Prefix example:eq
-var q = new SearchParams().Where("birthdate=eq1969-03-24");
+var q = new SearchParams().Where("birthdate=eq1983-04-23");
 var bundle = client.Search<Patient>(q);
 foreach (var o in bundle.Entry){
     Patient p = (Patient)o.Resource;
@@ -75,7 +75,7 @@ foreach (var o in bundle.Entry){
 #!csharp
 
 // search modifier example: exact
-var q = new SearchParams().Where("name:exact=Sanford861");
+var q = new SearchParams().Where("name:exact=王");
 var bundle = client.Search<Patient>(q);
 foreach (var o in bundle.Entry){
     Patient p = (Patient)o.Resource;

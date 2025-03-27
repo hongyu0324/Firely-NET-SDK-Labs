@@ -31,7 +31,7 @@ using static Hl7.Fhir.Specification.Source.ZipSource;
 using System.IO;
 
 
-var client = new FhirClient("http://localhost:8081/fhir");
+var client = new FhirClient("http://localhost:8080/fhir");
 
 #!markdown
 
@@ -41,7 +41,7 @@ var client = new FhirClient("http://localhost:8081/fhir");
 
 var parser = new FhirJsonParser();
 var pat_A = new Patient();
-String json = File.ReadAllText("C:\\Project\\fhir\\polygolt_book\\data\\MI-TW_Track2_examples.json"); 
+String json = File.ReadAllText("D:\\Hongyu\\Project\\data\\fhir-example\\MI-TW_Track2_examples.json"); 
 try
 {
     var bundle = parser.Parse<Bundle>(json);
@@ -102,7 +102,7 @@ string pat_Json = serializer.SerializeToString(pat_A);
 ISourceNode pat_Node = FhirJsonNode.Parse(pat_Json);
 Console.WriteLine("Data read from ISoureNode:" + pat_Node.Children("identifier").Children("use").First().Text);
 
-//ITypedElement
-IResourceResolver zipSource = ZipSource.CreateValidationSource("..\\profile\\specification.zip");
-ITypedElement pat_Ite = pat_Node.ToTypedElement(new StructureDefinitionSummaryProvider(zipSource, null));
-Console.WriteLine("Data read from ITypedElement:" + pat_Ite.Children("identifier").Children("use").ToFhirValues().First());
+//ITypedElement out of date
+//IResourceResolver zipSource = ZipSource.CreateValidationSource("..\\profile\\specification.zip");
+//ITypedElement pat_Ite = pat_Node.ToTypedElement(new StructureDefinitionSummaryProvider(zipSource, null));
+//Console.WriteLine("Data read from ITypedElement:" + pat_Ite.Children("identifier").Children("use").ToFhirValues().First());

@@ -29,13 +29,14 @@
 using Hl7.Fhir.Model; 
 using Hl7.Fhir.Rest;
 
+
 var client = new FhirClient("http://localhost:8080/fhir");
 
 #!markdown
 
 2. 從FHIR Server讀取資料
 
-2.1 讀取單一病患資料(已知technical id '9869')
+2.1 讀取單一病患資料(已知technical id '102')
 
 #!csharp
 
@@ -70,15 +71,11 @@ foreach (var p in patients.Entry){
 var q = new SearchParams().Where("birthdate=gt1900").OrderBy("birthdate");
 Bundle patients = await client.SearchAsync<Patient>(q);
 
-Console.WriteLine("總計:" + patients.Total.ToString() + "人");
+Console.WriteLine("總計:" + patients.Entry.Count  + "人");
 foreach (var p in patients.Entry){
     var r = (Patient)p.Resource;
     Console.WriteLine(r.BirthDate.ToString() +" " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
 } 
-
-#!markdown
-
-2.4 各種不同的搜尋條件與結果
 
 #!markdown
 
@@ -94,7 +91,8 @@ id.System = "http://hl7.org/fhir/sid/us-ssn";
 id.Value = "000-12-3456";
 pat.Identifier.Add(id);
 
-var name =  new HumanName().WithGiven("Christopher").WithGiven("C.H.").AndFamily("Parks");
+
+var name =  new HumanName().WithGiven("大名").AndFamily("王");
 name.Prefix = new string[] { "Mr." };
 name.Use = HumanName.NameUse.Official;
 
@@ -114,14 +112,14 @@ pat.BirthDate = "1983-04-23";
 //birthplace.Value = new Address() { City = "Seattle" };
 //pat.Extension.Add(birthplace);
 
-var valueAge = new Extension();
-valueAge.Url = "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/person-age";
+var ttt = new Extension();
+ttt.Url = "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/person-age";
 var age = new Age();
-age.Value = 39;
+age.Value = 43;
 age.Code = "a";
 age.System = "http://unitsofmeasure.org";
-valueAge.Value = age;
-pat.Extension.Add(valueAge);
+ttt.Value = age;
+pat.Extension.Add(ttt);
 
 
 var birthtime = new Extension("http://hl7.org/fhir/StructureDefinition/patient-birthTime",new FhirDateTime("1983-04-23"));

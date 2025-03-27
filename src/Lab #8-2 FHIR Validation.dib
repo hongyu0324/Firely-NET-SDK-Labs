@@ -47,8 +47,9 @@ var patientJson = File.ReadAllText("D:\\Hongyu\\Project\\data\\fhir-example\\Pat
 
 var patient = new FhirJsonParser().Parse<Resource>(patientJson) as Patient;
 
-var result = validator.Validate(patient);
+#!csharp
 
+var result = validator.Validate(patient);
 foreach (var issue in result.Issue)
 {
     Console.WriteLine($"{issue.Severity} - {issue.Details.Text}");
@@ -57,6 +58,23 @@ foreach (var issue in result.Issue)
 #!csharp
 
 result
+
+#!csharp
+
+// print profile url
+foreach (var profile in patient.Meta.Profile)
+{
+    Console.WriteLine(profile);
+}
+
+#!csharp
+
+var profile = "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore";
+result = validator.Validate(patient, profile);
+foreach (var issue in result.Issue)
+{
+    Console.WriteLine($"{issue.Severity} - {issue.Details.Text}");
+}
 
 #!csharp
 

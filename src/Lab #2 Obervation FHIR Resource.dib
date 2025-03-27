@@ -1,6 +1,6 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+{"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
 
 #!markdown
 
@@ -17,7 +17,7 @@
 
 using Hl7.Fhir.Model; 
 using Hl7.Fhir.Rest;
-var client = new FhirClient("http://localhost/fhir");
+var client = new FhirClient("http://localhost:8080/fhir");
 
 #!markdown
 
@@ -63,7 +63,7 @@ observation.Value = o_value;
 
 #!csharp
 
-var q = new SearchParams().Where("name=陳,name=鴻裕");
+var q = new SearchParams().Where("name=王");
 Bundle result = await client.SearchAsync<Patient>(q);
 
 var patient = new Patient();
@@ -80,6 +80,23 @@ var rr = new ResourceReference("Patient/" + patient.Id);
 
 observation.Subject = new ResourceReference("Patient/" + patient.Id);
 
+#!csharp
+
+using Hl7.Fhir.Serialization;
+
+// create a FHIR JSON serializer, using pretty-printing (nice formatting)
+FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
+{
+    Pretty = true,
+});
+string obs_Json = serializer.SerializeToString(observation);
+
+#!csharp
+
+obs_Json
+
+#!csharp
+
 var created = await client.CreateAsync<Observation>(observation);
 
 #!markdown
@@ -88,7 +105,8 @@ var created = await client.CreateAsync<Observation>(observation);
 
 #!csharp
 
-var q = new SearchParams().Where("patient:id=" + patient.Id);
+// search for the created observation with the patient id
+var q = new SearchParams().Where("patient=" + patient.Id);
 Bundle observations = await client.SearchAsync<Observation>(q);
 
 foreach (var o in observations.Entry){

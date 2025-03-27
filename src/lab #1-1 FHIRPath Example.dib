@@ -8,11 +8,15 @@
 
 #!csharp
 
-using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Model; 
+using Hl7.Fhir.Rest;
+using Hl7.Fhir.Serialization;
 using Hl7.Fhir.FhirPath;
-using Hl7.Fhir.Model;
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Specification;
 using Hl7.Fhir.Specification.Source;
-using Hl7.Fhir.Specification.Terminology;
+using static Hl7.Fhir.Specification.Source.ZipSource;
+using System.IO;
 
 #!csharp
 
@@ -39,10 +43,10 @@ pat.Gender = AdministrativeGender.Male;
 
 pat.BirthDate = "1983-04-23";
 
-//var birthplace = new Extension();
-//birthplace.Url = "http://hl7.org/fhir/StructureDefinition/birthPlace";
-//birthplace.Value = new Address() { City = "Seattle" };
-//pat.Extension.Add(birthplace);
+var birthplace = new Extension();
+birthplace.Url = "http://hl7.org/fhir/StructureDefinition/birthPlace";
+birthplace.Value = new Address() { City = "Seattle" };
+pat.Extension.Add(birthplace);
 
 var valueAge = new Extension();
 valueAge.Url = "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/person-age";
@@ -80,10 +84,33 @@ pat.Deceased = new FhirBoolean(false);
 
 #!csharp
 
+pat
+
+#!csharp
+
 var nav = pat.ToTypedElement();
 
-var name = nav.Children("name");
+var name = nav.Children("name").First().Children("given").First().Value;
+Console.WriteLine("Patient given name : " + name);
 
-var number = name.Count();
+var extension = nav.Children("extension");
 
-number
+foreach (var ext in extension)
+{
+    Console.WriteLine("Extension URL : " + ext.Children("url").First().Value);
+}
+
+#!csharp
+
+var hasValue = pat.IsTrue("Patient.name.where(use='official').exists()");
+Console.WriteLine("Patient name exists : " + hasValue);
+
+#!csharp
+
+var ext = pat.Select("Patient.extension");
+Console.WriteLine("Patient extension : " + ext.Count());
+
+var age = pat.Select("Patient.extension.where(url='https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/person-age').value");
+
+Age a = (Age)age.First();
+Console.WriteLine("Patient age : " + a.Value);

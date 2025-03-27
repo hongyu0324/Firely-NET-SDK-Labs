@@ -27,6 +27,10 @@ var token = await u_cred.GetAccessTokenForRequestAsync("",  System.Threading.Can
 
 #!csharp
 
+token
+
+#!csharp
+
 // 產生 FHIR 服務
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
@@ -51,6 +55,10 @@ var fhir_store_id = "sasa-healthcare";
 var base_url = "https://healthcare.googleapis.com/v1";
 
 var url = base_url + "/projects/" + project_id + "/locations/" + location + "/datasets/" + dataset_id + "/fhirStores/" + fhir_store_id + "/fhir";
+
+#!csharp
+
+url
 
 #!csharp
 
@@ -94,7 +102,7 @@ var client = new FhirClient(url, settings,handler);
 try
 {
      
-    var result = await client.ReadAsync<Patient>("Patient/3219f9b7-0ed8-cc42-683a-c2a06fafab0a");
+    var result = await client.ReadAsync<Patient>("Patient/1f2e1702-8b05-9150-b2bd-a53a53543656");
     // Print the patient's name
     Console.WriteLine(result.Name[0].GivenElement[0].Value + " " +　result.Name[0].FamilyElement);
 }
