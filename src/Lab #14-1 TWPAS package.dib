@@ -14,7 +14,9 @@ using Firely.Fhir.Packages;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Validation;
 using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
 using System.IO;
+using Hl7.Fhir.FhirPath;
 
 #!csharp
 
@@ -30,81 +32,209 @@ foreach (var n in names){
     }
 }
 
+#!markdown
+
+分析StructureDefinition內容，統計每一個profile所需要之Reference數量
+
 #!csharp
 
+var profileList = new List<Tuple<string,int,int,List<Tuple<bool,string,string>>>>();
 foreach (var p in profiles){
-    Console.WriteLine(p);
+
     StructureDefinition twpas_profile = await resolver.ResolveByUriAsync("StructureDefinition/" + p) as StructureDefinition;
 
-   
-    foreach(var n in twpas_profile.Snapshot.Element){
-        var n_list = n.ElementId.Split(".");
-        if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
-            if(n.Min > 0){
-                Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
-            }  
-        }
+    int countTrue = 0;
+    int countFalse = 0;
+
+    var refList = new List<Tuple<bool,string,string>>();
+     
+    List<bool> listRequired = new List<bool>();
+    for(int i = 0; i < 10; i++){
+        listRequired.Add(false);
     }
-    Console.WriteLine(twpas_profile.Description);
-}
-
-#!csharp
-
-var profileList = new List<Tuple<string,int,List<string>>>();
-foreach (var p in profiles){
-
-    StructureDefinition twpas_profile = await resolver.ResolveByUriAsync("StructureDefinition/" + p) as StructureDefinition;
-
-    int count = 0;
-    List<string> refList = new List<string>();  
+    bool isRequired = false;
 
     foreach(var n in twpas_profile.Snapshot.Element){
-        
+    //foreach(var n in twpas_profile.Differential.Element){
         // find resource refernce for each profile
-        if(n.Min > 0 && n.Type.Count() > 0){
-            if(n.Type[0].Code == "Reference"){
-                refList.Add(n.Path + "  " + n.Type[0].TargetProfile.First().Split("/").Last());
-                count++;
-                //Console.WriteLine(n.Path + "  " + n.Type[0].TargetProfile.First().Split("/").Last());
-            }
+        
+        int level = n.Path.Count(x => x == '.') - 1;
+        if (level < 0) continue;
+        listRequired[level] = n.Min > 0;
+        isRequired = n.Min > 0;
+        for(int i = 0; i < level; i++){
+            isRequired = isRequired & listRequired[i];
         }
+        if(isRequired == false){
+            // continue;
+        }
+        
+        //if( n.Min > 0 && n.Type.Count() > 0 && n.Type[0].Code == "Reference"){
+        if( n.Type.Count() > 0 && n.Type[0].Code == "Reference"){
+            refList.Add(new Tuple<bool,string,string>(isRequired,n.Path,n.Type[0].TargetProfile.First().Split("/").Last()));
+            if(isRequired) countTrue++;
+            else countFalse++;
+            //Console.WriteLine(n.Path + "  " + n.Type[0].TargetProfile.First().Split("/").Last());
+        }
+
+        // refList order by isRequired desc
+        refList = refList.OrderByDescending(x => x.Item1).ToList();
+        
     }
-    profileList.Add(new Tuple<string,int,List<string>>(p,count,refList));
+    profileList.Add(new Tuple<string,int,int,List<Tuple<bool,string,string>>>(p,countTrue,countFalse,refList));
 }
 
+// print out the result
 foreach(var p in profileList){
-    Console.WriteLine(p.Item1 + "  " + p.Item2);
-    foreach(var r in p.Item3){
-        Console.WriteLine(r);
+    Console.WriteLine(p.Item1 + "  " + p.Item2 + "  " + p.Item3);
+    foreach(var r in p.Item4){
+        Console.WriteLine(r.Item1 + "  " + r.Item2 + "  " + r.Item3);
     }
+    Console.WriteLine();
 }
 
 #!csharp
 
-foreach (var p in profiles){
-    Console.WriteLine("\n"+p);
-    StructureDefinition twpas_profile = await resolver.ResolveByUriAsync("StructureDefinition/" + p) as StructureDefinition;
+// funtion to get the reference count by profile
+Tuple<int,List<string>> getReferenceCount(string profile, List<Tuple<string,int,int,List<Tuple<bool,string,string>>>> list){
     int count = 0;
-    foreach(var n in twpas_profile.Snapshot.Element){
-        if (n.Min > 0 && n.Type.Count() > 0 && n.Type[0].Code == "Reference"){
-            Console.WriteLine(n.ElementId + "  " + n.Type[0].TargetProfileElement[0].ToString().Split("/").Last());
-            count++;
+    List<string> refList = new List<string>();
+    foreach(var l in list){
+        if(l.Item1 == profile){
+            count = l.Item2 + l.Item3;
+            foreach(var r in l.Item4){
+                refList.Add(r.Item3);
+            }
+            break;
         }
     }
-    Console.WriteLine(p + ":" +count.ToString());
+    return new Tuple<int,List<string>>(count,refList);
 }
 
 #!csharp
+
+var parser = new FhirJsonParser();
+
+// open all example file from D:\Hongyu\Project\data\profiles\PAS\V1.0.1\package\example directory
+var exampleDir = "..\\..\\data\\profiles\\PAS\\V1.0.1\\package\\example";
+var exampleFiles = Directory.GetFiles(exampleDir);
+var exampleResources = new List<Resource>();
+var exampleProfiles = new List<Tuple<Resource,string,string,int,List<string>>>();
+
+foreach(var f in exampleFiles){
+    var content = File.ReadAllText(f);
+    var resource = parser.Parse<Resource>(content);
+    //Console.WriteLine(resource.TypeName);
+
+    if(resource.TypeName == "Bundle") continue;
+    if(resource.TypeName == "OperationOutcome") continue;
+    string profile = resource.Meta.Profile.First().Split("/").Last();
+    Tuple<int,List<string>> refCount = getReferenceCount(profile,profileList);
+    exampleProfiles.Add(new Tuple<Resource,string,string,int,List<string>>(resource,profile,f,refCount.Item1,refCount.Item2));
+}
+// exampleProfiles order by refCount asc
+exampleProfiles = exampleProfiles.OrderBy(x => x.Item4).ToList();
+
+foreach(var p in exampleProfiles){
+    string output = "";
+    output = p.Item2 + " " + p.Item4 + " --- ";
+    foreach(var r in p.Item5){
+        output += r + " ";
+    }
+    Console.WriteLine(output);
+}
+
+#!csharp
+
+// function to get FHIRPath expression
+List<string> getFhirPath(string profile, List<Tuple<string,int,int,List<Tuple<bool,string,string>>>> list){
+    List<string> fhirPathList = new List<string>();
+    foreach(var l in list){
+        if(l.Item1 == profile){
+            foreach(var r in l.Item4){
+                fhirPathList.Add(r.Item2);
+            }
+            break;
+        }
+    }
+    return fhirPathList;
+}
+
+#!csharp
+
+// save the example resources to fhir server
+var client = new FhirClient("http://localhost:8080/fhir");
+var result = new List<Tuple<string,string>>();
+
+List<string> readyList = new List<string>();
+
+while(readyList.Count < 10) {
+    foreach(var p in exampleProfiles){
+        if( readyList.Contains((p.Item2)) == true) continue;
+
+        var resource = p.Item1;
+        var id = resource.Id;
+        
+        List<string> fhirPathList = getFhirPath(p.Item2,profileList);
+        bool isReady = true;
+        foreach(var r in fhirPathList){
+            bool isExist = resource.IsTrue(r);
+            if(isExist == true){
+                isReady = false;
+                break;
+            }   
+        }
+        if(isReady == true){
+            Console.WriteLine("Ready: " + p.Item2 + " " + p.Item4 );
+            readyList.Add(p.Item2);
+        } 
+        //else Console.WriteLine("Not Ready: " + p.Item2 + " " + p.Item4 + " " + p.Item3);
+        // var resultResource = await client.CreateAsync(resource);
+        // result.Add(new Tuple<string,string>(p.Item3,resultResource.Id));
+        //Console.WriteLine(p.Item3 + " " + resultResource.Id);
+    }
+}
+
+#!csharp
+
+string bundleName = "Bundle-twpas";
+//string bundleName = "Bundle-response-twpas";
 
 //find resource by id or by canonical uris
-StructureDefinition twpas_bundle = await resolver.ResolveByUriAsync("StructureDefinition/Bundle-twpas") as StructureDefinition;
-Console.WriteLine(twpas_bundle.Kind);
-foreach(var n in twpas_bundle.Snapshot.Element){
+StructureDefinition twpas_bundle = await resolver.ResolveByUriAsync("StructureDefinition/" + bundleName) as StructureDefinition;
+var listBundleProfiles = new List<Tuple<bool,string,string>>();
+string element ="";
+bool isRequired = false;
+
+foreach(var n in twpas_bundle.Differential.Element){
     var n_list = n.ElementId.Split(".");
     if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
         if(n.Min > 0){
             Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
         }  
     }
+    else if (n.ElementId.Contains(":")){
+        var n_list2 = n.ElementId.Split(":");
+        
+        if(n_list2[0] == "Bundle.entry"){
+            int level = n_list2[1].Count(x => x == '.') - 1;
+            if (level < 0) {
+                isRequired = n.Min > 0;
+                element = n.ElementId;
+            }
+            else{
+                string profile = n.Type[0].Profile.First().Split("/").Last();
+                // new profile Tuple
+                listBundleProfiles.Add(new Tuple<bool,string,string>(isRequired,element,profile));
+                element = "";
+            }
+        }
+    }
 }
 Console.WriteLine(twpas_bundle.Description);
+Console.WriteLine("------");
+
+listBundleProfiles = listBundleProfiles.OrderByDescending(x => x.Item1).ToList();
+foreach(var p in listBundleProfiles){
+    Console.WriteLine(p.Item1 + " " + p.Item2 + " " + p.Item3);
+}
