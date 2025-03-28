@@ -1,6 +1,6 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"sql","languageName":"SQL"},{"name":"value"}]}}
 
 #!csharp
 
@@ -147,12 +147,15 @@ foreach(var p in exampleProfiles){
 #!csharp
 
 // function to get FHIRPath expression
-List<string> getFhirPath(string profile, List<Tuple<string,int,int,List<Tuple<bool,string,string>>>> list){
-    List<string> fhirPathList = new List<string>();
+List<Tuple<string,string>> getFhirPath(string profile, List<Tuple<string,int,int,List<Tuple<bool,string,string>>>> list){
+    List<Tuple<string,string>> fhirPathList = new List<Tuple<string,string>>();
+
     foreach(var l in list){
         if(l.Item1 == profile){
             foreach(var r in l.Item4){
-                fhirPathList.Add(r.Item2);
+                //Console.WriteLine(r.Item2 + "  " + r.Item3);
+                var targetProfile = r.Item3;
+                fhirPathList.Add(new Tuple<string,string>(r.Item2,targetProfile));
             }
             break;
         }
@@ -163,36 +166,55 @@ List<string> getFhirPath(string profile, List<Tuple<string,int,int,List<Tuple<bo
 #!csharp
 
 // save the example resources to fhir server
-var client = new FhirClient("http://localhost:8080/fhir");
+//var client = new FhirClient("http://localhost:8080/fhir");
 var result = new List<Tuple<string,string>>();
 
 List<string> readyList = new List<string>();
+List<string> readyFile = new List<string>();
 
-while(readyList.Count < 10) {
+Console.WriteLine(exampleProfiles.Count + " example profiles");
+
+int loop = 0;
+while(readyList.Count < exampleProfiles.Count){
+
     foreach(var p in exampleProfiles){
-        if( readyList.Contains((p.Item2)) == true) continue;
+        if( readyFile.Contains((p.Item3)) == true) continue;
 
         var resource = p.Item1;
         var id = resource.Id;
         
-        List<string> fhirPathList = getFhirPath(p.Item2,profileList);
+        List<Tuple<string,string>> fhirPathList = getFhirPath(p.Item2,profileList);
         bool isReady = true;
         foreach(var r in fhirPathList){
-            bool isExist = resource.IsTrue(r);
+            bool isExist = resource.IsTrue(r.Item1);
             if(isExist == true){
-                isReady = false;
-                break;
+                if(readyList.Contains(r.Item2) == false){
+                    isReady = false;
+                    if( readyList.Count > 31) Console.WriteLine((p.Item3) + " " + r.Item1 + " " + r.Item2 + " " + isExist);
+                    break;
+                }
             }   
+            
         }
         if(isReady == true){
-            Console.WriteLine("Ready: " + p.Item2 + " " + p.Item4 );
             readyList.Add(p.Item2);
+            readyFile.Add(p.Item3);
         } 
-        //else Console.WriteLine("Not Ready: " + p.Item2 + " " + p.Item4 + " " + p.Item3);
-        // var resultResource = await client.CreateAsync(resource);
-        // result.Add(new Tuple<string,string>(p.Item3,resultResource.Id));
-        //Console.WriteLine(p.Item3 + " " + resultResource.Id);
     }
+    loop++;
+    Console.WriteLine("Loop: " + loop + " " + readyList.Count + " " + exampleProfiles.Count);
+    if(loop > 10) break;
+}
+
+//ready file order by file name
+
+readyFile = readyFile.OrderBy(x => x).ToList();
+foreach(var f in readyFile){
+    Console.WriteLine(f);
+}
+readyList = readyList.OrderBy(x => x).ToList();
+foreach(var f in readyList){
+    Console.WriteLine(f);
 }
 
 #!csharp
