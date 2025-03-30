@@ -1,0 +1,226 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+
+#!csharp
+
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
+using System.IO;
+using Hl7.Fhir.FhirPath;
+
+#!csharp
+
+string profilePath = "..\\..\\data\\profiles\\PAS\\V1.0.1";
+string profileName = "https://twcore.mohw.gov.tw/ig/pas/StructureDefinition";
+//string profilePath = "..\\..\\data\\profiles\\EMR";
+//string profileName = "https://twcore.mohw.gov.tw/ig-emr/twcore/StructureDefinition";
+
+#!csharp
+
+var tw_pas = profilePath + "\\package.tgz";
+FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_pas});
+//var names = resolver.ListResourceUris();
+var names = resolver.ListCanonicalUris();
+var profiles = new List<String>();
+foreach (var n in names){
+    if(n.StartsWith(profileName)){
+        var profile = n.Split("/").Last();
+        profiles.Add(profile);
+    }
+    
+}
+
+// print all profiles
+foreach (var n in profiles){
+    Console.WriteLine(n);
+}
+
+#!csharp
+
+var profileList = new List<Tuple<string,int,int,List<Tuple<bool,string,string>>>>();
+foreach (var p in profiles){
+
+    StructureDefinition twpas_profile = await resolver.ResolveByUriAsync("StructureDefinition/" + p) as StructureDefinition;
+
+    int countTrue = 0;
+    int countFalse = 0;
+
+    var refList = new List<Tuple<bool,string,string>>();
+     
+    List<bool> listRequired = new List<bool>();
+    for(int i = 0; i < 10; i++){
+        listRequired.Add(false);
+    }
+    bool isRequired = false;
+
+    foreach(var n in twpas_profile.Snapshot.Element){
+    //foreach(var n in twpas_profile.Differential.Element){
+        // find resource refernce for each profile
+        
+        int level = n.Path.Count(x => x == '.') - 1;
+        if (level < 0) continue;
+        listRequired[level] = n.Min > 0;
+        isRequired = n.Min > 0;
+        for(int i = 0; i < level; i++){
+            isRequired = isRequired & listRequired[i];
+        }
+        if(isRequired == false){
+            // continue;
+        }
+        
+        //if( n.Min > 0 && n.Type.Count() > 0 && n.Type[0].Code == "Reference"){
+        if( n.Type.Count() > 0 && n.Type[0].Code == "Reference"){
+            refList.Add(new Tuple<bool,string,string>(isRequired,n.Path,n.Type[0].TargetProfile.First().Split("/").Last()));
+            if(isRequired) countTrue++;
+            else countFalse++;
+            //Console.WriteLine(n.Path + "  " + n.Type[0].TargetProfile.First().Split("/").Last());
+        }
+
+        // refList order by isRequired desc
+        refList = refList.OrderByDescending(x => x.Item1).ToList();
+        
+    }
+    profileList.Add(new Tuple<string,int,int,List<Tuple<bool,string,string>>>(p,countTrue,countFalse,refList));
+}
+
+// print out the result
+foreach(var p in profileList){
+    Console.WriteLine(p.Item1 + "  " + p.Item2 + "  " + p.Item3);
+    foreach(var r in p.Item4){
+        Console.WriteLine(r.Item1 + "  " + r.Item2 + "  " + r.Item3);
+    }
+    Console.WriteLine();
+}
+
+#!csharp
+
+string bundleName = "Bundle-twpas";
+//string bundleName = "Bundle-response-twpas";
+
+//find resource by id or by canonical uris
+StructureDefinition twpas_bundle = await resolver.ResolveByUriAsync("StructureDefinition/" + bundleName) as StructureDefinition;
+var listBundleProfiles = new List<Tuple<bool,string,string>>();
+string element ="";
+bool isRequired = false;
+
+foreach(var n in twpas_bundle.Differential.Element){
+    var n_list = n.ElementId.Split(".");
+    if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
+        if(n.Min > 0){
+            Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
+        }  
+    }
+    else if (n.ElementId.Contains(":")){
+        var n_list2 = n.ElementId.Split(":");
+        
+        if(n_list2[0] == "Bundle.entry"){
+            int level = n_list2[1].Count(x => x == '.') - 1;
+            if (level < 0) {
+                isRequired = n.Min > 0;
+                element = n.ElementId;
+            }
+            else{
+                string profile = n.Type[0].Profile.First().Split("/").Last();
+                // new profile Tuple
+                listBundleProfiles.Add(new Tuple<bool,string,string>(isRequired,element,profile));
+                element = "";
+            }
+        }
+    }
+}
+Console.WriteLine(twpas_bundle.Description);
+Console.WriteLine("------");
+
+listBundleProfiles = listBundleProfiles.OrderByDescending(x => x.Item1).ToList();
+foreach(var p in listBundleProfiles){
+    Console.WriteLine(p.Item1 + " " + p.Item2 + " " + p.Item3);
+}
+
+#!csharp
+
+// funtion to get the reference count by profile
+// function to get FHIRPath expression
+List<Tuple<string,string>> getFhirPath(string profile, List<Tuple<string,int,int,List<Tuple<bool,string,string>>>> list){
+    List<Tuple<string,string>> fhirPathList = new List<Tuple<string,string>>();
+
+    foreach(var l in list){
+        if(l.Item1 == profile){
+            foreach(var r in l.Item4){
+                //Console.WriteLine(r.Item2 + "  " + r.Item3);
+                var targetProfile = r.Item3;
+                fhirPathList.Add(new Tuple<string,string>(r.Item2,targetProfile));
+            }
+            break;
+        }
+    }
+    return fhirPathList;
+}
+
+#!csharp
+
+var refList = getFhirPath("Claim-twpas", profileList);
+
+// print out the result
+foreach(var p in refList){
+    Console.WriteLine(p.Item1 + "  " + p.Item2);
+}
+
+#!csharp
+
+// Read all Claims resource from FHIR Server http://localhost:8080/fhir
+
+string fhirServer = "http://localhost:8080/fhir";
+string resourceType = "Claim";
+
+
+var client = new FhirClient(fhirServer);
+var searchParams = new SearchParams()
+    .Where("status=active");
+var searchResult = await client.SearchAsync<Claim>(searchParams);
+
+var claims = searchResult.Entry.Select(e => e.Resource as Claim).ToList();
+
+Claim claim = claims[1];
+Console.WriteLine("Claim ID: " + claim.Id);
+bool checkList = false;
+string listPath = "";
+foreach(var r in refList){
+    bool isExist = false;
+    var path = r.Item1;
+    if (path.EndsWith("[x]")){
+        checkList = true;
+        listPath = path.Substring(0, path.Length - 3);
+    }
+    else{
+        isExist = claim.IsTrue(path);
+    }
+    var targetProfile = r.Item2;
+    
+    if(isExist){
+        //Console.WriteLine("Path: " + path + "  " + targetProfile);
+        var reference = claim.Select(path).ToList();
+        ResourceReference a = (ResourceReference)reference.First();
+        Console.WriteLine("Reference: " + a.Reference );
+    }
+}
+
+if(checkList){
+
+    var list = claim.Select(listPath).ToList();
+    foreach(var l in list){
+        var reference = l as ResourceReference;
+        if(reference != null){
+            Console.WriteLine("Reference: " + reference.Reference );
+        }
+    }
+}
