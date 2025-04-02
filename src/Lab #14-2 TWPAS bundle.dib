@@ -177,6 +177,54 @@ foreach(var p in refList){
 
 #!csharp
 
+List<ResourceReference> GetResourceReferences(Resource resource,List<Tuple<string,string>> refList)
+{
+    bool checkList = false;
+    string listPath = "";
+    var listPathList = new List<string>();
+    foreach(var r in refList){
+        bool isExist = false;
+        var path = r.Item1;
+        if (path.EndsWith("[x]")){
+            checkList = true;
+            listPath = path.Substring(0, path.Length - 3);
+        }
+        else{
+            isExist = resource.IsTrue(path);
+        }
+        var targetProfile = r.Item2;
+    
+        if(isExist){
+            var reference = resource.Select(path).ToList();
+            ResourceReference a = (ResourceReference)reference.First();
+            listPathList.Add(a.Reference);
+            //Console.WriteLine("Reference: " + a.Reference );
+        }
+    }
+
+    if(checkList){
+        var list = resource.Select(listPath).ToList();
+        foreach(var l in list){
+            var reference = l as ResourceReference;
+            if(reference != null){
+                //Console.WriteLine("Reference: " + reference.Reference );
+                listPathList.Add(reference.Reference);
+            }
+        }
+    }
+
+    // listPathList order by profile name
+    listPathList = listPathList.OrderBy(x => x).ToList();
+    var resourceReferenceList = new List<ResourceReference>();
+    foreach(var l in listPathList){
+        var reference = new ResourceReference(l);
+        resourceReferenceList.Add(reference);
+    }
+    return resourceReferenceList;
+}
+
+#!csharp
+
 // Read all Claims resource from FHIR Server http://localhost:8080/fhir
 
 string fhirServer = "http://localhost:8080/fhir";
@@ -190,37 +238,66 @@ var searchResult = await client.SearchAsync<Claim>(searchParams);
 
 var claims = searchResult.Entry.Select(e => e.Resource as Claim).ToList();
 
-Claim claim = claims[1];
+List<Resource> resourceList = new List<Resource>();
+
+Claim claim = claims[0];
+resourceList.Add(claim);
+
 Console.WriteLine("Claim ID: " + claim.Id);
 bool checkList = false;
-string listPath = "";
-foreach(var r in refList){
-    bool isExist = false;
-    var path = r.Item1;
-    if (path.EndsWith("[x]")){
-        checkList = true;
-        listPath = path.Substring(0, path.Length - 3);
-    }
-    else{
-        isExist = claim.IsTrue(path);
-    }
-    var targetProfile = r.Item2;
-    
-    if(isExist){
-        //Console.WriteLine("Path: " + path + "  " + targetProfile);
-        var reference = claim.Select(path).ToList();
-        ResourceReference a = (ResourceReference)reference.First();
-        Console.WriteLine("Reference: " + a.Reference );
+List<ResourceReference> listPathList = new List<ResourceReference>();
+listPathList = GetResourceReferences(claim,refList);
+
+// print out the result
+foreach(var p in listPathList){
+    // get the resource by reference
+    var resource = await client.ReadAsync<Resource>(p.Reference);
+
+    if(resource != null){
+        //add resource to the bundle
+        resourceList.Add(resource);
     }
 }
-
-if(checkList){
-
-    var list = claim.Select(listPath).ToList();
-    foreach(var l in list){
-        var reference = l as ResourceReference;
-        if(reference != null){
-            Console.WriteLine("Reference: " + reference.Reference );
+/*
+foreach(Resource r in resourceList){
+    List<ResourceReference> listPathList2 = new List<ResourceReference>();
+    listPathList2 = GetResourceReferences(r,refList);
+    // print out the listPathList2
+    foreach(var p in listPathList2){
+        Console.WriteLine("Resource ID: " + p.Reference);
+    }
+    
+    foreach(var p in listPathList2){
+        // get the resource by reference
+        var resource = await client.ReadAsync<Resource>(p.Reference);
+        if(resource != null && resourceList.Contains(resource) == false){
+            //add resource to the bundle
+            Console.WriteLine("Resource ID: " + resource.Id);
         }
     }
 }
+*/
+// create a bundle
+var bundle = new Bundle
+{
+    Type = Bundle.BundleType.Collection,
+    Id = "bundle-" + DateTime.Now.ToString("yyyyMMdd-HHmmss"),
+    Timestamp = DateTimeOffset.Now,
+    Total = resourceList.Count,
+    Entry = new List<Bundle.EntryComponent>()
+};
+foreach (var resource in resourceList)
+{
+    var entry = new Bundle.EntryComponent
+    {
+        Resource = resource
+    };
+    bundle.Entry.Add(entry);
+}
+
+var serializer = new FhirJsonSerializer(new SerializerSettings { Pretty = true });
+// save the bundle to a json string
+string bundleJson = serializer.SerializeToString(bundle);
+
+//print out the bundle json
+Console.WriteLine(bundleJson);

@@ -20,16 +20,29 @@ using Hl7.Fhir.FhirPath;
 
 #!csharp
 
-var tw_pas = "..\\..\\data\\profiles\\PAS\\V1.0.1\\package.tgz";
+string profilePath = "..\\..\\data\\profiles\\PAS\\V1.0.1";
+string profileName = "https://twcore.mohw.gov.tw/ig/pas/StructureDefinition";
+//string profilePath = "..\\..\\data\\profiles\\EMR";
+//string profileName = "https://twcore.mohw.gov.tw/ig-emr/twcore/StructureDefinition";
+
+#!csharp
+
+var tw_pas = profilePath + "\\package.tgz";
 FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_pas});
 //var names = resolver.ListResourceUris();
 var names = resolver.ListCanonicalUris();
 var profiles = new List<String>();
 foreach (var n in names){
-    if(n.StartsWith("https://twcore.mohw.gov.tw/ig/pas/StructureDefinition")){
+    if(n.StartsWith(profileName)){
         var profile = n.Split("/").Last();
         profiles.Add(profile);
     }
+    
+}
+
+// print all profiles
+foreach (var n in profiles){
+    Console.WriteLine(n);
 }
 
 #!markdown
@@ -93,6 +106,10 @@ foreach(var p in profileList){
     Console.WriteLine();
 }
 
+#!markdown
+
+根據Profile名稱，取得該profile所需要的reference數目以及reference所對應之profile
+
 #!csharp
 
 // funtion to get the reference count by profile
@@ -111,12 +128,16 @@ Tuple<int,List<string>> getReferenceCount(string profile, List<Tuple<string,int,
     return new Tuple<int,List<string>>(count,refList);
 }
 
+#!markdown
+
+取得範例資料以及匯入資料所需要的相關資訊
+
 #!csharp
 
 var parser = new FhirJsonParser();
 
 // open all example file from D:\Hongyu\Project\data\profiles\PAS\V1.0.1\package\example directory
-var exampleDir = "..\\..\\data\\profiles\\PAS\\V1.0.1\\package\\example";
+var exampleDir = profilePath +"\\package\\example";
 var exampleFiles = Directory.GetFiles(exampleDir);
 var exampleResources = new List<Resource>();
 var exampleProfiles = new List<Tuple<Resource,string,string,int,List<string>>>();
@@ -144,6 +165,10 @@ foreach(var p in exampleProfiles){
     Console.WriteLine(output);
 }
 
+#!markdown
+
+取得每一個profile可能需要的reference以及對應之FHIRPath
+
 #!csharp
 
 // function to get FHIRPath expression
@@ -163,14 +188,19 @@ List<Tuple<string,string>> getFhirPath(string profile, List<Tuple<string,int,int
     return fhirPathList;
 }
 
+#!markdown
+
+排定匯入資料的順序
+
 #!csharp
 
 // save the example resources to fhir server
-//var client = new FhirClient("http://localhost:8080/fhir");
+
 var result = new List<Tuple<string,string>>();
 
 List<string> readyList = new List<string>();
 List<string> readyFile = new List<string>();
+List<Resource> readyResource = new List<Resource>();
 
 Console.WriteLine(exampleProfiles.Count + " example profiles");
 
@@ -188,34 +218,64 @@ while(readyList.Count < exampleProfiles.Count){
         foreach(var r in fhirPathList){
             bool isExist = resource.IsTrue(r.Item1);
             if(isExist == true){
-                if(readyList.Contains(r.Item2) == false){
+                string targetProfile = r.Item2;
+                if (targetProfile == "Practitioner") targetProfile = "Practitioner-twpas";
+                if(readyList.Contains(targetProfile) == false){
                     isReady = false;
-                    if( readyList.Count > 31) Console.WriteLine((p.Item3) + " " + r.Item1 + " " + r.Item2 + " " + isExist);
                     break;
                 }
             }   
-            
         }
         if(isReady == true){
             readyList.Add(p.Item2);
             readyFile.Add(p.Item3);
+            readyResource.Add(resource);
         } 
     }
     loop++;
-    Console.WriteLine("Loop: " + loop + " " + readyList.Count + " " + exampleProfiles.Count);
     if(loop > 10) break;
 }
 
 //ready file order by file name
 
+/*
 readyFile = readyFile.OrderBy(x => x).ToList();
 foreach(var f in readyFile){
     Console.WriteLine(f);
 }
+
 readyList = readyList.OrderBy(x => x).ToList();
 foreach(var f in readyList){
     Console.WriteLine(f);
 }
+*/
+
+// print count of the ready resources
+Console.WriteLine(readyList.Count + " ready resources");
+
+// print out the ready resources
+foreach(var r in readyResource){
+    Console.WriteLine(r.TypeName + " " + r.Id);
+}
+
+#!csharp
+
+//save the resources to fhir server
+/*
+var client = new FhirClient("http://localhost:8080/fhir");
+
+var resultList = new List<Tuple<string,string>>();
+foreach(var r in readyResource){
+    var resource = r;
+    var id = resource.Id;
+    try{
+        var response = await client.UpdateAsync(resource);
+        resultList.Add(new Tuple<string,string>(resource.TypeName,resource.Id));
+    }catch(Exception e){
+        Console.WriteLine(e.Message);
+    }
+}
+*/
 
 #!csharp
 

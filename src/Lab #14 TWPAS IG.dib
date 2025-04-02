@@ -1,3 +1,43 @@
 #!meta
 
 {"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+
+#!csharp
+
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
+using System.IO;
+using Hl7.Fhir.FhirPath;
+
+#!csharp
+
+string profilePath = "..\\..\\data\\profiles\\PAS\\V1.0.1";
+string profileName = "https://twcore.mohw.gov.tw/ig/pas/ImplementationGuide";
+
+#!csharp
+
+var igsPath = Path.Combine(profilePath, "package\\ImplementationGuide-tw.gov.mohw.nhi.pas.json");
+var ig = new FhirJsonParser().Parse<ImplementationGuide>(File.ReadAllText(igsPath));
+var listResource = ig.Definition.Resource;
+
+//printing the resources in the ImplementationGuide
+foreach (var resource in listResource)
+{
+    string profileName = resource.Reference.Url.ToString();
+    if (profileName.Contains("StructureDefinition"))
+    {
+        profileName = profileName.Substring(profileName.LastIndexOf("/") + 1);
+        Console.WriteLine(profileName);
+    }
+   
+
+}
