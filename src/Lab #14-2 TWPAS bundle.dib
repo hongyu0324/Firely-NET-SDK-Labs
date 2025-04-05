@@ -295,9 +295,49 @@ foreach (var resource in resourceList)
     bundle.Entry.Add(entry);
 }
 
+Console.WriteLine("Number of entries: " + bundle.Entry.Count);
+foreach(var e in bundle.Entry){
+    var resource = e.Resource;
+    Console.WriteLine("Resource ID: " + resource.Id);
+}
+
 var serializer = new FhirJsonSerializer(new SerializerSettings { Pretty = true });
 // save the bundle to a json string
 string bundleJson = serializer.SerializeToString(bundle);
 
 //print out the bundle json
-Console.WriteLine(bundleJson);
+//Console.WriteLine(bundleJson);
+
+#!csharp
+
+var parser = new FhirJsonParser();
+
+// open all example file from D:\Hongyu\Project\data\profiles\PAS\V1.0.1\package\example directory
+var exampleDir = profilePath +"\\package\\example";
+var exampleFiles = Directory.GetFiles(exampleDir);
+var exampleResources = new List<Resource>();
+List<Resource> bundleList = new List<Resource>();
+foreach(var f in exampleFiles){
+    var content = File.ReadAllText(f);
+    var resource = parser.Parse<Resource>(content);
+    //Console.WriteLine(resource.TypeName);
+
+    if(resource.TypeName == "Bundle"){
+        bundleList.Add(resource);
+        continue;
+    }
+}
+
+// print out the bundle resource
+foreach(var b in bundleList){
+    var bundleResource = b as Bundle;
+    if(bundleResource != null){
+        Console.WriteLine("Bundle ID: " + bundleResource.Id);
+        //print out number of entries
+        Console.WriteLine("Number of entries: " + bundleResource.Entry.Count);
+        foreach(var e in bundleResource.Entry){
+            var resource = e.Resource;
+            Console.WriteLine("Resource ID: " + resource.Id);
+        }
+    }
+}

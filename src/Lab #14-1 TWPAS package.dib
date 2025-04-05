@@ -20,29 +20,89 @@ using Hl7.Fhir.FhirPath;
 
 #!csharp
 
-string profilePath = "..\\..\\data\\profiles\\PAS\\V1.0.1";
-string profileName = "https://twcore.mohw.gov.tw/ig/pas/StructureDefinition";
+string igName = "ngs";
+string profilePath = "..\\..\\data\\profiles\\" + igName;
+string profileName = "https://twcore.mohw.gov.tw/ig/" + igName + "/StructureDefinition";
 //string profilePath = "..\\..\\data\\profiles\\EMR";
 //string profileName = "https://twcore.mohw.gov.tw/ig-emr/twcore/StructureDefinition";
 
 #!csharp
 
-var tw_pas = profilePath + "\\package.tgz";
-FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_pas});
+var tw_ig = profilePath + "\\package.tgz";
+
+Console.WriteLine($"Loading {tw_ig}...");
+FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_ig});
 //var names = resolver.ListResourceUris();
 var names = resolver.ListCanonicalUris();
 var profiles = new List<String>();
+var bundles = new List<String>();
 foreach (var n in names){
-    if(n.StartsWith(profileName)){
-        var profile = n.Split("/").Last();
-        profiles.Add(profile);
+    try{
+        if(n.StartsWith(profileName)){
+            var profile = n.Split("/").Last();
+            if(profile.Contains("Bundle")){
+                bundles.Add(profile);
+            }
+            else{
+                profiles.Add(profile);
+            }
+        }
     }
-    
+    catch (Exception e){
+        Console.WriteLine($"Error processing {n}: {e.Message}");
+    }
+
+
 }
 
 // print all profiles
 foreach (var n in profiles){
     Console.WriteLine(n);
+}
+
+#!csharp
+
+foreach (var bun in bundles){
+   //string bundleName = "Bundle-response-twpas";
+
+    //find resource by id or by canonical uris
+    StructureDefinition tw_bundle = await resolver.ResolveByUriAsync("StructureDefinition/" + bun) as StructureDefinition;
+    var listBundleProfiles = new List<Tuple<bool,string,string>>();
+    string element ="";
+    bool isRequired = false;
+
+    foreach(var n in tw_bundle.Differential.Element){
+        var n_list = n.ElementId.Split(".");
+        if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
+            if(n.Min > 0){
+                Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
+            }  
+        }
+        else if (n.ElementId.Contains(":")){
+            var n_list2 = n.ElementId.Split(":");
+        
+            if(n_list2[0] == "Bundle.entry"){
+                int level = n_list2[1].Count(x => x == '.') - 1;
+                if (level < 0) {
+                    isRequired = n.Min > 0;
+                    element = n.ElementId;
+                }
+                else{
+                    string profile = n.Type[0].Profile.First().Split("/").Last();
+                    // new profile Tuple
+                    listBundleProfiles.Add(new Tuple<bool,string,string>(isRequired,element,profile));
+                    element = "";
+                }
+            }
+        }
+    }
+    Console.WriteLine(tw_bundle.Description);
+    Console.WriteLine("------");
+
+    listBundleProfiles = listBundleProfiles.OrderByDescending(x => x.Item1).ToList();
+    foreach(var p in listBundleProfiles){
+        Console.WriteLine(p.Item1 + " " + p.Item2 + " " + p.Item3);
+    }
 }
 
 #!markdown
@@ -136,9 +196,13 @@ Tuple<int,List<string>> getReferenceCount(string profile, List<Tuple<string,int,
 
 var parser = new FhirJsonParser();
 
-// open all example file from D:\Hongyu\Project\data\profiles\PAS\V1.0.1\package\example directory
+
 var exampleDir = profilePath +"\\package\\example";
+
 var exampleFiles = Directory.GetFiles(exampleDir);
+
+
+
 var exampleResources = new List<Resource>();
 var exampleProfiles = new List<Tuple<Resource,string,string,int,List<string>>>();
 
@@ -147,8 +211,18 @@ foreach(var f in exampleFiles){
     var resource = parser.Parse<Resource>(content);
     //Console.WriteLine(resource.TypeName);
 
-    if(resource.TypeName == "Bundle") continue;
+    if(resource.TypeName == "Bundle"){
+        Console.WriteLine($"Bundle {f}");
+        continue;
+    } 
     if(resource.TypeName == "OperationOutcome") continue;
+    try{
+        if(resource.Meta == null || resource.Meta.Profile == null || resource.Meta.Profile.Count() == 0) continue;
+    }
+    catch (Exception e){
+        Console.WriteLine($"Error processing {f}: {e.Message}");
+        continue;
+    }
     string profile = resource.Meta.Profile.First().Split("/").Last();
     Tuple<int,List<string>> refCount = getReferenceCount(profile,profileList);
     exampleProfiles.Add(new Tuple<Resource,string,string,int,List<string>>(resource,profile,f,refCount.Item1,refCount.Item2));
@@ -276,47 +350,3 @@ foreach(var r in readyResource){
     }
 }
 */
-
-#!csharp
-
-string bundleName = "Bundle-twpas";
-//string bundleName = "Bundle-response-twpas";
-
-//find resource by id or by canonical uris
-StructureDefinition twpas_bundle = await resolver.ResolveByUriAsync("StructureDefinition/" + bundleName) as StructureDefinition;
-var listBundleProfiles = new List<Tuple<bool,string,string>>();
-string element ="";
-bool isRequired = false;
-
-foreach(var n in twpas_bundle.Differential.Element){
-    var n_list = n.ElementId.Split(".");
-    if ( n_list.Count() == 2 && n.ElementId.Contains(":") == false ){
-        if(n.Min > 0){
-            Console.WriteLine( n.ElementId  + "   " + n.Min + "."+ n.Max + "  - " + n.Short);
-        }  
-    }
-    else if (n.ElementId.Contains(":")){
-        var n_list2 = n.ElementId.Split(":");
-        
-        if(n_list2[0] == "Bundle.entry"){
-            int level = n_list2[1].Count(x => x == '.') - 1;
-            if (level < 0) {
-                isRequired = n.Min > 0;
-                element = n.ElementId;
-            }
-            else{
-                string profile = n.Type[0].Profile.First().Split("/").Last();
-                // new profile Tuple
-                listBundleProfiles.Add(new Tuple<bool,string,string>(isRequired,element,profile));
-                element = "";
-            }
-        }
-    }
-}
-Console.WriteLine(twpas_bundle.Description);
-Console.WriteLine("------");
-
-listBundleProfiles = listBundleProfiles.OrderByDescending(x => x.Item1).ToList();
-foreach(var p in listBundleProfiles){
-    Console.WriteLine(p.Item1 + " " + p.Item2 + " " + p.Item3);
-}
