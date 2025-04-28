@@ -20,7 +20,7 @@ using Hl7.Fhir.FhirPath;
 
 #!csharp
 
-string igName = "ngs";
+string igName = "pas";
 string profilePath = "..\\..\\data\\profiles\\" + igName;
 string profileName = "https://twcore.mohw.gov.tw/ig/" + igName + "/StructureDefinition";
 //string profilePath = "..\\..\\data\\profiles\\EMR";
@@ -36,12 +36,16 @@ FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_i
 var names = resolver.ListCanonicalUris();
 var profiles = new List<String>();
 var bundles = new List<String>();
+var applyModel = "";
 foreach (var n in names){
     try{
         if(n.StartsWith(profileName)){
             var profile = n.Split("/").Last();
             if(profile.Contains("Bundle")){
                 bundles.Add(profile);
+            }
+            else if(profile.Contains("ApplyModel")){
+                applyModel = profile;
             }
             else{
                 profiles.Add(profile);
@@ -56,9 +60,218 @@ foreach (var n in names){
 }
 
 // print all profiles
+
 foreach (var n in profiles){
     Console.WriteLine(n);
 }
+
+#!csharp
+
+string getProfileName(string name){
+    name = name.ToLower();
+    foreach (var n in profiles){
+        var p = n.Replace("-", "");
+        p = p.Replace("twpas", "");
+        p = "twpas" + p;
+        p = p.ToLower();
+        if( p == name){
+            return n;
+        }
+    }
+    return name;
+}
+
+#!csharp
+
+StructureDefinition applyModelDef = await resolver.ResolveByUriAsync("StructureDefinition/" + applyModel) as StructureDefinition;
+List<Tuple<string, string,string,string>> qList = new List<Tuple<string, string,string,string>>();
+
+foreach (var e in applyModelDef.Differential.Element){
+    
+    var elementList = e.Path.Split('.').ToList();
+    if (elementList.Count > 1){
+        if(elementList.Count == 2){
+            //Console.WriteLine(("\n"));
+        }
+        //Console.WriteLine($" {e.Definition} {e.Path} {e.Type.FirstOrDefault()?.Code} {e.Min} {e.Max} {e.Slicing?.Discriminator?.FirstOrDefault()?.Path} {e.Slicing?.Discriminator?.FirstOrDefault()?.Type}");
+        var map = e.Mapping;
+        foreach (var m in map){
+            //Console.WriteLine($"{"  "} {m.Identity} {m.Map}");
+            // get profile name from profiles list 
+            if (e.Path.StartsWith("ApplyModel.gene") && elementList.Count > 2){
+                string q3 = m.Map;
+                // 移除q3中，最後一個()中的中文字
+                if (q3.Contains("(")){
+                    int start = q3.LastIndexOf("(");
+                    int end = q3.LastIndexOf(")");
+                    if (start > 0 && end > start){
+                        q3 = q3.Remove(start, end - start + 1);
+                    }
+                }
+                var q = new Tuple<string, string,string,string>(e.Definition + " | " + e.Path.Replace("ApplyModel.gene.",""), getProfileName(m.Identity) ,  q3 , e.Type.FirstOrDefault()?.Code); 
+                qList.Add(q);
+            }
+            
+        }
+    }
+}  
+
+// print out qList
+
+foreach (var q in qList){
+    Console.WriteLine($"{q.Item1} {q.Item2} {q.Item3} {q.Item4}");
+}
+
+#!csharp
+
+StructureDefinition sd = await resolver.ResolveByUriAsync("StructureDefinition/Observation-diagnostic-twpas") as StructureDefinition;
+// 根據ApplyModel的定義，產生一個Questionnaire
+var questionnaire = new Questionnaire();
+
+questionnaire.Name = "Observation Diagnostic TWPAS";
+questionnaire.Title = "Observation Diagnostic TWPAS";
+questionnaire.Status = PublicationStatus.Active;
+questionnaire.Publisher = "大同醫護股份有限公司";
+questionnaire.Description = "基因檢測問卷";
+
+questionnaire.Contact = new List<ContactDetail>();
+var contact = new ContactDetail();
+contact.Name = "大同醫護股份有限公司";
+contact.Telecom = new List<ContactPoint>();
+var telecom = new ContactPoint();
+telecom.System = ContactPoint.ContactPointSystem.Url;
+telecom.Value = "https://tmhtc.net/";
+contact.Telecom.Add(telecom);
+questionnaire.Contact.Add(contact);
+
+var item1 = new Questionnaire.ItemComponent();
+item1.LinkId = "1";
+item1.Text = "基因資訊";
+item1.Type = Questionnaire.QuestionnaireItemType.Group;
+item1.Item = new List<Questionnaire.ItemComponent>();
+questionnaire.Item.Add(item1);
+
+string itemText = "";
+foreach (var q in qList){
+    if(itemText != q.Item1){
+        itemText = q.Item1;
+    }else{
+        continue;
+    }
+    var item = new Questionnaire.ItemComponent();
+    item.LinkId = "1." + (item1.Item.Count + 1).ToString();
+    
+
+    item.Text = q.Item1;
+    // 根據item4內容，判斷Type
+
+    if (q.Item4 == "string"){
+        item.Type = Questionnaire.QuestionnaireItemType.String;
+    }
+
+    else if (q.Item4 == "dateTime"){
+        item.Type = Questionnaire.QuestionnaireItemType.DateTime;
+    }
+    else if (q.Item4 == "CodeableConcept"){
+        item.Type = Questionnaire.QuestionnaireItemType.Choice;
+        //item.AnswerValueSet = getCodeUrlbyFHIRPath(sd,q.Item3);
+        //var binding = sd.Select("differential.element.where(path = 'Observation" + q.Item3+ "').binding").FirstOrDefault() as Hl7.Fhir.Model.ElementDefinition.ElementDefinitionBindingComponent; 
+        //item.AnswerValueSet = binding.ValueSet;  
+    }
+    else{
+        item.Type = Questionnaire.QuestionnaireItemType.String;
+    }
+
+    item.Required = true;
+    item1.Item.Add(item);
+}
+// 根據ApplyModel的定義，產生一個Questionnaire.ItemComponent
+// 這裡的ItemComponent是根據ApplyModel的定義來產生的，並不是隨便亂寫的
+
+/*
+var item2 = new Questionnaire.ItemComponent();
+item2.LinkId = "1.1";
+item2.Text = "基因檢測代碼";
+item2.Type = Questionnaire.QuestionnaireItemType.String;
+item2.Initial = new List<Questionnaire.InitialComponent>();
+var initial = new Questionnaire.InitialComponent();
+initial.Value = new FhirString("69548-6");
+item2.Initial.Add(initial);
+item2.Required = true;
+item.Item.Add(item2);
+
+var item3 = new Questionnaire.ItemComponent();
+item3.LinkId = "1.2";
+item3.Text = "基因檢測日期";
+item3.Type = Questionnaire.QuestionnaireItemType.Date;
+item3.Required = true;
+item.Item.Add(item3);
+
+var item4 = new Questionnaire.ItemComponent();
+item4.LinkId = "1.3";
+item4.Text = "基因檢測分析結果";
+item4.Type = Questionnaire.QuestionnaireItemType.Choice;
+item4.AnswerValueSet = "http://loinc.org/vs/LL1971-2";
+item4.Required = true;
+item.Item.Add(item4);
+
+var item5 = new Questionnaire.ItemComponent();
+item5.LinkId = "1.4";
+item5.Text = "基因臨床判讀結果";
+item5.Type = Questionnaire.QuestionnaireItemType.Choice;
+item5.AnswerOption = new List<Questionnaire.AnswerOptionComponent>();
+item5.AnswerValueSet = "http://terminology.hl7.org/ValueSet/v3-ObservationInterpretation";
+item5.Required = true;
+item.Item.Add(item5);
+
+var item6 = new Questionnaire.ItemComponent();
+item6.LinkId = "1.5";
+item6.Text = "基因檢測方法";
+item6.Type = Questionnaire.QuestionnaireItemType.Choice;
+item6.AnswerValueSet = "http://loinc.org/vs/LL1971-2";
+item6.Required = true;
+item.Item.Add(item6);
+
+
+var item7 = new Questionnaire.ItemComponent();
+item7.LinkId = "1.6";
+item7.Text = "基因檢測代碼";
+item7.Type = Questionnaire.QuestionnaireItemType.Choice;
+item7.AnswerValueSet = "https://twcore.mohw.gov.tw/ig/pas/ValueSet/gene-test-code";
+item7.Required = true;
+item.Item.Add(item7);
+
+var item8 = new Questionnaire.ItemComponent();
+item8.LinkId = "1.7";
+item8.Text = "基因突變類型";
+item8.Type = Questionnaire.QuestionnaireItemType.Choice;
+item8.AnswerValueSet = "https://twcore.mohw.gov.tw/ig/pas/ValueSet/dna-change-type";
+item8.Required = true;
+item.Item.Add(item8);
+*/
+
+FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
+{
+    Pretty = true,
+});
+string pat_Json = serializer.SerializeToString(questionnaire);
+Console.WriteLine(pat_Json);
+
+#!csharp
+
+string profileName = "Observation-diagnostic-twpas";
+
+StructureDefinition pd = await resolver.ResolveByUriAsync("StructureDefinition/" + profileName) as StructureDefinition;
+
+//interpretation.coding.code
+//var binding = pd.Select("differential.element.where(path = 'Observation.interpretation').binding").FirstOrDefault() as Hl7.Fhir.Model.ElementDefinition.ElementDefinitionBindingComponent; 
+
+//Console.WriteLine(binding.ValueSet);
+
+
+//Console.WriteLine($"Version: {versionStr}");
+
+pd
 
 #!csharp
 
