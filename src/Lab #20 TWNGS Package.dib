@@ -1,0 +1,126 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+
+#!csharp
+
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
+using System.IO;
+using Hl7.Fhir.FhirPath;
+
+#!csharp
+
+string igName = "pas";
+string profilePath = "..\\..\\..\\Data\\IG\\" + igName;
+string profileName = "https://nhicore.nhi.gov.tw/" + igName + "/StructureDefinition";
+//string profilePath = "..\\..\\data\\profiles\\EMR";
+// string profileName = "https://twcore.mohw.gov.tw/ig-emr/twcore/StructureDefinition";
+
+#!csharp
+
+var tw_ig = profilePath + "\\package.tgz";
+
+Console.WriteLine($"Loading {tw_ig}...");
+FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_ig});
+//var names = resolver.ListResourceUris();
+var names = resolver.ListCanonicalUris();
+var profiles = new List<String>();
+var bundles = new List<String>();
+var applyModel = "";
+foreach (var n in names){
+    try{
+        if(n.StartsWith(profileName)){
+            //var profile = n.Split("/").Last();
+            if(n.Contains("Bundle")){
+                bundles.Add(n);
+            }
+            else if(n.Contains("ApplyModel")){
+                applyModel = n;
+            }
+            else{
+                profiles.Add(n);
+            }
+        }
+    }
+    catch (Exception e){
+        Console.WriteLine($"Error processing {n}: {e.Message}");
+    }
+}
+
+// print all profiles
+
+foreach (var n in profiles){
+    Console.WriteLine(n);
+}
+
+#!csharp
+
+foreach (var profile in profiles){
+    string profileName = profile.Split("/").Last();
+    StructureDefinition sd = await resolver.ResolveByUriAsync("StructureDefinition/" + profileName) as StructureDefinition;
+    List<ElementDefinition?> ed = sd.Differential.Element.Where(e =>  e.Slicing != null).ToList();
+
+    foreach (var e in ed){
+        Console.WriteLine($" {profile} - {e.Path} (Path: {e.Slicing?.Discriminator.FirstOrDefault()?.Path} , Type: {e.Slicing?.Discriminator.FirstOrDefault()?.Type} )  | {e.Slicing?.Rules}");
+    }
+}
+
+#!csharp
+
+string profileName = "DiagnosticReport-twngs";
+StructureDefinition sd = await resolver.ResolveByUriAsync("StructureDefinition/" + profileName) as StructureDefinition;
+sd.Differential.Element.ForEach(e => {
+   Console.WriteLine($"{e.Path}:{e.SliceName} |{e.ElementId} | {e.Min}..{e.Max} | {e.Type?.FirstOrDefault()?.Code} | {e.Binding?.Strength}");
+});
+
+sd
+// ElementDefinition? ed = sd.Differential.Element.LastOrDefault(e => e.Path == "Observation.component.code" && e.Pattern != null);
+// ed
+
+#!csharp
+
+profiles
+
+#!csharp
+
+string profileName = "DiagnosticReport-twngs";
+StructureDefinition sd = await resolver.ResolveByUriAsync("StructureDefinition/" + profileName) as StructureDefinition;
+sd.Differential.Element.ForEach(e => {
+   //Console.WriteLine($"{e.Path}:{e.SliceName} |{e.ElementId} | {e.Min}..{e.Max} | {e.Type?.FirstOrDefault()?.Code} | {e.Binding?.Strength}");
+});
+
+List<ElementDefinition?> ed = sd.Differential.Element.Where(e =>  e.Slicing != null).ToList();
+
+foreach (var e in ed){
+    Console.WriteLine($"{e.Path}:{e.SliceName} | {e.Slicing?.Discriminator.FirstOrDefault()?.Path} | {e.Slicing?.Rules}");
+}
+sd
+
+#!csharp
+
+string extensionUrl = "https://nhicore.nhi.gov.tw/ngs/StructureDefinition/extension-DiagnosticReport-condition";
+string extension = "StructureDefinition/extension-DiagnosticReport-condition";
+StructureDefinition? extSd = await resolver.ResolveByUriAsync(extension) as StructureDefinition;
+extSd
+
+#!csharp
+
+string examplePath = @"C:\Hongyu\Data\ig\ngs\package\example\Observation-obs-lung-min.json";
+string exampleContent = File.ReadAllText(examplePath);
+FhirJsonParser parser = new FhirJsonParser();
+Observation obs = parser.Parse<Observation>(exampleContent);
+List<Observation.ComponentComponent> components = obs.Select("component.where(code.coding.code='48018-6')").Cast<Observation.ComponentComponent>().ToList();
+
+foreach (Observation.ComponentComponent c in components){
+    Console.WriteLine((c.Value as CodeableConcept)?.Coding?.FirstOrDefault()?.Display);
+}

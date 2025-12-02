@@ -1,0 +1,94 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+
+#!csharp
+
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
+using System.IO;
+using Hl7.Fhir.FhirPath;
+
+#!csharp
+
+string fumeExpression = string.Empty;
+fumeExpression += "InstanceOf:Patient" + Environment.NewLine;
+fumeExpression += "* meta" + Environment.NewLine;
+fumeExpression += "  * profile = \"https://nhicore.nhi.gov.tw/ngs/StructureDefinition/Patient-twngs\"" + Environment.NewLine;
+fumeExpression += "* identifier = [Identifier]\"" + Environment.NewLine;
+fumeExpression += "  * use = \"official\"" + Environment.NewLine;
+fumeExpression += "  * type = [CodeableConcept]\"" + Environment.NewLine;
+fumeExpression += "    * coding = [Coding]\"" + Environment.NewLine;
+fumeExpression += "      * system = \"http://terminology.hl7.org/CodeSystem/v2-0203\"" + Environment.NewLine;
+fumeExpression += "      * code = \"NNxxx\"" + Environment.NewLine;
+fumeExpression += "  * system = \"http://www.moi.gov.tw\"" + Environment.NewLine;
+fumeExpression += "  * value = patientidCard" + Environment.NewLine;
+fumeExpression += "* identifier = [Identifier]\"" + Environment.NewLine;
+fumeExpression += "  * use = \"official\"" + Environment.NewLine;
+fumeExpression += "  * type = [CodeableConcept]\""+ Environment.NewLine;
+fumeExpression += "    * coding = [Coding]\"" + Environment.NewLine;
+fumeExpression += "      * system = \"http://terminology.hl7.org/CodeSystem/v2-0203\"" + Environment.NewLine;
+fumeExpression += "      * code = \"MR\"" + Environment.NewLine;
+fumeExpression += "  * system = hospurl" + Environment.NewLine;
+fumeExpression += "  * value = patientpatId" + Environment.NewLine;
+fumeExpression += "* name = [HumanName]" + Environment.NewLine;
+fumeExpression += "  * text = patientname" + Environment.NewLine;
+fumeExpression += "* gender = patientgender" + Environment.NewLine;
+fumeExpression += "* birthDate = patientbirthday" + Environment.NewLine;
+
+#!csharp
+
+// read FUME template from  D:\Hongyu\Project\data\IGAnalyzer\fume\template.json
+string fumeTemplate = File.ReadAllText(@"C:\Hongyu\Data\FUMETemplate.json");
+
+// Deserialize the JSON string to a FHIR resource
+var deserializer = new FhirJsonDeserializer();
+StructureMap map = deserializer.DeserializeResource(fumeTemplate) as StructureMap;
+
+map.Id = "FUME-Patient-TWNGS";
+//map.Id = map.Id.Replace("-", "");
+
+map.Url = "http://tmhtc.net/StructureMap/" + map.Id;
+map.Name = map.Id;
+map.Title = "FUME Template for " + map.Id;
+map.Description = "FUME Template for " + map.Id;
+map.Status = PublicationStatus.Active;
+map.Experimental = true;    
+
+map.Date = DateTimeOffset.Now.ToString("yyyy-MM-dd");
+map.Publisher = "TMH-TC";
+
+map.Identifier = new List<Identifier>
+{
+    new Identifier
+    {
+        System = "http://tmhtc.net/StructureMap",
+        Value = map.Id
+    }
+};
+
+var expression = new Expression();
+expression.Language = "application/vnd.outburn.fume";
+expression.Expression_ = fumeExpression;
+
+var meta = new Meta();
+meta.VersionId = "1.0";
+meta.LastUpdated = DateTimeOffset.Now;
+meta.Source = "http://tmhtc.net/StructureMap/" + map.Id;
+map.Meta = meta;
+
+// Add the expression to the StructureMap
+map.Group[0].Rule[0].Extension[0].Value = expression;
+// Serialize the StructureMap to JSON
+var json = map.ToJson();
+
+expression
