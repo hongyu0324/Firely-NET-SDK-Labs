@@ -1,6 +1,6 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"sql","languageName":"SQL"},{"name":"value"}]}}
 
 #!csharp
 
@@ -21,18 +21,18 @@ using System.IO;
 using Hl7.Fhir.Serialization;
 
 
-var path = @"D:\Hongyu\Project\data\synthea-data\fhir";
+var path = @"C:\Hongyu\Data\上課資料";
 var files = Directory.GetFiles(path, "*.json");
-var parser = new FhirJsonParser();
+var parser = new FhirJsonDeserializer();
 
 foreach (var file in files)
 {
     if (file.Contains("hospital") || file.Contains("practitioner")){
         try
         {
-            Bundle bundle = parser.Parse<Bundle>(File.ReadAllText(file));
+            Bundle bundle = parser.Deserialize<Bundle>(File.ReadAllText(file));
 
-            var response = client.Transaction(bundle);
+            var response = client.TransactionAsync(bundle).GetAwaiter().GetResult();
 
             Console.WriteLine($"Processed {file}");
         }
@@ -54,9 +54,9 @@ foreach (var file in files)
     }
     try
     {
-        Bundle bundle = parser.Parse<Bundle>(File.ReadAllText(file));
+        Bundle bundle = parser.Deserialize<Bundle>(File.ReadAllText(file));
 
-        var response = client.Transaction(bundle);
+        var response = client.TransactionAsync(bundle).GetAwaiter().GetResult();
 
         Console.WriteLine($"Processed {file}");
     }

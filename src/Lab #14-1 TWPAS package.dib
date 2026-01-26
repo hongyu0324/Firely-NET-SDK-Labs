@@ -4,9 +4,9 @@
 
 #!csharp
 
-#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.r4, 6.0.1"
 #r "nuget:hl7.fhir.specification.Data.r4"
-#r "nuget:Firely.Fhir.Packages"
+#r "nuget:Firely.Fhir.Packages, 5.0.0"
 
 #!csharp
 
@@ -20,107 +20,256 @@ using Hl7.Fhir.FhirPath;
 
 #!csharp
 
-string igName = "pas";
-string profilePath = "..\\..\\data\\profiles\\" + igName;
-string profileName = "https://twcore.mohw.gov.tw/ig/" + igName + "/StructureDefinition";
-//string profilePath = "..\\..\\data\\profiles\\EMR";
-//string profileName = "https://twcore.mohw.gov.tw/ig-emr/twcore/StructureDefinition";
+string igName = "empd";
+string profilePath = "..\\..\\..\\Data\\ig\\" + igName ;
+string canonical = "https://nhicore.nhi.gov.tw/empd/";
+//canonical = "https://twvacc.cdc.gov.tw/twempd" + "/";
+// canonical = "https://twcore.mohw.gov.tw/ig/" + igName + "/";
+string profileName = canonical + "/StructureDefinition";
 
 #!csharp
 
-var tw_ig = profilePath + "\\package.tgz";
+using Hl7.Fhir.Specification.Source;
+using Firely.Fhir.Packages;
 
-Console.WriteLine($"Loading {tw_ig}...");
-FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_ig});
-//var names = resolver.ListResourceUris();
-var names = resolver.ListCanonicalUris();
-var profiles = new List<String>();
-var bundles = new List<String>();
-var applyModel = "";
-foreach (var n in names){
-    try{
-        if(n.StartsWith(profileName)){
-            var profile = n.Split("/").Last();
-            if(profile.Contains("Bundle")){
-                bundles.Add(profile);
-            }
-            else if(profile.Contains("ApplyModel")){
-                applyModel = profile;
-            }
-            else{
-                profiles.Add(profile);
-            }
-        }
-    }
-    catch (Exception e){
-        Console.WriteLine($"Error processing {n}: {e.Message}");
-    }
+var dirSource = new DirectorySource(profilePath + "/package", new DirectorySourceSettings { IncludeSubDirectories = true});
+var resolver = new CachedResolver(dirSource);
 
+#!csharp
 
-}
-
-// print all profiles
-
-foreach (var n in profiles){
-    Console.WriteLine(n);
+// show profile list for the IG
+foreach (var pi in dirSource.ListResourceUris())
+{
+    if(pi.Contains("StructureDefinition") && !pi.Contains("OperationOutcome")) Console.WriteLine($"Profile: {pi}");
 }
 
 #!csharp
 
-string getProfileName(string name){
-    name = name.ToLower();
-    foreach (var n in profiles){
-        var p = n.Replace("-", "");
-        p = p.Replace("twpas", "");
-        p = "twpas" + p;
-        p = p.ToLower();
-        if( p == name){
-            return n;
+string profileName = "ep-model";
+StructureDefinition sd = await resolver.ResolveByUriAsync(canonical + "StructureDefinition/" + profileName) as StructureDefinition;
+
+
+foreach (var ed in sd.Differential.Element)
+{
+    Console.WriteLine($"{ed.Path} - {ed.Min}..{ed.Max}");
+    if(ed.Mapping != null)
+    {
+        foreach(var map in ed.Mapping)
+        {
+            //Console.WriteLine($"   Mapping: {map.Identity} - {map.Map}");
         }
     }
-    return name;
 }
+sd
 
 #!csharp
 
-StructureDefinition applyModelDef = await resolver.ResolveByUriAsync("StructureDefinition/" + applyModel) as StructureDefinition;
-List<Tuple<string, string,string,string>> qList = new List<Tuple<string, string,string,string>>();
+string bundleName = "bundle-upload-composition-vacc";
+StructureDefinition sd = await resolver.ResolveByUriAsync(canonical + "StructureDefinition/" + bundleName) as StructureDefinition;
 
-foreach (var e in applyModelDef.Differential.Element){
-    
-    var elementList = e.Path.Split('.').ToList();
-    if (elementList.Count > 1){
-        if(elementList.Count == 2){
-            //Console.WriteLine(("\n"));
-        }
-        //Console.WriteLine($" {e.Definition} {e.Path} {e.Type.FirstOrDefault()?.Code} {e.Min} {e.Max} {e.Slicing?.Discriminator?.FirstOrDefault()?.Path} {e.Slicing?.Discriminator?.FirstOrDefault()?.Type}");
-        var map = e.Mapping;
-        foreach (var m in map){
-            //Console.WriteLine($"{"  "} {m.Identity} {m.Map}");
-            // get profile name from profiles list 
-            if (e.Path.StartsWith("ApplyModel.gene") && elementList.Count > 2){
-                string q3 = m.Map;
-                // 移除q3中，最後一個()中的中文字
-                if (q3.Contains("(")){
-                    int start = q3.LastIndexOf("(");
-                    int end = q3.LastIndexOf(")");
-                    if (start > 0 && end > start){
-                        q3 = q3.Remove(start, end - start + 1);
+// Define the references list before using it
+var references = new List<string>();
+
+foreach(ElementDefinition ed in sd.Differential.Element)
+{
+    if (ed.Type != null)
+    {
+        foreach (var t in ed.Type)
+        {
+            if (t.Code == "Resource" && t.Profile != null)
+            {
+                foreach (var target in t.Profile)
+                {
+                    if (target != null)
+                    {
+                        references.Add(target);
                     }
                 }
-                var q = new Tuple<string, string,string,string>(e.Definition + " | " + e.Path.Replace("ApplyModel.gene.",""), getProfileName(m.Identity) ,  q3 , e.Type.FirstOrDefault()?.Code); 
-                qList.Add(q);
             }
-            
         }
     }
-}  
-
-// print out qList
-
-foreach (var q in qList){
-    Console.WriteLine($"{q.Item1} {q.Item2} {q.Item3} {q.Item4}");
 }
+
+foreach (var reference in references.Distinct())
+{
+    Console.WriteLine($"Reference Target Profile: {reference}");
+}   
+
+#!csharp
+
+string profileName = "VACCRequestModel";
+StructureDefinition sd = await resolver.ResolveByUriAsync(canonical + "StructureDefinition/" + profileName) as StructureDefinition;
+
+foreach (var ed in sd.Snapshot.Element)
+{
+    
+    //Console.WriteLine($"\nElement: {ed.Path} ");
+    if( ed.Mapping.Count >  0 )
+    {
+        string identity = ed.Mapping[0].Identity; 
+        // TWPASImmClaim --> Claim-immunologic-agent-twpas
+        string idRefined = string.Empty;
+        
+        if(identity.StartsWith("TWPASImm"))
+            idRefined  = identity.Replace("TWPASImm", "twpas");
+        else
+            idRefined  = identity.Replace("TWPAS", "twpas");
+        // 使用正規表示式將大寫字母前加上連字號，並轉為小寫，將TWPAS至於最後，並首字母大寫
+        
+        idRefined = System.Text.RegularExpressions.Regex.Replace(idRefined, "([a-z])([A-Z])", "$1-$2").ToLower();
+        List<string> parts = new List<string>(idRefined.Split('-'));
+        if (parts.Count > 1)
+        {
+            string firstPart= parts[0];
+            parts.RemoveAt(0);
+            parts.Add(firstPart);
+            idRefined = string.Join("-", parts);
+        }
+        idRefined = char.ToUpper(idRefined[0]) + idRefined.Substring(1);
+        if(identity.StartsWith("TWPASImmClaim")) 
+            idRefined = "Claim-immunologic-agent-twpas";
+        string profileName = idRefined;
+        string path = profileName.Split("-")[0] + "."+ ed.Mapping[0].Map.Split(" ")[0];
+        Console.WriteLine($"Path : {ed.Path} , Refined Path : {idRefined} , Mapping : {identity + " - " + ed.Mapping[0].Identity + " > " +ed.Mapping[0].Map} " );
+
+        // Claim-twpas.extension.where(url = 'https://nhicore.nhi.gov.tw/pas/StructureDefinition/extension-claim-encounter').valueReference.reference(EncounterTWPAS) (就醫科別)
+        // 取得 where 的內容
+        string whereClause = ed.Mapping[0].Map.Contains(".where(") ? ed.Mapping[0].Map.Substring(ed.Mapping[0].Map.IndexOf(".where(") + 7) : "";
+        whereClause = whereClause.Split(")")[0];
+        string slicingPath = string.Empty;
+        string slicingCriteria = string.Empty;
+        if( whereClause != "")
+        {
+            // 取得 slicingPath 與 slicingCriteria
+            slicingPath = whereClause.Split(" = ")[0];
+            slicingCriteria = whereClause.Split(" = ")[1].Trim('\'');
+            //Console.WriteLine($"{ed.Path} = {idRefined + " - " + ed.Mapping[0].Map } " );
+            List<string> types = new List<string>();
+            foreach(var t in ed.Type)
+            {
+                types.Add(t.Code);
+            }
+            // Console.WriteLine($"   --> Types: {string.Join(", ", types)} ");
+            // Console.WriteLine($" * Slicing Path: {slicingPath}, Criteria: {slicingCriteria}");
+        }
+ 
+        StructureDefinition mappedSd = await resolver.ResolveByUriAsync(canonical + "StructureDefinition/" + profileName) as StructureDefinition;
+        if (mappedSd != null)
+        {
+            if(whereClause != "" && slicingPath != "url")
+            {
+                // 找出 mappedSd 中符合 slicingCriteria 的 ElementDefinition
+                var slicedElements = mappedSd.Snapshot.Element
+                    .Where(e => e.Slicing != null && e.Slicing.Discriminator != null && e.Slicing.Discriminator.Any(d => d.Path == slicingPath)).ToList();
+                
+                if( slicedElements == null || slicedElements.Count == 0)
+                {
+                    slicingPath = slicingPath.Replace(".coding.code", "").Trim();
+                    slicedElements = mappedSd.Snapshot.Element
+                        .Where(e => e.Slicing != null && e.Slicing.Discriminator != null && e.Slicing.Discriminator.Any(d => d.Path == slicingPath)).ToList();
+                }
+
+                if (slicedElements != null && slicedElements.Count > 0)
+                {
+                    foreach (var se in slicedElements)
+                    {
+                        // Console.WriteLine($" ** Sliced Element: {se.Path} ");
+
+                        var elementList = mappedSd.Snapshot.Element
+                            .Where(e => e.Path == (se.Path +"." + slicingPath)).ToList();
+                        // string sliceName = null;
+                        foreach (var el in elementList)
+                        {
+                            if(el.Pattern?.ToString() == slicingCriteria) 
+                            {
+                               /// Console.WriteLine($"   --> Found matching sliced element : {el.ElementId} ");
+                            }
+                            // Check if Pattern is a Code or Coding and compare Code property
+                            if (el.Pattern is Code codePattern && codePattern.Value == slicingCriteria)
+                            {
+                                /// Console.WriteLine($"   --> Found matching sliced element : {el.ElementId} ");
+                            }
+                            else if (el.Pattern is CodeableConcept codingPattern && codingPattern.Coding.Any(c => c.Code == slicingCriteria))
+                            {
+                                /// Console.WriteLine($"   --> Found matching sliced element : {el.ElementId} ");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("  No sliced elements found.");
+                }
+                
+            }
+            var mappedElement = mappedSd.Differential.Element.FirstOrDefault(e => e.Path == path) as ElementDefinition;
+
+            if (mappedElement != null)
+            {
+                // Console.WriteLine($"  Mapped to: {mappedElement.Path} {mappedElement.Binding} ");
+            }
+        }   
+    }
+}
+
+#!csharp
+
+string profileName = "extension-claim-encounter";
+StructureDefinition sd = await resolver.ResolveByUriAsync(canonical + "StructureDefinition/" + profileName) as StructureDefinition;
+
+foreach (var elem in sd.Differential.Element)
+{
+    Console. WriteLine($"{elem.Path}/{elem.ElementId} - {elem.Type?.FirstOrDefault()?.Code} {elem.Min} {elem.Max} {elem.MustSupport} ");
+    if(elem.Pattern is Hl7.Fhir.Model.CodeableConcept)
+    {
+        var cc = elem.Pattern as Hl7.Fhir.Model.CodeableConcept;
+        foreach(var coding in cc.Coding)
+        {
+            Console.WriteLine($"   Coding: {coding.System} | {coding.Code} | {coding.Display}");
+        }
+    }
+}
+sd
+
+#!csharp
+
+string profileName = "Claim-twpas";
+StructureDefinition sd = await resolver.ResolveByUriAsync(canonical + "StructureDefinition/" + profileName) as StructureDefinition;
+
+foreach (var elem in sd.Differential.Element)
+{
+    Console. WriteLine($"{elem.Path} - {elem.Type?.FirstOrDefault()?.Code} {elem.Pattern} {elem.Fixed} {elem.Min} {elem.Max} {elem.MustSupport} {elem.Pattern}");
+    if(elem.Pattern is Hl7.Fhir.Model.CodeableConcept)
+    {
+        var cc = elem.Pattern as Hl7.Fhir.Model.CodeableConcept;
+        foreach(var coding in cc.Coding)
+        {
+            Console.WriteLine($"   Coding: {coding.System} | {coding.Code} | {coding.Display}");
+        }
+    }
+}
+
+var elementList = sd.Differential.Element
+    .Where(e => e.Path.StartsWith("Claim.insurance.sequence"))
+    .ToList();
+
+foreach( var info in elementList)
+{
+    if (info.Pattern is Hl7.Fhir.Model.Coding codingPattern)
+    {
+        Console.WriteLine($"{info.Path} - {info.Type?.FirstOrDefault()?.Code} {info.Fixed} {codingPattern.System} {codingPattern.Code}");
+    }
+    else if (info.Pattern is Hl7.Fhir.Model.CodeableConcept ccPattern && ccPattern.Coding != null && ccPattern.Coding.Count > 0)
+    {
+        var coding = ccPattern.Coding.First();
+        Console.WriteLine($"{info.Path} - {info.Type?.FirstOrDefault()?.Code} {info.Fixed} {coding.System} {coding.Code}");
+    }
+    else
+    {
+        Console.WriteLine($"{info.Path} - {info.Type?.FirstOrDefault()?.Code} {info.Fixed}");
+    }
+}
+elementList
 
 #!csharp
 

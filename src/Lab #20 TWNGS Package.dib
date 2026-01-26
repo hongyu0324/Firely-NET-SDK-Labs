@@ -20,6 +20,36 @@ using Hl7.Fhir.FhirPath;
 
 #!csharp
 
+string examplePath = @"C:\Hongyu\Data\ig\ngs\package\example\Patient-pat-min.json";
+string exampleContent = File.ReadAllText(examplePath);
+FhirJsonDeserializer deserializer = new FhirJsonDeserializer();
+Resource specimen = deserializer.Deserialize<Resource>(exampleContent);
+
+PocoNode poco = specimen.ToPocoNode();
+PocoNode pocoNode = poco as PocoNode;
+
+foreach(PocoNodeOrList item in poco.Children())
+{
+    Type type = item.GetType();
+    Console.WriteLine("Type: " + type.ToString());
+    var valueString = item is Hl7.Fhir.ElementModel.ITypedElement te && te.Value != null ? te.Value.ToString() : "";
+    if (item.Name == "identifier")
+    {
+        var idList = item as PocoNodeOrList;
+        foreach(var id in idList)
+        {
+            var idNode = id as PocoNode;
+            foreach(var idChild in idNode.Children())
+            {                var idValueString = idChild is Hl7.Fhir.ElementModel.ITypedElement idTe && idTe.Value != null ? idTe.Value.ToString() : "";
+                Console.WriteLine("   " + idChild.Name + " : " + idValueString);
+            }
+        }
+    }
+    Console.WriteLine(item.Name + " : " + valueString);
+}
+
+#!csharp
+
 string igName = "pas";
 string profilePath = "..\\..\\..\\Data\\IG\\" + igName;
 string profileName = "https://nhicore.nhi.gov.tw/" + igName + "/StructureDefinition";
@@ -28,19 +58,41 @@ string profileName = "https://nhicore.nhi.gov.tw/" + igName + "/StructureDefinit
 
 #!csharp
 
+using Hl7.Fhir.Specification.Source;
+
+var dirSource = new DirectorySource(profilePath + "/package", new DirectorySourceSettings { IncludeSubDirectories = true });
+var dirResolver = new CachedResolver(dirSource);
+
+#!csharp
+
 var tw_ig = profilePath + "\\package.tgz";
+
 
 Console.WriteLine($"Loading {tw_ig}...");
 FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_ig});
-//var names = resolver.ListResourceUris();
-var names = resolver.ListCanonicalUris();
+
+
+//resolver.ListCanonicalUris();
+
+// create pure file names List in profilePath Directory 
+var fileNames = Directory.GetFiles(profilePath, "*.json", SearchOption.AllDirectories);
+List<string> names = new List<string>();
+foreach (var n in fileNames){
+    string name = n.Replace(profilePath + "\\", "").Replace("\\", "/");
+    name = profileName + "/" + name.Replace("package/", "");
+    names.Add(name);
+}   
+
+#!csharp
+
 var profiles = new List<String>();
 var bundles = new List<String>();
 var applyModel = "";
 foreach (var n in names){
+    Console.WriteLine(n);
     try{
         if(n.StartsWith(profileName)){
-            //var profile = n.Split("/").Last();
+            var profile = n.Split("/").Last();
             if(n.Contains("Bundle")){
                 bundles.Add(n);
             }
@@ -56,45 +108,49 @@ foreach (var n in names){
         Console.WriteLine($"Error processing {n}: {e.Message}");
     }
 }
-
-// print all profiles
-
 foreach (var n in profiles){
     Console.WriteLine(n);
 }
 
 #!csharp
 
-foreach (var profile in profiles){
-    string profileName = profile.Split("/").Last();
-    StructureDefinition sd = await resolver.ResolveByUriAsync("StructureDefinition/" + profileName) as StructureDefinition;
-    List<ElementDefinition?> ed = sd.Differential.Element.Where(e =>  e.Slicing != null).ToList();
+// Test: Resolve a specific StructureDefinition by its canonical URL
+string testUrl = "https://nhicore.nhi.gov.tw/ngs/StructureDefinition/Observation-twngs";    
+StructureDefinition sd = await dirResolver.ResolveByUriAsync(testUrl) as StructureDefinition;
 
-    foreach (var e in ed){
-        Console.WriteLine($" {profile} - {e.Path} (Path: {e.Slicing?.Discriminator.FirstOrDefault()?.Path} , Type: {e.Slicing?.Discriminator.FirstOrDefault()?.Type} )  | {e.Slicing?.Rules}");
-    }
-}
+// List COmponents of the StructureDefinition
 
 #!csharp
 
-string profileName = "DiagnosticReport-twngs";
-StructureDefinition sd = await resolver.ResolveByUriAsync("StructureDefinition/" + profileName) as StructureDefinition;
+string profileName = "Composition-twngs";
+StructureDefinition sd = await dirResolver.ResolveByUriAsync("https://nhicore.nhi.gov.tw/ngs/StructureDefinition/" + profileName) as StructureDefinition;
 sd.Differential.Element.ForEach(e => {
-   Console.WriteLine($"{e.Path}:{e.SliceName} |{e.ElementId} | {e.Min}..{e.Max} | {e.Type?.FirstOrDefault()?.Code} | {e.Binding?.Strength}");
+   // Console.WriteLine($"{e.Path}:{e.SliceName} |{e.ElementId} | {e.Min}..{e.Max} | {e.Type?.FirstOrDefault()?.Code} | {e.Binding?.Strength}");
 });
 
-sd
-// ElementDefinition? ed = sd.Differential.Element.LastOrDefault(e => e.Path == "Observation.component.code" && e.Pattern != null);
-// ed
+List<string> references = new List<string>();
+sd.Differential.Element.ForEach(e => {
+    if(e.Type != null){
+        foreach(var t in e.Type){
+            if(t.Code == "Reference" && t.TargetProfile != null){
+                foreach(var tp in t.TargetProfile){
+                    references.Add(tp);
+                }
+            }
+        }
+    }
+});
 
-#!csharp
-
-profiles
+references = references.Distinct().ToList();
+Console.WriteLine($"References in {profileName}:");
+foreach(var r in references){
+   Console.WriteLine(r);
+}  
 
 #!csharp
 
 string profileName = "DiagnosticReport-twngs";
-StructureDefinition sd = await resolver.ResolveByUriAsync("StructureDefinition/" + profileName) as StructureDefinition;
+StructureDefinition sd = await dirResolver.ResolveByUriAsync(canonical + "StructureDefinition/" + profileName) as StructureDefinition;
 sd.Differential.Element.ForEach(e => {
    //Console.WriteLine($"{e.Path}:{e.SliceName} |{e.ElementId} | {e.Min}..{e.Max} | {e.Type?.FirstOrDefault()?.Code} | {e.Binding?.Strength}");
 });
@@ -104,23 +160,21 @@ List<ElementDefinition?> ed = sd.Differential.Element.Where(e =>  e.Slicing != n
 foreach (var e in ed){
     Console.WriteLine($"{e.Path}:{e.SliceName} | {e.Slicing?.Discriminator.FirstOrDefault()?.Path} | {e.Slicing?.Rules}");
 }
-sd
 
 #!csharp
 
-string extensionUrl = "https://nhicore.nhi.gov.tw/ngs/StructureDefinition/extension-DiagnosticReport-condition";
-string extension = "StructureDefinition/extension-DiagnosticReport-condition";
-StructureDefinition? extSd = await resolver.ResolveByUriAsync(extension) as StructureDefinition;
-extSd
+string valueSetPath = @"C:\Hongyu\Data\ig\ngs\package\ValueSet-hgnc-vs.json";
+
+string valueSet = valueSetPath.Split("\\").LastOrDefault().Replace(".json","").Replace("ValueSet-","");
+
+ValueSet vs = await dirResolver.ResolveByUriAsync(canonical + "ValueSet/" + valueSet) as ValueSet;
+
+List<string> composes = vs.Select("compose.include.system").Cast<FhirUri>().Select(p => p.Value?.ToString()).ToList();
 
 #!csharp
 
-string examplePath = @"C:\Hongyu\Data\ig\ngs\package\example\Observation-obs-lung-min.json";
-string exampleContent = File.ReadAllText(examplePath);
-FhirJsonParser parser = new FhirJsonParser();
-Observation obs = parser.Parse<Observation>(exampleContent);
-List<Observation.ComponentComponent> components = obs.Select("component.where(code.coding.code='48018-6')").Cast<Observation.ComponentComponent>().ToList();
+string bundlePath = @"C:\Hongyu\Data\ig\ngs\Bundle\chimei-03.json";
+string bundleContent = File.ReadAllText(bundlePath);
 
-foreach (Observation.ComponentComponent c in components){
-    Console.WriteLine((c.Value as CodeableConcept)?.Coding?.FirstOrDefault()?.Display);
-}
+FhirJsonDeserializer deserializer = new FhirJsonDeserializer();
+Bundle bundle = deserializer.Deserialize<Bundle>(bundleContent); 

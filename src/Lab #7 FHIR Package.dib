@@ -33,7 +33,7 @@ using System.IO;
 
 #!csharp
 
-var tw_core = "..\\..\\data\\profiles\\tw-core-ig\\v0.3.2\\package.tgz";
+var tw_core = @"C:\Hongyu\Data\ig\twcore\package.tgz";
 FhirPackageSource  resolver = new (ModelInfo.ModelInspector, new string[] { tw_core});
 //var names = resolver.ListResourceUris();
 var names = resolver.ListCanonicalUris();
@@ -68,15 +68,27 @@ Console.WriteLine(tw_pat.Description);
 #!csharp
 
 // 讀取一個Patient資源的檔案，例如patient.json
-var patientJson = File.ReadAllText("..\\..\\data\\fhir-example\\Patient-pat-example.json");
+var patientJson = File.ReadAllText(@"C:\Hongyu\Data\ig\twcore\package\example\Patient-pat-example.json");
 
-// 將Patient資源的檔案轉換為Patient資源的物件
-var patient = new FhirJsonParser().Parse<Patient>(patientJson);
+// 將Patient資源的檔案轉換為Patient資源的物件（使用新版 FhirJsonDeserializer）
+var deserializer = new FhirJsonDeserializer();
+var patient = deserializer.Deserialize<Patient>(patientJson);
 
 try {
     // 驗證Patient資源的物件是否符合結構定義
-    patient.Validate(recurse: true, narrativeValidation : NarrativeValidationKind.FhirXhtml);
+    var outcome = patient.Validate(narrativeValidation: NarrativeValidationKind.FhirXhtml);
+    if (outcome != null && outcome.Count > 0)
+    {
+        foreach (var ex in outcome)
+        {
+            Console.WriteLine($"{ex.Severity}: {ex.Message}");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Validation passed.");
+    }
 }
 catch (Exception ex) {
     Console.WriteLine(ex.Message);
-};
+}

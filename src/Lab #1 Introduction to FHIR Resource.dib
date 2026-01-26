@@ -40,11 +40,12 @@ var client = new FhirClient("http://localhost:8080/fhir");
 
 #!csharp
 
-var location_A = new Uri("http://localhost:8080/fhir/Patient/102");
+var location_A = new Uri("http://localhost:8080/fhir/Patient/714");
 var pat_A = new Patient();
 pat_A = await client.ReadAsync<Patient>(location:location_A);
 if (pat_A != null){
-    Console.WriteLine(pat_A.Name[0].Family + pat_A.Name[0].Given.First());
+    //Console.WriteLine(pat_A.Name[0].Family + pat_A.Name[0].Given.First());
+    Console.WriteLine(pat_A.Id);
 }
 
 #!markdown
@@ -59,8 +60,13 @@ Bundle patients = await client.SearchAsync<Patient>(q);
 Console.WriteLine("總計:" + patients.Entry.Count + "人");
 foreach (var p in patients.Entry){
     var r = (Patient)p.Resource;
-    Console.WriteLine(r.Id + " : " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
+    //Console.WriteLine(r.Id + " : " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
+    Console.WriteLine(r.Id + " " +r.Name[0].Text);
 } 
+
+#!csharp
+
+patients.Entry[0]
 
 #!markdown
 
@@ -74,7 +80,7 @@ Bundle patients = await client.SearchAsync<Patient>(q);
 Console.WriteLine("總計:" + patients.Entry.Count  + "人");
 foreach (var p in patients.Entry){
     var r = (Patient)p.Resource;
-    Console.WriteLine(r.BirthDate.ToString() +" " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
+    Console.WriteLine(r.Id + " " +r.Name[0].Text);
 } 
 
 #!markdown
@@ -91,6 +97,10 @@ id.System = "http://hl7.org/fhir/sid/us-ssn";
 id.Value = "000-12-3456";
 pat.Identifier.Add(id);
 
+var id1 = new Identifier();
+id1.System = "http://www.moi.gov.tw";
+id1.Value = "A123456789";
+pat.Identifier.Add(id1);
 
 var name =  new HumanName().WithGiven("大名").AndFamily("王");
 name.Prefix = new string[] { "Mr." };
@@ -150,11 +160,11 @@ pat.Deceased = new FhirBoolean(false);
 
 using Hl7.Fhir.Serialization;
 
-FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
-{
-    Pretty = true,
-});
-string pat_Json = serializer.SerializeToString(pat);
+// Serialize to JSON using the FHIR JSON serializer with pretty print
+
+
+var fhirJsonSerializer = new FhirJsonSerializer();
+var pat_Json = fhirJsonSerializer.SerializeToString(pat, pretty: true);
 Console.WriteLine(pat_Json);
 
 #!csharp

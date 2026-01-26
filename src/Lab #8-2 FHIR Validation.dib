@@ -1,6 +1,6 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"sql","languageName":"SQL"},{"name":"value"}]}}
 
 #!csharp
 
@@ -28,10 +28,10 @@ using System.IO;
 
 var packageSource = FhirPackageSource.CreateCorePackageSource(ModelInfo.ModelInspector, FhirRelease.R4, "https://packages.simplifier.net");
 IAsyncResourceResolver  _coreSource = new CachedResolver(packageSource);
-var directorySource1 = new CachedResolver(new DirectorySource("D:\\Hongyu\\Project\\data\\profiles\\tw-core-ig\\v0.3.2\\package",
+var directorySource1 = new CachedResolver(new DirectorySource("C:\\Hongyu\\Data\\ig\\twcore\\package",
                             new DirectorySourceSettings { IncludeSubDirectories = true }));
                             
-var directorySource2 = new CachedResolver(new DirectorySource("D:\\Hongyu\\Project\\data\\profiles\\EMR\\package",
+var directorySource2 = new CachedResolver(new DirectorySource("C:\\Hongyu\\Data\\ig\\ngs\\package",
                             new DirectorySourceSettings { IncludeSubDirectories = true }));
 
 var profileSource = new MultiResolver(directorySource1,directorySource2, _coreSource);
@@ -43,9 +43,9 @@ var validator = new Validator(profileSource, terminologySource);
 #!csharp
 
 // read patient resource from file
-var patientJson = File.ReadAllText("D:\\Hongyu\\Project\\data\\fhir-example\\Patient-pat-example.json");
+var patientJson = File.ReadAllText(@"C:\Hongyu\Data\ig\ngs\package\example\Patient-pat-min.json");
 
-var patient = new FhirJsonParser().Parse<Resource>(patientJson) as Patient;
+var patient = new FhirJsonDeserializer().Deserialize<Resource>(patientJson) as Patient;
 
 #!csharp
 
@@ -79,9 +79,9 @@ foreach (var issue in result.Issue)
 #!csharp
 
 // read a bundle object from a file
-var esBuldle = File.ReadAllText("D:\\Hongyu\\Project\\data\\fhir-example\\ep\\處方箋1130509.txt");
+var esBuldle = File.ReadAllText(@"C:\Hongyu\Data\ig\ngs\package\example\Bundle-bun-lung-min.json");
 
-var bundle = new FhirJsonParser().Parse<Bundle>(esBuldle);
+var bundle = new FhirJsonDeserializer().Deserialize<Bundle>(esBuldle);
 
 var result = validator!.Validate(bundle);
 

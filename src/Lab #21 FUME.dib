@@ -4,8 +4,8 @@
 
 #!csharp
 
-#r "nuget:hl7.fhir.r4"
-#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:hl7.fhir.r4,5.13.0"
+#r "nuget:hl7.fhir.specification.Data.r4,5.13.0"
 #r "nuget:Firely.Fhir.Packages"
 
 #!csharp
@@ -89,6 +89,7 @@ map.Meta = meta;
 // Add the expression to the StructureMap
 map.Group[0].Rule[0].Extension[0].Value = expression;
 // Serialize the StructureMap to JSON
-var json = map.ToJson();
+var json = new FhirJsonSerializer().SerializeToString(map);
 
-expression
+string fumeJsonMap = json;
+json
