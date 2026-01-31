@@ -40,13 +40,17 @@ var client = new FhirClient("http://localhost:8080/fhir");
 
 #!csharp
 
-var location_A = new Uri("http://localhost:8080/fhir/Patient/714");
+var location_A = new Uri("http://localhost:8080/fhir/Patient/patient-00ad3ff6a648");
 var pat_A = new Patient();
 pat_A = await client.ReadAsync<Patient>(location:location_A);
 if (pat_A != null){
-    //Console.WriteLine(pat_A.Name[0].Family + pat_A.Name[0].Given.First());
+    Console.WriteLine(pat_A.Name[0].Family + pat_A.Name[0].Given.First());
     Console.WriteLine(pat_A.Id);
 }
+
+#!csharp
+
+pat_A
 
 #!markdown
 
@@ -60,7 +64,7 @@ Bundle patients = await client.SearchAsync<Patient>(q);
 Console.WriteLine("總計:" + patients.Entry.Count + "人");
 foreach (var p in patients.Entry){
     var r = (Patient)p.Resource;
-    //Console.WriteLine(r.Id + " : " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
+    Console.WriteLine(r.Id + " : " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
     Console.WriteLine(r.Id + " " +r.Name[0].Text);
 } 
 

@@ -1,0 +1,73 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+
+#!csharp
+
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
+using System.IO;
+using Hl7.Fhir.FhirPath;
+
+#!csharp
+
+string igName = "ci";
+string profilePath = @"C:\Hongyu\Data\ig\" + igName ;
+string canonical = "https://nhicore.nhi.gov.tw/ci/";
+//canonical = "https://twvacc.cdc.gov.tw/twvacc" + "/";
+// canonical = "https://twcore.mohw.gov.tw/ig/" + igName + "/";
+string profileName = canonical + "/StructureDefinition";
+
+#!csharp
+
+using Hl7.Fhir.Specification.Source;
+using Firely.Fhir.Packages;
+
+// DirectorySource for folder-based packages
+var dirSource = new DirectorySource(profilePath + "/package", new DirectorySourceSettings { IncludeSubDirectories = true });
+string package1 = @"C:\Hongyu\Data\ig\ci\package.tgz";
+
+FhirPackageSource resolver = new(ModelInfo.ModelInspector, new string[] { package1});
+
+#!csharp
+
+// If you want to combine multiple resolvers, use MultiResolver. 
+// For example, if you had another resolver called 'otherResolver':
+// resolver = new MultiResolver(resolver, otherResolver);
+
+// Otherwise, you can just continue using the existing 'resolver' as defined above.
+
+#!csharp
+
+// show profile list for the IG
+foreach (var pi in dirSource.ListResourceUris())
+{
+    if(pi.Contains("StructureDefinition") && !pi.Contains("OperationOutcome")) Console.WriteLine($"Profile: {pi}");
+}
+
+#!csharp
+
+string profileName = "Patient-twci";
+StructureDefinition sd = await resolver.ResolveByCanonicalUriAsync(canonical + "StructureDefinition/" + profileName) as StructureDefinition;
+
+
+foreach (var ed in sd.Differential.Element)
+{
+    Console.WriteLine($"{ed.Path} - {ed.Min}..{ed.Max}");
+    if(ed.Mapping != null)
+    {
+        foreach(var map in ed.Mapping)
+        {
+            Console.WriteLine($"   Mapping: {map.Identity} - {map.Map}");
+        }
+    }
+}

@@ -49,6 +49,10 @@ var patient = new FhirJsonDeserializer().Deserialize<Resource>(patientJson) as P
 
 #!csharp
 
+patient.Gender = null; // make it invalid by removing required element
+
+#!csharp
+
 var result = validator.Validate(patient);
 foreach (var issue in result.Issue)
 {
@@ -69,7 +73,7 @@ foreach (var profile in patient.Meta.Profile)
 
 #!csharp
 
-var profile = "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore";
+var profile = "https://nhicore.nhi.gov.tw/ngs/StructureDefinition/Patient-twngs";
 result = validator.Validate(patient, profile);
 foreach (var issue in result.Issue)
 {

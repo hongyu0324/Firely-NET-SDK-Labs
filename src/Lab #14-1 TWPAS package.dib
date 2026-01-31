@@ -4,9 +4,9 @@
 
 #!csharp
 
-#r "nuget:hl7.fhir.r4, 6.0.1"
+#r "nuget:hl7.fhir.r4"
 #r "nuget:hl7.fhir.specification.Data.r4"
-#r "nuget:Firely.Fhir.Packages, 5.0.0"
+#r "nuget:Firely.Fhir.Packages"
 
 #!csharp
 
@@ -20,10 +20,10 @@ using Hl7.Fhir.FhirPath;
 
 #!csharp
 
-string igName = "empd";
-string profilePath = "..\\..\\..\\Data\\ig\\" + igName ;
-string canonical = "https://nhicore.nhi.gov.tw/empd/";
-//canonical = "https://twvacc.cdc.gov.tw/twempd" + "/";
+string igName = "pas";
+string profilePath = @"C:\Hongyu\Data\ig\" + igName ;
+string canonical = "https://nhicore.nhi.gov.tw/pas/";
+//canonical = "https://twvacc.cdc.gov.tw/twvacc" + "/";
 // canonical = "https://twcore.mohw.gov.tw/ig/" + igName + "/";
 string profileName = canonical + "/StructureDefinition";
 
@@ -45,7 +45,7 @@ foreach (var pi in dirSource.ListResourceUris())
 
 #!csharp
 
-string profileName = "ep-model";
+string profileName = "Patient-twpas";
 StructureDefinition sd = await resolver.ResolveByUriAsync(canonical + "StructureDefinition/" + profileName) as StructureDefinition;
 
 
@@ -56,10 +56,13 @@ foreach (var ed in sd.Differential.Element)
     {
         foreach(var map in ed.Mapping)
         {
-            //Console.WriteLine($"   Mapping: {map.Identity} - {map.Map}");
+            Console.WriteLine($"   Mapping: {map.Identity} - {map.Map}");
         }
     }
 }
+
+#!csharp
+
 sd
 
 #!csharp

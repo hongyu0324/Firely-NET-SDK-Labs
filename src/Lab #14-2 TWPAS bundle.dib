@@ -20,8 +20,8 @@ using Hl7.Fhir.FhirPath;
 
 #!csharp
 
-string profilePath = "..\\..\\data\\profiles\\PAS\\V1.0.1";
-string profileName = "https://twcore.mohw.gov.tw/ig/pas/StructureDefinition";
+string profilePath = @"C:\Hongyu\Data\ig\pas2";
+string profileName = "https://nhicore.nhi.gov.tw/pas/StructureDefinition/";
 //string profilePath = "..\\..\\data\\profiles\\EMR";
 //string profileName = "https://twcore.mohw.gov.tw/ig-emr/twcore/StructureDefinition";
 
