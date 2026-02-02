@@ -40,6 +40,10 @@ FhirPackageSource resolver = new(ModelInfo.ModelInspector, new string[] { packag
 
 #!csharp
 
+CachedResolver cachedResolver =  new CachedResolver(dirSource);
+
+#!csharp
+
 // If you want to combine multiple resolvers, use MultiResolver. 
 // For example, if you had another resolver called 'otherResolver':
 // resolver = new MultiResolver(resolver, otherResolver);
@@ -71,3 +75,120 @@ foreach (var ed in sd.Differential.Element)
         }
     }
 }
+
+#!csharp
+
+// List example resources from profileName + "/package/example"
+var exampleSource = new DirectorySource(profilePath + "/package/example", new DirectorySourceSettings { IncludeSubDirectories = true });
+foreach (var uri in exampleSource.ListResourceUris())
+{
+    Console.WriteLine($"Example Resource: {uri}");
+}
+
+#!csharp
+
+// load file from example folder
+var exampleFilePath = Path.Combine(profilePath, "package", "example", "QuestionnaireResponse-queRes-min.json");
+var jsonContent = File.ReadAllText(exampleFilePath);
+var deserializer = new FhirJsonDeserializer();
+var queRes = deserializer.Deserialize<QuestionnaireResponse>(jsonContent);
+Console.WriteLine($"QuestionnaireResponse: {queRes.Id} - {queRes.Status}");
+
+#!csharp
+
+string exampleFilePath = Path.Combine(profilePath, "package", "example");
+foreach (var file in Directory.GetFiles(exampleFilePath))
+{
+    Console.WriteLine($"Example File: {file}");
+    var jsonContent = File.ReadAllText(file);
+    var deserializer = new FhirJsonDeserializer();
+    var resource = deserializer.Deserialize<Resource>(jsonContent);
+    Console.WriteLine($"QuestionnaireResponse: {resource.Id} ");
+}
+
+#!csharp
+
+Dictionary<string,Object> exampleResources = new Dictionary<string,Object>();
+
+#!csharp
+
+void PrintSubItem(QuestionnaireResponse.ItemComponent item, string indent)
+{
+    Console.WriteLine($"{indent}Item: {item.LinkId} - {item.Text}");
+    if (item.Answer != null)
+    {
+        int answerCount = item.Answer.Count;
+        if(answerCount != 0)
+        {
+            //int answerIndex = 0;
+            List<string> answers = new List<string>();
+            foreach (var answer in item.Answer)
+            {
+                if (answer.Value != null)
+                {
+                    if(answer.Value is Hl7.Fhir.Model.FhirString fs)
+                    {
+                        Console.WriteLine($"{indent}  Answer: {fs.Value}");
+                        answers.Add(fs.Value);  
+                    }
+                    else if(answer.Value is Hl7.Fhir.Model.Coding coding)
+                    {
+                        Console.WriteLine($"{indent}  Answer: {coding.Code} - {coding.Display}");
+                        answers.Add(coding.Code);
+                    }
+                    else if(answer.Value is Hl7.Fhir.Model.ResourceReference reference)
+                    {
+                        Console.WriteLine($"{indent}  Answer: {reference.Reference}");
+                        answers.Add(reference.Reference);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{indent}  Answer: {answer.Value.ToString()}");
+                        answers.Add(answer.Value.ToString());
+                    }
+                    
+                }
+                // answerIndex++;
+            }
+            if(answers.Count > 1)
+                exampleResources[$"{item.LinkId}"] = answers;   
+            else if(answers.Count == 1)
+                exampleResources[$"{item.LinkId}"] = answers[0];   
+        }
+    }
+        
+    if (item.Item != null)
+    {
+        foreach (var subItem in item.Item)
+        {
+            PrintSubItem(subItem, indent + "  ");
+        }
+    }
+}
+
+#!csharp
+
+// Load a sample QuestionnaireResponse resource from the example folder
+using Newtonsoft.Json.Linq;
+
+string fileName = "QuestionnaireResponse-queRes-noillness";
+//
+string file = Path.Combine(profilePath, "package", "example", fileName + ".json");
+var jsonContent = File.ReadAllText(file);
+var deserializer = new FhirJsonDeserializer();
+var queRes = deserializer.Deserialize<QuestionnaireResponse>(jsonContent);
+Console.WriteLine($"QuestionnaireResponse: {queRes.Id} - {queRes.Status}");
+
+// navigate to the resource
+foreach(var item in queRes.Item)
+{
+    Console.WriteLine($"Item: {item.LinkId} - {item.Text}");
+    PrintSubItem(item, "  ");
+}
+
+JObject jsonObj = JObject.FromObject(exampleResources);
+string jsonString = jsonObj.ToString();
+Console.WriteLine(jsonString);
+
+string fileStaging = Path.Combine(profilePath, "staging", fileName + "-staging.json");
+File.WriteAllText(fileStaging, jsonString);
