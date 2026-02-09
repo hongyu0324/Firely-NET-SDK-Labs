@@ -1,0 +1,293 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+#r "nuget:Hl7.Cql.Packaging"
+#r "nuget:Hl7.Cql.Fhir"
+#r "nuget:Hl7.Cql.Iso8601"
+
+#!csharp
+
+using Hl7.Cql.Fhir;
+using Hl7.Cql.Packaging;
+using Hl7.Cql.Primitives;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
+using System.IO;
+using Hl7.Fhir.FhirPath;
+
+using Hl7.Cql;
+using Hl7.Cql.Runtime;
+
+using Hl7.Cql.Abstractions;
+
+// include JObject and JArray
+using Newtonsoft.Json.Linq;
+
+#!csharp
+
+// read all bundle file from C:\Hongyu\Data\cql 
+var bundleFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\cql", "*.json");
+
+foreach(var bundle in bundleFiles)
+{
+    // read each bundle file
+    Console.WriteLine($"Reading bundle file: {bundle}");
+    var bundleContent = System.IO.File.ReadAllText(bundle);
+    
+    // parse the bundle content as JSON
+    //var fhirDeserializer = new FhirJsonDeserializer();
+    //var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
+    //Console.WriteLine($"Bundle {bundle} has {fhirBundle.Entry.Count} entries.");
+}
+
+#!csharp
+
+var libraryFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\cql\pas", "*.json");
+foreach(var library in libraryFiles)
+{
+    // read each library file
+    Console.WriteLine($"Reading library file: {library}");
+    var libraryContent = System.IO.File.ReadAllText(library);
+    
+    // parse the library content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirLibrary = fhirDeserializer.Deserialize<Library>(libraryContent);
+    fhirLibrary.Url = "https://nhicore.nhi.gov.tw/cql/Library/" + fhirLibrary.Name;
+    Console.WriteLine($"Library {library} has {fhirLibrary.Url}");
+    //FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    //var result = await client.UpdateAsync<Library>(fhirLibrary);
+    //Console.WriteLine($"Uploaded Library {library} with ID: {result.Id}");
+}
+
+#!csharp
+
+string fileName = @"C:\Hongyu\Data\cql\pas\Library-CRCBevacizumabRule1.json";
+var fileContent = System.IO.File.ReadAllText(fileName);
+var fhirDeserializer2 = new FhirJsonDeserializer();
+var fhirLibrary2 = fhirDeserializer2.Deserialize<Library>(fileContent);
+
+string cqlContent = fhirLibrary2.Content.FirstOrDefault(c => c.ContentType == "text/cql") != null 
+    ? System.Text.Encoding.UTF8.GetString(fhirLibrary2.Content.First(c => c.ContentType == "text/cql").Data) 
+    : "No CQL content found";
+
+foreach(var content in fhirLibrary2.Content)
+{
+    Console.WriteLine($"Content type: {content.ContentType}, size: {content.Data.Length} bytes");
+    switch(content.ContentType)
+    {
+        case "text/cql":
+            var cqlContent = System.Text.Encoding.UTF8.GetString(content.Data);
+            Console.WriteLine($"CQL content:\n{cqlContent}");
+            break;
+        case "application/elm+json":
+            var elmJsonContent = System.Text.Encoding.UTF8.GetString(content.Data);
+            Console.WriteLine($"ELM JSON content:\n{elmJsonContent}");
+            break;
+        default:
+            Console.WriteLine($"Unknown content type: {content.ContentType}");
+            break;
+    }
+}
+
+#!csharp
+
+// read Library resource from FHIR Server
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+var libraryFromServer = await client.ReadAsync<Library>("Library/CRCBevacizumabRule1");
+Console.WriteLine($"Library from server: {libraryFromServer.Name}, URL: {libraryFromServer.Url}");
+
+// read all PlanDefinition resource from FHIR Server
+var planDefinitions = await client.SearchAsync<PlanDefinition>();
+foreach(var entry in planDefinitions.Entry)
+{
+    var planDefinition = (PlanDefinition)entry.Resource;
+    Console.WriteLine($"PlanDefinition: {planDefinition.Id}, URL: {planDefinition.Url}");
+}
+Console.WriteLine($"Found {planDefinitions.Entry.Count} PlanDefinition resources on the server.");
+
+#!csharp
+
+PlanDefinition pd = new PlanDefinition
+{
+    Id = "CRCBevacizumabRule1-plan-definition",
+    Url = "https://build.fhir.org/ig/TWNHIFHIR/PlanDefinition/CRCBevacizumabRule1",
+    Version = "0.0.1",
+    Name = "CRCBevacizumabRule1PlanDefinition",
+    Title = "大腸直腸癌_Bevacizumab給付規定(轉移性大腸或直腸癌患者的第一線治療)",
+    Status = PublicationStatus.Active,
+    Publisher = "NHICore Team",
+    Date = DateTime.Now.ToString("yyyy-MM-dd"),
+    Description = "針對轉移性大腸或直腸癌患者第一線治療使用 Bevacizumab 之健保給付預檢規則（Rule 1）。",
+    Type = new CodeableConcept
+    {
+        Coding = new List<Coding>
+        {
+            new Coding
+            {
+                System = "http://terminology.hl7.org/CodeSystem/plan-definition-type",
+                Code = "eca-rule",
+                Display = "ECA Rule"
+            }
+        },
+        Text = "ECA Rule"
+    },
+    
+    Library = new List<string>
+    {
+        "https://build.fhir.org/ig/TWNHIFHIR/Library/CRCBevacizumabRule1"
+    }  
+};
+
+pd.Action = new List<PlanDefinition.ActionComponent>
+{
+    new PlanDefinition.ActionComponent
+    {
+        Title = "Bevacizumab給付規定檢核",
+        Description = "檢核轉移性大腸或直腸癌患者第一線治療使用 Bevacizumab 之健保給付規定。",
+        Code = new List<CodeableConcept>
+        {
+            new CodeableConcept
+            {
+                Coding = new List<Coding>
+                {
+                    new Coding
+                    {
+                        System = "http://example.org/CodeSystem/action-type",
+                        Code = "fire-event",
+                        Display = "Fire Event"
+                    }
+                },
+                Text = "Fire Event"
+            }
+        },
+        Type = new CodeableConcept
+        {
+            Coding = new List<Coding>
+            {
+                new Coding
+                {
+                    System = "http://terminology.hl7.org/CodeSystem/plan-action-kind",
+                    Code = "applicability",
+                    Display = "Applicability"
+                }
+            },
+            Text = "Applicability"
+        },  
+        Condition = new List<PlanDefinition.ConditionComponent>
+        {
+            new PlanDefinition.ConditionComponent
+            {
+                Kind = ActionConditionKind.Applicability,
+                Expression = new Expression
+                {
+                    Language = "text/cql",
+                    Expression_ = cqlContent
+                }
+            }
+        }
+    }
+};
+
+pd.UseContext = new List<UsageContext>
+{
+    new UsageContext
+    {
+        Code = new Coding
+        {
+            System = "http://terminology.hl7.org/CodeSystem/usage-context-type",
+            Code = "focus",
+            Display = "Focus"
+        },
+        Value = new CodeableConcept
+        {
+            Coding = new List<Coding>
+            {
+                new Coding
+                {
+                    System = "http://snomed.info/sct",
+                    Code = "363406005",
+                    Display = "Metastatic colorectal cancer (disorder)"
+                }
+            },
+            Text = "大腸直腸癌"
+        }
+    }
+};
+
+#!csharp
+
+// upload the PlanDefinition to FHIR server
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+var result = await client.UpdateAsync<PlanDefinition>(pd);
+Console.WriteLine($"Uploaded PlanDefinition with ID: {result.Id}");
+
+#!csharp
+
+// read plan definition from FHIR server
+var retrievedPlanDefinition = await client.ReadAsync<PlanDefinition>("PlanDefinition/CRCBevacizumabRule1-plan-definition");
+Console.WriteLine($"Retrieved PlanDefinition: {retrievedPlanDefinition.Name}, URL: {retrievedPlanDefinition.Url}"); 
+
+#!csharp
+
+// read patient from FHIR server
+var retrievedPatient = await client.ReadAsync<Patient>("Patient/714");
+
+//pring patient name
+var patientName = retrievedPatient.Name.FirstOrDefault()?.ToString() ?? "Unknown";
+Console.WriteLine($"Retrieved Patient Name: {patientName}");
+
+#!csharp
+
+// using POST to apply the PlanDefinition
+var applyParameters = new Parameters
+{
+    Parameter = new List<Parameters.ParameterComponent>
+    {
+        new Parameters.ParameterComponent
+        {
+            Name = "subject",
+            Value = new FhirString("Patient/714")
+        }
+    }
+};
+
+var applyResult = await client.OperationAsync(
+    new Uri("http://localhost:8080/fhir/PlanDefinition/CRCBevacizumabRule1-plan-definition/$apply"),
+    applyParameters);
+
+// Serialize the apply result to JSON and print it
+var fhirJsonSerializer = new FhirJsonSerializer();
+var applyResultJson = fhirJsonSerializer.SerializeToString(applyResult,pretty: true);
+
+// 顯示正確中文字 \u7533\u8ACB\u5BE9\u6838\u5831\u544A
+JObject applyResultObj = JObject.Parse(applyResultJson);
+applyResultJson = applyResultObj.ToString(Newtonsoft.Json.Formatting.Indented);
+
+Console.WriteLine($"Apply PlanDefinition result:\n{applyResultJson}");  
+
+#!csharp
+
+var patientBundles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle", "*.json");
+
+foreach(var bundle in patientBundles)
+{
+    // read each bundle file
+    Console.WriteLine($"Reading patient bundle file: {bundle}");
+    var bundleContent = System.IO.File.ReadAllText(bundle);
+    
+    // parse the bundle content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
+    Console.WriteLine($"Patient Bundle {bundle} has {fhirBundle.Entry.Count} entries.");
+}

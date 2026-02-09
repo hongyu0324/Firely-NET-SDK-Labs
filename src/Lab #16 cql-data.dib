@@ -1,0 +1,159 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+#r "nuget:Hl7.Cql.Packaging"
+#r "nuget:Hl7.Cql.Fhir"
+#r "nuget:Hl7.Cql.Iso8601"
+
+#!csharp
+
+using Hl7.Cql.Fhir;
+using Hl7.Cql.Packaging;
+using Hl7.Cql.Primitives;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
+using System.IO;
+using Hl7.Fhir.FhirPath;
+
+using Hl7.Cql;
+using Hl7.Cql.Runtime;
+
+using Hl7.Cql.Abstractions;
+
+// include JObject and JArray
+using Newtonsoft.Json.Linq;
+
+#!csharp
+
+/// <summary>
+/// This code reads CQL library files in JSON format from a specified directory, deserializes them into FHIR Library resources, and prints their URLs.
+/// </summary>
+
+var libraryFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\cql\pas", "*.json");
+foreach(var library in libraryFiles)
+{
+    // read each library file
+    Console.WriteLine($"Reading library file: {library}");
+    var libraryContent = System.IO.File.ReadAllText(library);
+    
+    // parse the library content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirLibrary = fhirDeserializer.Deserialize<Library>(libraryContent);
+    fhirLibrary.Url = "https://nhicore.nhi.gov.tw/cql/Library/" + fhirLibrary.Name;
+    Console.WriteLine($"Library {library} has {fhirLibrary.Url}");
+    //FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    //var result = await client.UpdateAsync<Library>(fhirLibrary);
+    //Console.WriteLine($"Uploaded Library {library} with ID: {result.Id}");
+}
+
+#!csharp
+
+var patientBundles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle", "*.json");
+
+foreach(var bundle in patientBundles)
+{
+    // read each bundle file
+    Console.WriteLine($"Reading patient bundle file: {bundle}");
+    var bundleContent = System.IO.File.ReadAllText(bundle);
+    
+    // parse the bundle content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
+    Console.WriteLine($"Patient Bundle {bundle} has {fhirBundle.Entry.Count} entries.");
+}
+
+#!csharp
+
+string GetReferenceFromNode(PocoNodeOrList node)
+{
+    if(node == null) return null;
+    if(node is PocoListNode pocoListNode)
+    {
+        foreach(var child in pocoListNode.Children())
+        {
+            var reference = GetReferenceFromNode(child);
+            if(reference != null) return reference;
+        }
+    }
+    else if(node is PocoNode pocoNode)
+    {
+        var typedElement = pocoNode.ToTypedElement();
+        if(typedElement.InstanceType == "Reference")
+        {
+            // get the reference value from the typedElement
+            var childReference = typedElement.Children("reference").FirstOrDefault()?.Value?.ToString();
+            return childReference;
+        }      
+    }      
+    return null;
+}
+
+#!csharp
+
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Model;
+using System.Linq;
+
+string bundleFile = @"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle\1124521_bundle.json";
+
+// read the bundle file
+// Console.WriteLine($"Reading patient bundle file: {bundleFile}");
+var bundleContent = System.IO.File.ReadAllText(bundleFile);
+// parse the bundle content as JSON
+var fhirDeserializer = new FhirJsonDeserializer();
+var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
+Console.WriteLine($"Patient Bundle {bundleFile} has {fhirBundle.Entry.Count} entries.");
+
+List<Resource> resources = new List<Resource>();
+
+foreach(var profile in fhirBundle.Entry)
+{
+    //Console.WriteLine($"Processing entry with fullUrl: {profile.FullUrl}");
+    if(profile.Resource is Resource resource)
+    {
+        resources.Add(resource);
+        Console.WriteLine($"Resource type: {resource.TypeName}, ID: {resource.Id}");
+
+        var pocoReferences = resource.ToPocoNode();
+        foreach(var child in pocoReferences.Children())
+        {
+           if(child is PocoNode pocoNode)
+           {
+                string reference = GetReferenceFromNode(pocoNode);
+                if(reference != null)
+                {
+                    Console.WriteLine($"Found reference: {reference}");
+                }
+           }
+           else
+           {
+               var pocoNodeOrList = child as PocoNodeOrList;
+                if(pocoNodeOrList != null)
+                {
+                    foreach(var item in pocoNodeOrList)
+                    {
+                        if(item is PocoNode itemPocoNode)
+                        {
+                            string reference = GetReferenceFromNode(itemPocoNode);
+                            if(reference != null)
+                            {
+                                Console.WriteLine($"Found reference: {reference}");
+                            }
+                        }
+                    }
+                }
+           }
+        }
+    }
+}
