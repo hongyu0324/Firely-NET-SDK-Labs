@@ -46,9 +46,9 @@ foreach(var bundle in bundleFiles)
     var bundleContent = System.IO.File.ReadAllText(bundle);
     
     // parse the bundle content as JSON
-    //var fhirDeserializer = new FhirJsonDeserializer();
-    //var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
-    //Console.WriteLine($"Bundle {bundle} has {fhirBundle.Entry.Count} entries.");
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
+    Console.WriteLine($"Bundle {bundle} has {fhirBundle.Entry.Count} entries.");
 }
 
 #!csharp
@@ -192,7 +192,7 @@ pd.Action = new List<PlanDefinition.ActionComponent>
                 Expression = new Expression
                 {
                     Language = "text/cql",
-                    Expression_ = cqlContent
+                    Expression_ = "MainRule1_Pass"
                 }
             }
         }
@@ -275,19 +275,3 @@ JObject applyResultObj = JObject.Parse(applyResultJson);
 applyResultJson = applyResultObj.ToString(Newtonsoft.Json.Formatting.Indented);
 
 Console.WriteLine($"Apply PlanDefinition result:\n{applyResultJson}");  
-
-#!csharp
-
-var patientBundles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle", "*.json");
-
-foreach(var bundle in patientBundles)
-{
-    // read each bundle file
-    Console.WriteLine($"Reading patient bundle file: {bundle}");
-    var bundleContent = System.IO.File.ReadAllText(bundle);
-    
-    // parse the bundle content as JSON
-    var fhirDeserializer = new FhirJsonDeserializer();
-    var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
-    Console.WriteLine($"Patient Bundle {bundle} has {fhirBundle.Entry.Count} entries.");
-}

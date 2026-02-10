@@ -19,6 +19,7 @@ using Hl7.Cql.Primitives;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Specification;
 using Hl7.Fhir.Specification.Source;
+using Hl7.Fhir.ElementModel;
 using Firely.Fhir.Packages;
 using Hl7.Fhir.Validation;
 using Hl7.Fhir.Serialization; 
@@ -75,28 +76,50 @@ foreach(var bundle in patientBundles)
 
 #!csharp
 
-string GetReferenceFromNode(PocoNodeOrList node)
+List<string> GetReferenceFromNode(PocoNodeOrList node)
 {
-    if(node == null) return null;
-    if(node is PocoListNode pocoListNode)
+    if(node == null) return new List<string>();
+
+    List<string> list = new List<string>();
+    
+    if(node is PocoNode pocoNode && pocoNode is ITypedElement typedElement)
     {
-        foreach(var child in pocoListNode.Children())
+
+        var childReference = typedElement.DescendantsAndSelf().Children("reference").ToList();
+            
+        foreach(var item in childReference)
         {
-            var reference = GetReferenceFromNode(child);
-            if(reference != null) return reference;
+            list.Add(typedElement.Name +"/" + item.Value?.ToString().Split(":").LastOrDefault());
+        }
+
+    }
+    else if(node is PocoListNode pocoListNode)
+    {
+        for(int i = 0; i < pocoListNode.Count(); i++)
+        {
+            var child = pocoListNode[i] as PocoNodeOrList;
+            if(child is PocoNode childPocoNode && childPocoNode is ITypedElement childTypedElement)
+            {
+                var childReference = childTypedElement.DescendantsAndSelf().Children("reference");
+                foreach(var item in childReference)
+                {
+                    list.Add(childTypedElement.Name +"/" + item.Value?.ToString().Split(":").LastOrDefault());
+                }
+
+            }
+            else if(child is PocoListNode pocoListChildNode)
+            {
+                for(int j = 0; j < pocoListChildNode.Count(); j++)
+                {
+                    var grandChild = pocoListChildNode[j] as PocoNodeOrList;
+                    List<string> grandChildReferences = GetReferenceFromNode(grandChild);
+                    list.AddRange(grandChildReferences);
+                }
+            }
+            
         }
     }
-    else if(node is PocoNode pocoNode)
-    {
-        var typedElement = pocoNode.ToTypedElement();
-        if(typedElement.InstanceType == "Reference")
-        {
-            // get the reference value from the typedElement
-            var childReference = typedElement.Children("reference").FirstOrDefault()?.Value?.ToString();
-            return childReference;
-        }      
-    }      
-    return null;
+    return list;
 }
 
 #!csharp
@@ -105,7 +128,7 @@ using Hl7.Fhir.ElementModel;
 using Hl7.Fhir.Model;
 using System.Linq;
 
-string bundleFile = @"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle\1124521_bundle.json";
+string bundleFile = @"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle\17589765_bundle_3.json";
 
 // read the bundle file
 // Console.WriteLine($"Reading patient bundle file: {bundleFile}");
@@ -115,45 +138,28 @@ var fhirDeserializer = new FhirJsonDeserializer();
 var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
 Console.WriteLine($"Patient Bundle {bundleFile} has {fhirBundle.Entry.Count} entries.");
 
-List<Resource> resources = new List<Resource>();
+List<(Resource, List<string>)> resources = new List<(Resource, List<string>)>();
 
 foreach(var profile in fhirBundle.Entry)
 {
-    //Console.WriteLine($"Processing entry with fullUrl: {profile.FullUrl}");
     if(profile.Resource is Resource resource)
     {
-        resources.Add(resource);
-        Console.WriteLine($"Resource type: {resource.TypeName}, ID: {resource.Id}");
-
         var pocoReferences = resource.ToPocoNode();
+        var referenceList = new List<string>();
         foreach(var child in pocoReferences.Children())
-        {
-           if(child is PocoNode pocoNode)
-           {
-                string reference = GetReferenceFromNode(pocoNode);
-                if(reference != null)
-                {
-                    Console.WriteLine($"Found reference: {reference}");
-                }
-           }
-           else
-           {
-               var pocoNodeOrList = child as PocoNodeOrList;
-                if(pocoNodeOrList != null)
-                {
-                    foreach(var item in pocoNodeOrList)
-                    {
-                        if(item is PocoNode itemPocoNode)
-                        {
-                            string reference = GetReferenceFromNode(itemPocoNode);
-                            if(reference != null)
-                            {
-                                Console.WriteLine($"Found reference: {reference}");
-                            }
-                        }
-                    }
-                }
-           }
+        {         
+            List<string> childReferences = GetReferenceFromNode(child);
+            referenceList.AddRange(childReferences);    
         }
+        resources.Add((resource, referenceList));
+    }
+}
+
+foreach(var (resource, references) in resources)
+{
+    Console.WriteLine($"\nResource type: {resource.TypeName}, ID: {resource.Id}");
+    foreach(var reference in references)
+    {
+        Console.WriteLine($"Found reference: {reference}");
     }
 }
