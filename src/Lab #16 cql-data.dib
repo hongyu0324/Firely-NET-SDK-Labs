@@ -163,3 +163,101 @@ foreach(var (resource, references) in resources)
         Console.WriteLine($"Found reference: {reference}");
     }
 }
+
+#!csharp
+
+// Order by reference count by accending order
+resources = resources.OrderBy(r => r.Item2.Count).ToList();
+List<Resource> resourcesList = new List<Resource>();
+List<string> allReferences = new List<string>();
+
+int count = 0;    
+Console.WriteLine($"Total resources count: {resources.Count}");
+while(allReferences.Count < resources.Count)
+{
+    foreach(var(checkResource, checkReferences) in resources)
+    {
+        if(allReferences.Contains(checkResource.Id))
+        {
+            continue;
+        }
+        bool isExisted = false;
+        foreach(var reference in checkReferences)
+        {
+            if(allReferences.Contains(reference))
+            {
+                isExisted = true;
+                break;
+            }
+        }
+        if(isExisted == false)
+        {
+            resourcesList.Add(checkResource);
+            allReferences.Add(checkResource.Id);
+        }
+    }
+    //Console.WriteLine($"Current reference count: {allReferences.Count}, Current resource count: {resourcesList.Count}");
+    count++;
+    if(count > 10)
+    {
+        break;
+    }
+}
+
+foreach(var res in resourcesList)
+{
+    Console.WriteLine($"Final Resource type: {res.TypeName}, ID: {res.Id}");
+}   
+
+#!csharp
+
+// upload resources in order
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+Dictionary<string,string> uploadedResources = new Dictionary<string,string>();
+List<Resource> uploadResourceList = new List<Resource>();
+foreach(var res in resourcesList) 
+{
+    // serialize the resource to JSON string
+    var fhirSerializer = new FhirJsonSerializer();
+    var jsonString = fhirSerializer.SerializeToString(res);
+
+    // get all reference in the resource
+    var pocoReferences = res.ToPocoNode();
+    //var referenceList = new List<string>();
+
+    bool hasReference = false;
+    foreach(var child in pocoReferences.Children())
+    {
+        List<string> childReferences = GetReferenceFromNode(child);
+        for(int i = 0; i < childReferences.Count; i++)
+        {
+            string referenceId = childReferences[i].Split("/").LastOrDefault();
+            if(uploadedResources.ContainsKey(referenceId))
+            {
+                jsonString = jsonString.Replace("urn:uuid:" + referenceId, uploadedResources[referenceId]);
+            }
+            else
+            {
+                //Console.WriteLine($"Resource {res.TypeName}/{res.Id} has reference {childReferences[i]} which is not uploaded yet.");
+                hasReference = true;
+            }
+        }
+    }
+    if(hasReference == false)
+    {
+        var deserializedResource = fhirDeserializer.Deserialize<Resource>(jsonString);
+        uploadResourceList.Add(deserializedResource);
+        var result = await client.UpdateAsync<Resource>(deserializedResource);
+        uploadedResources[res.Id] = res.TypeName + "/" + res.Id;
+    }
+} 
+
+
+foreach(var key in uploadedResources.Keys)
+{
+    Console.WriteLine($"Uploaded resource: {uploadedResources[key]}");
+}
+
+#!csharp
+
+uploadResourceList[8]
