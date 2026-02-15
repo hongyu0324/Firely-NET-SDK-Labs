@@ -65,9 +65,9 @@ foreach(var library in libraryFiles)
     var fhirLibrary = fhirDeserializer.Deserialize<Library>(libraryContent);
     fhirLibrary.Url = "https://nhicore.nhi.gov.tw/cql/Library/" + fhirLibrary.Name;
     Console.WriteLine($"Library {library} has {fhirLibrary.Url}");
-    //FhirClient client = new FhirClient("http://localhost:8080/fhir");
-    //var result = await client.UpdateAsync<Library>(fhirLibrary);
-    //Console.WriteLine($"Uploaded Library {library} with ID: {result.Id}");
+    FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    var result = await client.UpdateAsync<Library>(fhirLibrary);
+    Console.WriteLine($"Uploaded Library {library} with ID: {result.Id}");
 }
 
 #!csharp

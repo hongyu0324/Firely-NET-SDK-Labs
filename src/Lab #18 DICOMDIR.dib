@@ -1,0 +1,267 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:fo-dicom,4.0.8"
+#r "nuget:Newtonsoft.Json"
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Dicom;
+using Dicom.IO;
+using Hl7.Fhir.Model;
+using Newtonsoft.Json;
+
+#!csharp
+
+string dicomFile = @"C:\Hongyu\Data\DICOMDIR.txt";
+string outputCsvFile = @"C:\Hongyu\Data\DICOMDIR.csv";
+
+#!csharp
+
+var file = DicomFile.Open(dicomFile);
+var output = new List<string>();
+var dataset = file.Dataset;
+
+var records = dataset.GetSequence(DicomTag.DirectoryRecordSequence);
+
+foreach (var record in records)
+{
+    string type = record.GetSingleValueOrDefault(DicomTag.DirectoryRecordType, "");
+
+    if (type == "PATIENT")
+    {
+        string name = record.GetSingleValueOrDefault(DicomTag.PatientName, "");
+        string id = record.GetSingleValueOrDefault(DicomTag.PatientID, "");
+        Console.WriteLine($"Patient: {name} ({id})");
+        output.Add($"Patient,{name},{id}");
+    }
+
+    if (type == "STUDY")
+    {
+        string studyUID = record.GetSingleValueOrDefault(DicomTag.StudyInstanceUID, "");
+        Console.WriteLine($"Study UID: {studyUID}");
+        output.Add($"Study,{studyUID}");
+    }
+
+    if (type == "SERIES")
+    {
+        string seriesUID = record.GetSingleValueOrDefault(DicomTag.SeriesInstanceUID, "");
+        Console.WriteLine($"Series UID: {seriesUID}");
+        output.Add($"Series,{seriesUID}");
+    }
+
+    if (type == "IMAGE")
+    {
+        string sop = record.GetSingleValueOrDefault(DicomTag.ReferencedSOPInstanceUIDInFile, "");
+        Console.WriteLine($"Image SOP: {sop}");
+        output.Add($"Image,{sop}");     
+    }
+}
+
+// Write output to CSV
+File.WriteAllLines(outputCsvFile, output);
+
+#!csharp
+
+        var file = DicomFile.Open(dicomFile);
+        var dataset = file.Dataset;
+
+        var records = dataset.GetSequence(DicomTag.DirectoryRecordSequence);
+
+        string patientName = null;
+        string patientID = null;
+        string birthDate = null;
+
+        foreach (var record in records)
+        {
+            string type = record.GetSingleValueOrDefault(DicomTag.DirectoryRecordType, "");
+
+            if (type == "PATIENT")
+            {
+                patientName = record.GetSingleValueOrDefault(DicomTag.PatientName, "");
+                
+                patientID = record.GetSingleValueOrDefault(DicomTag.PatientID, "");
+                birthDate = record.GetSingleValueOrDefault(DicomTag.PatientBirthDate, "");
+
+                break; // 第一個 PATIENT 就夠了
+            }
+        }
+        //  顯示中文正確編碼
+        patientName = System.Text.Encoding.UTF8.GetString(System.Text.Encoding.Default.GetBytes(patientName));
+        Console.WriteLine($"PatientName = {patientName}");
+        Console.WriteLine($"PatientID   = {patientID}");
+        Console.WriteLine($"BirthDate   = {birthDate}");
+
+#!csharp
+
+string DecodePN(DicomDataset ds)
+{
+    if (!ds.Contains(DicomTag.PatientName))
+        return null;
+
+    // 取得 raw bytes
+    var element = ds.GetDicomItem<DicomElement>(DicomTag.PatientName);
+    var raw = element.Buffer.Data;
+
+    // 台灣醫院最常見 Big5
+    string[] encodings = { "big5", "utf-8", "gb18030", "shift_jis", "euc-kr" };
+
+    foreach (var enc in encodings)
+    {
+        try
+        {
+            var text = System.Text.Encoding.GetEncoding(enc).GetString(raw);
+            if (!text.Contains("?"))
+                return text;
+        }
+        catch { }
+    }
+
+    return System.Text.Encoding.ASCII.GetString(raw);
+}
+
+#!csharp
+
+var file = DicomFile.Open(dicomFile);
+var dataset = file.Dataset;
+
+var records = dataset.GetSequence(DicomTag.DirectoryRecordSequence);
+
+string patientName = null;
+string patientID = null;
+string birthDate = null;
+
+foreach (var record in records)
+{
+    string type = record.GetSingleValueOrDefault(DicomTag.DirectoryRecordType, "");
+
+    if (type == "PATIENT")
+    {
+        patientName = DecodePN(record);
+        patientID = record.GetSingleValueOrDefault(DicomTag.PatientID, "");
+        birthDate = record.GetSingleValueOrDefault(DicomTag.PatientBirthDate, "");
+        break;
+    }
+}
+
+Console.WriteLine($"PatientName = {patientName}");
+Console.WriteLine($"PatientID   = {patientID}");
+Console.WriteLine($"BirthDate   = {birthDate}");
+
+#!csharp
+
+var result = new List<ImagingStudy>();
+
+// 讀取 DICOMDIR
+var dicomdir = DicomFile.Open(dicomFile);
+
+var records = dicomdir.Dataset.GetSequence(DicomTag.DirectoryRecordSequence);
+
+// 收集所有影像檔案路徑
+var imagePaths = new List<string>();
+
+foreach (var item in records)
+{
+    var type = item.GetSingleValueOrDefault<string>(DicomTag.DirectoryRecordType, null);
+
+    if (type == "IMAGE")
+    {
+        var refFile = item.GetSingleValueOrDefault<string>(DicomTag.ReferencedFileID, null);
+        if (!string.IsNullOrEmpty(refFile))
+        {
+            var baseDir = Path.GetDirectoryName(dicomFile);
+            var fullPath = Path.Combine(baseDir, refFile.Replace("\\", "/"));
+            imagePaths.Add(fullPath);
+        }
+    }
+}
+
+
+// 逐檔讀取影像
+var dicomFiles = imagePaths
+    .Where(File.Exists)
+    .Select(p => DicomFile.Open(p))
+    .ToList();
+
+// 依 Study 分組
+var studyGroups = dicomFiles
+    .GroupBy(f => f.Dataset.GetString(DicomTag.StudyInstanceUID))
+    .ToList();
+
+var imagingStudies = new List<ImagingStudy>();
+
+foreach (var studyGroup in studyGroups)
+{
+    var first = studyGroup.First().Dataset;
+
+    var study = new ImagingStudy
+    {
+        Id = Guid.NewGuid().ToString(),
+        Status = ImagingStudy.ImagingStudyStatus.Available,
+        Subject = new ResourceReference("Patient/" + first.GetString(DicomTag.PatientID)),
+        Description = first.GetString(DicomTag.StudyDescription),
+        Identifier = new List<Identifier>
+            {
+                new Identifier("urn:dicom:uid", first.GetString(DicomTag.StudyInstanceUID))
+            },
+        Series = new List<ImagingStudy.SeriesComponent>()
+    };
+
+    // 依 Series 分組
+    var seriesGroups = studyGroup
+        .GroupBy(f => f.Dataset.GetString(DicomTag.SeriesInstanceUID));
+
+    foreach (var seriesGroup in seriesGroups)
+    {
+        var sds = seriesGroup.First().Dataset;
+        var series = new ImagingStudy.SeriesComponent
+        {
+            Uid = sds.GetString(DicomTag.SeriesInstanceUID),
+            Number = sds.GetSingleValueOrDefault<int>(DicomTag.SeriesNumber, 0),
+            Modality = new Coding(
+                    "http://dicom.nema.org/resources/ontology/DCM",
+                    sds.GetString(DicomTag.Modality)),
+            Description = sds.GetString(DicomTag.BodyPartExamined),
+            Instance = new List<ImagingStudy.InstanceComponent>()
+        };
+
+        foreach (var file in seriesGroup)
+        {
+            var ds = file.Dataset;
+
+            var instance = new ImagingStudy.InstanceComponent
+            {
+                Uid = ds.GetString(DicomTag.SOPInstanceUID),
+                Number = ds.GetSingleValueOrDefault<int>(DicomTag.InstanceNumber, 0),
+                SopClass = new Coding(
+                    "urn:ietf:rfc:3986",
+                    "urn:oid:" + ds.GetString(DicomTag.SOPClassUID))
+            };
+
+            series.Instance.Add(instance);
+        }
+
+        study.Series.Add(series);
+    }
+
+    imagingStudies.Add(study);
+}
+
+#!csharp
+
+imagingStudies.ForEach(s =>
+{
+    var json = JsonConvert.SerializeObject(s, new JsonSerializerSettings
+    {
+        NullValueHandling = NullValueHandling.Ignore,
+        Formatting = Formatting.Indented
+    });
+    Console.WriteLine(json);
+}); 

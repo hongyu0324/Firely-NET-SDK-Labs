@@ -128,7 +128,7 @@ using Hl7.Fhir.ElementModel;
 using Hl7.Fhir.Model;
 using System.Linq;
 
-string bundleFile = @"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle\17589765_bundle_3.json";
+string bundleFile = @"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle\12426591_bundle.json";
 
 // read the bundle file
 // Console.WriteLine($"Reading patient bundle file: {bundleFile}");
@@ -257,7 +257,3 @@ foreach(var key in uploadedResources.Keys)
 {
     Console.WriteLine($"Uploaded resource: {uploadedResources[key]}");
 }
-
-#!csharp
-
-uploadResourceList[8]

@@ -38,7 +38,7 @@ using Newtonsoft.Json.Linq;
 
 // Load Library from FHIR Server
 var fhirClient = new FhirClient("http://localhost:8080/fhir");
-var library = await fhirClient.ReadAsync<Library>("Library/CRCBevacizumabRule1");
+var library = await fhirClient.ReadAsync<Library>("Library/CRCPanitumumabRule1");
 
 Console.WriteLine($"Loaded Library: {library.Name} (version: {library.Version})");
 
@@ -52,13 +52,13 @@ var applyParameters = new Parameters
         new Parameters.ParameterComponent
         {
             Name = "subject",
-            Value = new FhirString("Patient/714")
+            Value = new FhirString("Patient/87988f40-0649-43fb-9d26-98fed5bacfe5")
         }
     }
 };
 
 var applyResult = await fhirClient.OperationAsync(
-    new Uri("http://localhost:8080/fhir/Library/CRCBevacizumabRule1/$evaluate"),
+    new Uri("http://localhost:8080/fhir/Library/CRCPanitumumabRule1/$evaluate"),
     applyParameters);
 
 // Serialize the apply result to JSON and print it
@@ -69,4 +69,20 @@ var applyResultJson = fhirJsonSerializer.SerializeToString(applyResult,pretty: t
 JObject applyResultObj = JObject.Parse(applyResultJson);
 applyResultJson = applyResultObj.ToString(Newtonsoft.Json.Formatting.Indented);
 
-Console.WriteLine($"Apply PlanDefinition result:\n{applyResultJson}");  
+var appParameters = applyResult as Parameters;
+
+// print each parameter in the apply result
+if (appParameters?.Parameter != null)
+{
+    foreach (var parameter in appParameters.Parameter)
+    {
+        if (parameter.Name == "申請審核報告")
+        {
+            Console.WriteLine($"Parameter name: {parameter.Name}");
+            Console.WriteLine($"Parameter value: {parameter.Value}");
+        }
+    }
+}
+
+Console.WriteLine("Apply Result JSON:");
+Console.WriteLine(applyResultJson);
