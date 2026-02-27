@@ -1,6 +1,6 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
 
 #!csharp
 
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.IO;
 
 HttpClient cqlClient = new HttpClient();
-string URI = "http://localhost:8081/cql/translator?locators=true&signatures=Overloads&result-types=true";
+string URI = "http://localhost:8090/cql/translator?locators=true&signatures=Overloads&result-types=true";
 
 string cql = "";
 string cqlFile = "";
@@ -22,7 +22,7 @@ string cqlFile = "";
 cqlFile = "Exercises10Key";
 var cqlContent = new MultipartFormDataContent();
 
-string cqlBase = System.IO.File.ReadAllText(@"C:\Project\sqf-exercises\cqf-exercises\input\cql\" + cqlFile + ".cql");
+string cqlBase = System.IO.File.ReadAllText(@"C:\Hongyu\Project\cqf-exercises\input\cql\" + cqlFile + ".cql");
 var stringContentA = new StringContent(cqlBase, Encoding.UTF8, "application/cql");
 stringContentA.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
 {
@@ -31,7 +31,7 @@ stringContentA.Headers.ContentDisposition = new ContentDispositionHeaderValue("f
 stringContentA.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
 cqlContent.Add(stringContentA, cqlFile);
 
-string cqlCommon = System.IO.File.ReadAllText(@"C:\Project\sqf-exercises\cqf-exercises\input\cql\FHIRCommon.cql");
+string cqlCommon = System.IO.File.ReadAllText(@"C:\Hongyu\Project\cqf-exercises\input\cql\FHIRCommon.cql");
 var stringContentB = new StringContent(cqlCommon, Encoding.UTF8, "application/cql");
 // set Content-Disposition header to "form-data" to match server expectation
 stringContentB.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")

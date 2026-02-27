@@ -1,0 +1,163 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+#r "nuget:Hl7.Cql.Packaging"
+#r "nuget:Hl7.Cql.Fhir"
+#r "nuget:Hl7.Cql.Iso8601"
+
+#!csharp
+
+using Hl7.Cql.Fhir;
+using Hl7.Cql.Packaging;
+using Hl7.Cql.Primitives;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
+using System.IO;
+using Hl7.Fhir.FhirPath;
+
+using Hl7.Cql;
+using Hl7.Cql.Runtime;
+
+using Hl7.Cql.Abstractions;
+
+// include JObject and JArray
+using Newtonsoft.Json.Linq;
+
+#!csharp
+
+// Load Library from FHIR Server
+var fhirClient = new FhirClient("http://localhost:8080/fhir");
+var planDefinition = await fhirClient.ReadAsync<PlanDefinition>("PlanDefinition/CRCBevacizumabRule1-plan-definition");
+
+Console.WriteLine($"Loaded PlanDefinition: {planDefinition.Name} (version: {planDefinition.Version})");
+
+#!csharp
+
+// serialize PlanDefinition to JSON
+var jsonSerializer = new FhirJsonSerializer();
+var planDefinitionJson = jsonSerializer.SerializeToString(planDefinition);
+// parse JSON to JObject
+var planDefinitionJObject = JObject.Parse(planDefinitionJson);
+// extract library references
+var libraryReferences = planDefinitionJObject["library"]?.Select(lib => lib.ToString()).ToList() ?? new List<string>();
+
+Console.WriteLine("Referenced Libraries:");
+foreach (var libRef in libraryReferences)
+{
+    Console.WriteLine($"- {libRef}");
+}
+
+#!csharp
+
+// Load Library from FHIR Server
+var fhirClient = new FhirClient("http://localhost:8080/fhir");
+var library = await fhirClient.ReadAsync<Library>("Library/CRCPanitumumabRule1");
+
+Console.WriteLine($"Loaded Library: {library.Name} (version: {library.Version})");
+Console.WriteLine($"Library Type: {library.Type?.Coding.FirstOrDefault()?.Code}");
+Console.WriteLine($"Library Url: {library.Url}");
+
+library = await fhirClient.ReadAsync<Library>("Library/CRCReusable");
+Console.WriteLine($"Loaded Library: {library.Name} (version: {library.Version})");
+Console.WriteLine($"Library Type: {library.Type?.Coding.FirstOrDefault()?.Code}");
+Console.WriteLine($"Library Url: {library.Url}");
+
+#!csharp
+
+// remove the library reference from PlanDefinition
+var updatedLibraries = new List<string?>(planDefinition.Library ?? Array.Empty<string?>());
+updatedLibraries.RemoveAll(lib => lib == "Library/CRCPanitumumabRule1");
+planDefinition.Library = updatedLibraries;
+
+// update Library reference in PlanDefinition with new library
+List<string?> updatedLibraryReferences = new List<string?>();
+updatedLibraryReferences.Add("https://nhicore.nhi.gov.tw/cql/Library/CRCPanitumumabRule1|1.0.0");
+updatedLibraryReferences.Add("https://nhicore.nhi.gov.tw/cql/Library/CRCReusable|1.0.0");
+planDefinition.Library = updatedLibraryReferences;
+
+// update PlanDefinition on FHIR Server
+var updateResult = await fhirClient.UpdateAsync(planDefinition);
+
+#!csharp
+
+// Get all patient id from FHIR Server
+var patientBundle = await fhirClient.SearchAsync<Patient>();
+var patientIds = patientBundle.Entry.Select(entry => entry.Resource.Id).ToList();
+Console.WriteLine("Patient IDs:");
+foreach (var id in patientIds){
+    Console.WriteLine($"- {id}");
+}
+
+#!csharp
+
+planDefinition.Url
+
+#!csharp
+
+// $apply operation on PlanDefinition with patient id as parameter
+var applyParameters = new Parameters(); 
+applyParameters.Add("subject", new FhirString("87988f40-0649-43fb-9d26-98fed5bacfe5")); // replace with actual patient id
+
+string applyTargetUrl = "http://localhost:8080/fhir/PlanDefinition/CRCBevacizumabRule1-plan-definition/$apply";
+var applyTarget = new Uri(applyTargetUrl);
+
+var applyResource = await fhirClient.OperationAsync(
+    applyTarget,
+    "$apply",
+    applyParameters);
+
+CarePlan carePlan = applyResource as CarePlan;
+if (carePlan != null)
+{    
+    Console.WriteLine($"Generated CarePlan: {carePlan.Id}");
+    Console.WriteLine($"CarePlan Status: {carePlan.Status}");
+    Console.WriteLine($"Care Plan Intent: {carePlan.Intent}");
+    Console.WriteLine($"Care Plan Title: {carePlan.Title}");
+    Console.WriteLine($"Care Plan Description: {carePlan.Description}");
+    Console.WriteLine($"Care Plan Activity Count: {carePlan.Activity.Count}");
+    foreach (var activity in carePlan.Activity)
+    {        
+        Console.WriteLine($"- Activity Detail Kind: {activity.Detail?.Kind}");
+        Console.WriteLine($"  Activity Detail Code: {activity.Detail?.Code?.Coding.FirstOrDefault()?.Code}");
+        Console.WriteLine($"  Activity Detail Status: {activity.Detail?.Status}");
+    }
+}
+
+#!csharp
+
+// serialize the plan definition to JSON and print it
+var jsonSerializer = new FhirJsonSerializer();
+var planDefinitionJson = jsonSerializer.SerializeToString(planDefinition,pretty: true);
+
+JObject applyResultObj = JObject.Parse(planDefinitionJson);
+planDefinitionJson = applyResultObj.ToString(Newtonsoft.Json.Formatting.Indented);
+Console.WriteLine(planDefinitionJson);
+
+#!csharp
+
+// Read Library resources from FHIR Server based on references
+var libraries = new List<Library>();
+foreach (var libRef in libraryReferences)
+{
+    try
+    {
+        var library = await fhirClient.ReadAsync<Library>(libRef);
+        libraries.Add(library);
+        Console.WriteLine($"Loaded Library: {library.Name} (version: {library.Version})");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error loading library '{libRef}': {ex.Message}");
+    }
+}

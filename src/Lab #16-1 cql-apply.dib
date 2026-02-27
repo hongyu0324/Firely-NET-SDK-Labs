@@ -92,10 +92,10 @@ foreach(var content in fhirLibrary2.Content)
             break;
         case "application/elm+json":
             var elmJsonContent = System.Text.Encoding.UTF8.GetString(content.Data);
-            Console.WriteLine($"ELM JSON content:\n{elmJsonContent}");
+            //Console.WriteLine($"ELM JSON content:\n{elmJsonContent}");
             break;
         default:
-            Console.WriteLine($"Unknown content type: {content.ContentType}");
+            //Console.WriteLine($"Unknown content type: {content.ContentType}");
             break;
     }
 }
@@ -115,6 +115,14 @@ foreach(var entry in planDefinitions.Entry)
     Console.WriteLine($"PlanDefinition: {planDefinition.Id}, URL: {planDefinition.Url}");
 }
 Console.WriteLine($"Found {planDefinitions.Entry.Count} PlanDefinition resources on the server.");
+
+#!csharp
+
+// read cql content from the Library resource
+var cqlContentFromServer = libraryFromServer.Content.FirstOrDefault(c => c.ContentType == "text/cql") != null 
+    ? System.Text.Encoding.UTF8.GetString(libraryFromServer.Content.First(c => c.ContentType == "text/cql").Data) 
+    : "No CQL content found";   
+Console.WriteLine($"CQL content from server:\n{cqlContentFromServer}");
 
 #!csharp
 
