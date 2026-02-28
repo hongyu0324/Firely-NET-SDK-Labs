@@ -1,0 +1,157 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "metabolic-syndrome-assessment-patient-male",
+  "questionnaire": "https://www.tmhtc.net/Questionnaire/metabolic-syndrome-assessment|1.0.0",
+  "status": "in-progress",
+  "subject": {
+    "reference": "Patient/patient-male"
+  },
+  "authored": "2026-02-28T12:56:36+08:00",
+  "item": [
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaireresponse-author",
+          "valueReference": {
+            "reference": "http://cqframework.org/fhir/Device/clinical-quality-language"
+          }
+        }
+      ],
+      "linkId": "date-of-birth",
+      "text": "病患生日",
+      "answer": [
+        {
+          "valueDate": "1969-02-07"
+        }
+      ]
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaireresponse-author",
+          "valueReference": {
+            "reference": "http://cqframework.org/fhir/Device/clinical-quality-language"
+          }
+        }
+      ],
+      "linkId": "waist-circumference",
+      "definition": "http://loinc.org/21482-5",
+      "text": "1. 腹部肥胖：腰圍 (男≧90cm, 女≧80cm)",
+      "answer": [
+        {
+          "valueDecimal": 95
+        }
+      ]
+    },
+    {
+      "linkId": "blood-pressure-group",
+      "text": "2. 血壓偏高 (收縮壓≧130mmHg 或 舒張壓≧85mmHg)",
+      "item": [
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaireresponse-author",
+              "valueReference": {
+                "reference": "http://cqframework.org/fhir/Device/clinical-quality-language"
+              }
+            }
+          ],
+          "linkId": "systolic-bp",
+          "definition": "http://loinc.org/8480-6",
+          "text": "收縮壓 (mmHg)",
+          "answer": [
+            {
+              "valueDecimal": 140
+            }
+          ]
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaireresponse-author",
+              "valueReference": {
+                "reference": "http://cqframework.org/fhir/Device/clinical-quality-language"
+              }
+            }
+          ],
+          "linkId": "diastolic-bp",
+          "definition": "http://loinc.org/8462-4",
+          "text": "舒張壓 (mmHg)",
+          "answer": [
+            {
+              "valueDecimal": 90
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaireresponse-author",
+          "valueReference": {
+            "reference": "http://cqframework.org/fhir/Device/clinical-quality-language"
+          }
+        }
+      ],
+      "linkId": "fasting-glucose",
+      "definition": "http://loinc.org/1558-6",
+      "text": "3. 空腹血糖偏高 (≧100mg/dL)",
+      "answer": [
+        {
+          "valueDecimal": 95
+        }
+      ]
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaireresponse-author",
+          "valueReference": {
+            "reference": "http://cqframework.org/fhir/Device/clinical-quality-language"
+          }
+        }
+      ],
+      "linkId": "triglycerides",
+      "definition": "http://loinc.org/2571-8",
+      "text": "4. 空腹三酸甘油酯偏高 (≧150mg/dL)",
+      "answer": [
+        {
+          "valueDecimal": 200
+        }
+      ]
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaireresponse-author",
+          "valueReference": {
+            "reference": "http://cqframework.org/fhir/Device/clinical-quality-language"
+          }
+        }
+      ],
+      "linkId": "hdl-cholesterol",
+      "definition": "http://loinc.org/2085-9",
+      "text": "5. 高密度脂蛋白膽固醇偏低 (男<40mg/dL, 女<50mg/dL)",
+      "answer": [
+        {
+          "valueDecimal": 45
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis-group",
+      "text": "自動診斷結果",
+      "item": [
+        {
+          "linkId": "abnormal-count",
+          "text": "符合指標項數"
+        },
+        {
+          "linkId": "diagnosis-result",
+          "text": "判定為代謝症候群"
+        }
+      ]
+    }
+  ]
+}

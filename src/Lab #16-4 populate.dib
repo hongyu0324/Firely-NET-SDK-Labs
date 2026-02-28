@@ -53,12 +53,25 @@ var result = fhirClient.UpdateAsync<Questionnaire>(fhirQuestionnaire);
 // read Library from FHIR server
 var library = await fhirClient.ReadAsync<Library>("Library/MetabolicSyndromeLogic");
 
+Console.WriteLine($"Library {library.Id} read from FHIR server.");
+
 // Get CQL from Library and convert to string
 byte[] cqlContent = library.Content.FirstOrDefault(c => c.ContentType == "text/cql").Data;
 string cqlString = System.Text.Encoding.UTF8.GetString(cqlContent);
 
 // display CQL string
-Console.WriteLine(cqlString);
+// Console.WriteLine(cqlString);
+
+#!csharp
+
+// read patient data from FHIR server
+var patient = await fhirClient.ReadAsync<Patient>("Patient/patient-male");
+
+patient.BirthDate = "1969-02-07";
+
+var updatedPatient = await fhirClient.UpdateAsync<Patient>(patient);
+
+Console.WriteLine($"Patient {updatedPatient.Id} updated on FHIR server.");
 
 #!csharp
 
@@ -68,9 +81,16 @@ populateParameters.Add("subject", new ResourceReference("Patient/patient-female"
 
 #!csharp
 
-var populateResult = await fhirClient.OperationAsync(
+Resource populateResource = await fhirClient.OperationAsync(
     new Uri("http://localhost:8080/fhir/Questionnaire/metabolic-syndrome-assessment/$populate"),
     populateParameters);
+
+var populateResult = populateResource as QuestionnaireResponse
+    ?? throw new InvalidOperationException($"$populate returned {populateResource.TypeName}, expected QuestionnaireResponse.");
+
+// update populated questionnaire response to fhir server
+var updateResult = await fhirClient.UpdateAsync<QuestionnaireResponse>(populateResult);
+Console.WriteLine($"QuestionnaireResponse {updateResult.Id} updated on FHIR server.");
 
 // print populated questionnaire response
 var fhirSerializer = new FhirJsonSerializer();
@@ -80,6 +100,23 @@ string populatedQuestionnaireResponseJson = fhirSerializer.SerializeToString(pop
 JObject populatedQuestionnaireResponseObj = JObject.Parse(populatedQuestionnaireResponseJson);
 populatedQuestionnaireResponseJson = populatedQuestionnaireResponseObj.ToString(Newtonsoft.Json.Formatting.Indented);
 
-
-
 Console.WriteLine(populatedQuestionnaireResponseJson);
+
+#!csharp
+
+// using $extract operation to extract data from questionnaire response
+string updateResultId = "metabolic-syndrome-assessment-patient-female";
+var extractParameters = new Parameters();
+extractParameters.Add("questionnaireResponse", new ResourceReference($"QuestionnaireResponse/{updateResultId}"));
+Resource extractResourceBase = await fhirClient.OperationAsync(
+    new Uri($"http://localhost:8080/fhir/QuestionnaireResponse/{updateResultId}/$extract"),
+    extractParameters);
+
+var extractResource = extractResourceBase as Bundle
+    ?? throw new InvalidOperationException($"$extract returned {extractResourceBase.TypeName}, expected Bundle.");
+
+// print extracted data
+string extractedDataJson = fhirSerializer.SerializeToString(extractResource);
+JObject extractedDataObj = JObject.Parse(extractedDataJson);
+extractedDataJson = extractedDataObj.ToString(Newtonsoft.Json.Formatting.Indented);
+Console.WriteLine(extractedDataJson);
