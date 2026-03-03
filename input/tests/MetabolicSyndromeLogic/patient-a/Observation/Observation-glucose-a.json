@@ -1,0 +1,9 @@
+{
+  "resourceType": "Observation",
+  "id": "glucose-a",
+  "status": "final",
+  "code": { "coding": [{ "system": "http://loinc.org", "code": "1558-6" }] },
+  "subject": { "reference": "Patient/patient-a" },
+  "effectiveDateTime": "2025-02-01T09:00:00+08:00",
+  "valueQuantity": { "value": 88, "unit": "mg/dL" }
+}

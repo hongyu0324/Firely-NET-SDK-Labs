@@ -1,0 +1,18 @@
+{
+  "resourceType": "Observation",
+  "id": "bp-a",
+  "status": "final",
+  "code": { "coding": [{ "system": "http://loinc.org", "code": "85354-9" }] },
+  "subject": { "reference": "Patient/patient-a" },
+  "effectiveDateTime": "2025-02-01T09:00:00+08:00",
+  "component": [
+    {
+      "code": { "coding": [{ "system": "http://loinc.org", "code": "8480-6" }] },
+      "valueQuantity": { "value": 138, "unit": "mm[Hg]" }
+    },
+    {
+      "code": { "coding": [{ "system": "http://loinc.org", "code": "8462-4" }] },
+      "valueQuantity": { "value": 88, "unit": "mm[Hg]" }
+    }
+  ]
+}

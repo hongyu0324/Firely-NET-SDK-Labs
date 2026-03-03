@@ -2,18 +2,21 @@
 
 {"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
 
-#!pwsh
+#!csharp
 
-cd C:\Project\Firely-NET-SDK-Labs\firely-cql
-dir
-
-#!pwsh
-
-dotnet tool install Hl7.Cql.Packager --global --version 1.0.0-rc2
+#r "nuget: Hl7.fhir.r4, 5.3.0"
 
 #!pwsh
 
-cql-package.exe --cql ./cql --elm ./elm/json --fhir ./fhir --cs ./cs 
+cql-package.exe --version
+
+#!pwsh
+
+dotnet tool install Hl7.Cql.Packager --global 
+
+#!pwsh
+
+cql-package.exe cql --cql ../input/cql --fhir ../output/fhir --cs ../output/csharp --json-pretty --elm ../output/elm
 
 #!pwsh
 

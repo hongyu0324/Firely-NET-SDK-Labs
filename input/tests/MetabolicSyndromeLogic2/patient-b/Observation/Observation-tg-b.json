@@ -1,0 +1,9 @@
+{
+  "resourceType": "Observation",
+  "id": "tg-b",
+  "status": "final",
+  "code": { "coding": [{ "system": "http://loinc.org", "code": "2571-8" }] },
+  "subject": { "reference": "Patient/patient-b" },
+  "effectiveDateTime": "2025-02-01T09:00:00+08:00",
+  "valueQuantity": { "value": 180, "unit": "mg/dL" }
+}

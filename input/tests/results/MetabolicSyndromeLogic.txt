@@ -1,0 +1,147 @@
+CQL: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\cql
+Terminology: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\vocabulary\valueset
+Test cases:
+patient-a - c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a
+patient-b - c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-b
+
+Abnormal_Count=3
+Is_Abnormal_BP=true
+Is_Abnormal_Glucose=false
+Is_Abnormal_HDL=false
+Is_Abnormal_TG=true
+Is_Abnormal_Waist=true
+Is_Metabolic_Syndrome=true
+LatestBP=Observation(id=bp-a)
+LatestDiastolicBPValue=decimal
+LatestGlucose=Observation(id=glucose-a)
+LatestGlucoseValue=decimal
+LatestHDL=Observation(id=hdl-a)
+LatestHDLValue=decimal
+LatestSystolicBPValue=decimal
+LatestTG=Observation(id=tg-a)
+LatestTGValue=decimal
+LatestWaist=Observation(id=waist-a)
+LatestWaistValue=decimal
+Patient=Patient(id=patient-a)
+
+Abnormal_Count=2
+Is_Abnormal_BP=false
+Is_Abnormal_Glucose=false
+Is_Abnormal_HDL=false
+Is_Abnormal_TG=true
+Is_Abnormal_Waist=true
+Is_Metabolic_Syndrome=false
+LatestBP=Observation(id=bp-b)
+LatestDiastolicBPValue=decimal
+LatestGlucose=Observation(id=glucose-b)
+LatestGlucoseValue=decimal
+LatestHDL=Observation(id=hdl-b)
+LatestHDLValue=decimal
+LatestSystolicBPValue=decimal
+LatestTG=Observation(id=tg-b)
+LatestTGValue=decimal
+LatestWaist=Observation(id=waist-b)
+LatestWaistValue=decimal
+Patient=Patient(id=patient-b)
+
+
+Evaluation logs:
+2276703 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=DIRECTORY_PER_TYPE, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=TYPE_AND_ID] 
+2276711 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=FLAT, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=ID_ONLY] 
+2276914 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: FHIRHelpers 
+2276963 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: FHIRHelpers 
+2276965 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: MetabolicSyndromeLogic 
+2276965 [pool-2-thread-1] DEBUG o.o.c.c.engine.execution.CqlEngine Evaluating library: MetabolicSyndromeLogic with expressions: [Abnormal_Count, Is_Abnormal_BP, Is_Abnormal_Glucose, Is_Abnormal_HDL, Is_Abnormal_TG, Is_Abnormal_Waist, Is_Metabolic_Syndrome, LatestBP, LatestDiastolicBPValue, LatestGlucose, LatestGlucoseValue, LatestHDL, LatestHDLValue, LatestSystolicBPValue, LatestTG, LatestTGValue, LatestWaist, LatestWaistValue, Patient] 
+2276965 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2276968 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\patient\Patient-patient-a.json 
+2276969 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Patient@3c228bf7 
+2276969 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Patient@3c228bf7 
+2276969 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2276969 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-bp-a.json 
+2276969 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@12604af5 
+2276969 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@12604af5 
+2276969 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-glucose-a.json 
+2276972 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@1c936d75 
+2276972 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@1c936d75 
+2276972 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-hdl-a.json 
+2276972 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@429cfa42 
+2276972 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@429cfa42 
+2276972 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-tg-a.json 
+2276973 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@6a49bcd5 
+2276973 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@6a49bcd5 
+2276973 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-waist-a.json 
+2276973 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@7a6e748b 
+2276973 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@7a6e748b 
+2276975 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2276976 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@12604af5 
+2276976 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1c936d75 
+2276976 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@429cfa42 
+2276976 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@6a49bcd5 
+2276976 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@7a6e748b 
+2276978 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2276979 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@12604af5 
+2276979 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1c936d75 
+2276979 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@429cfa42 
+2276979 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@6a49bcd5 
+2276979 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@7a6e748b 
+2276980 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2276981 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@12604af5 
+2276981 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1c936d75 
+2276981 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@429cfa42 
+2276981 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@6a49bcd5 
+2276981 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@7a6e748b 
+2276982 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2276982 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@12604af5 
+2276982 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1c936d75 
+2276982 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@429cfa42 
+2276982 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@6a49bcd5 
+2276982 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@7a6e748b 
+2276991 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=DIRECTORY_PER_TYPE, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=TYPE_AND_ID] 
+2276999 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=FLAT, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=ID_ONLY] 
+2277002 [pool-2-thread-1] DEBUG o.o.c.c.engine.execution.CqlEngine Evaluating library: MetabolicSyndromeLogic with expressions: [Abnormal_Count, Is_Abnormal_BP, Is_Abnormal_Glucose, Is_Abnormal_HDL, Is_Abnormal_TG, Is_Abnormal_Waist, Is_Metabolic_Syndrome, LatestBP, LatestDiastolicBPValue, LatestGlucose, LatestGlucoseValue, LatestHDL, LatestHDLValue, LatestSystolicBPValue, LatestTG, LatestTGValue, LatestWaist, LatestWaistValue, Patient] 
+2277002 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-b\patient\Patient-patient-b.json 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Patient@7d115676 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Patient@7d115676 
+2277002 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-b\observation\Observation-bp-b.json 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@58fafd7c 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@58fafd7c 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-b\observation\Observation-glucose-b.json 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@7ff25da2 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@7ff25da2 
+2277002 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-b\observation\Observation-hdl-b.json 
+2277009 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@76b1b4fb 
+2277009 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@76b1b4fb 
+2277009 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-b\observation\Observation-tg-b.json 
+2277009 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@1e4eebd 
+2277009 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@1e4eebd 
+2277009 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-b\observation\Observation-waist-b.json 
+2277009 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@efae2e0 
+2277009 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@efae2e0 
+2277009 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2277014 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@58fafd7c 
+2277014 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@7ff25da2 
+2277014 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@76b1b4fb 
+2277014 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1e4eebd 
+2277014 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@efae2e0 
+2277017 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2277017 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@58fafd7c 
+2277017 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@7ff25da2 
+2277017 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@76b1b4fb 
+2277017 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1e4eebd 
+2277017 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@efae2e0 
+2277019 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@58fafd7c 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@7ff25da2 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@76b1b4fb 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1e4eebd 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@efae2e0 
+2277019 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@58fafd7c 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@7ff25da2 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@76b1b4fb 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1e4eebd 
+2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@efae2e0 
+
+elapsed: 0.34 seconds

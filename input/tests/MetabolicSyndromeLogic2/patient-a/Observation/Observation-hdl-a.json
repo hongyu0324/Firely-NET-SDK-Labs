@@ -1,0 +1,9 @@
+{
+  "resourceType": "Observation",
+  "id": "hdl-a",
+  "status": "final",
+  "code": { "coding": [{ "system": "http://loinc.org", "code": "2085-9" }] },
+  "subject": { "reference": "Patient/patient-a" },
+  "effectiveDateTime": "2025-02-01T09:00:00+08:00",
+  "valueQuantity": { "value": 58, "unit": "mg/dL" }
+}
