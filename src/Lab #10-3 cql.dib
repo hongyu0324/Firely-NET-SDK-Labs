@@ -5,18 +5,151 @@
 #!csharp
 
 #r "nuget:hl7.fhir.r4"
-#r "nuget:hl7.Cql"
-#r "nuget:hl7.Cql.Packager"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+#r "nuget:Hl7.Cql.Packaging"
+#r "nuget:Hl7.Cql.Fhir"
+#r "nuget:Hl7.Cql.Iso8601"
+#r "nuget:Hl7.Cql.Runtime"
+#r "nuget:Hl7.Cql.Invocation"
+#r "nuget:Hl7.Cql.Compiler"
+#r "nuget:Hl7.Cql.CqlToElm"
+#r "nuget:Hl7.Cql.Abstractions"
+#r "nuget:Hl7.Cql.Firely,0.9.0-rc1"
 
 #!csharp
 
-using Hl7.Fhir.Model;
+using System.Diagnostics;
+using Hl7.Cql.CodeGeneration.NET;
+using Hl7.Cql.CodeGeneration.NET.Toolkit;
+using Hl7.Cql.CqlToElm.Toolkit;
+using Hl7.Cql.CqlToElm.Toolkit.Extensions;
 using Hl7.Cql.Fhir;
-using Hl7.Cql.Primitives;
-using Hl7.Cql.Packaging;
-using Hl7.Cql.Operators;
+using Hl7.Cql.Invocation.Toolkit;
+using Hl7.Cql.Invocation.Toolkit.Extensions;
+using Hl7.Cql.Packaging.Toolkit.Extensions;
+using Hl7.Cql.Toolkit;
+
 using Hl7.Cql.Runtime;
-using Hl7.Cql.Abstractions;
-using Hl7.Cql.ValueSets;
-using Hl7.Cql.Iso8601;
+
+using Hl7.Fhir.Model;
+using Microsoft.Extensions.Logging;
+
+using Hl7.Cql.CodeGeneration.NET.Toolkit.Extensions;
+using Hl7.Cql.Primitives;
+
 using System.IO;
+
+#!csharp
+
+var enableDebugging = true; // Try stepping through InvokeLibraryDefinition during debugging
+var ignoreErrors = true;    // This ignores errors and tries to continue processing other definitions
+
+// get ../input directory
+
+string InitialDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
+var InputDirectory = Path.Combine(InitialDirectory, "input");
+var OutputDirectory = Path.Combine(InitialDirectory, @"output");
+
+Console.WriteLine($"Input directory: {InputDirectory}");
+Console.WriteLine($"Output directory: {OutputDirectory}");
+
+#!csharp
+
+var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+// Add ELM libraries from Demos directory
+var elmDirectory = new DirectoryInfo(Path.Combine(OutputDirectory, "elm"));
+var elmToolkit = new ElmToolkit(loggerFactory, enableDebugging ? new ElmToolkitConfig(DebugSymbolsFormat.Embedded) : null);
+if (ignoreErrors)
+    elmToolkit = elmToolkit.SetIgnoreEnumerationExceptions();
+elmToolkit.AddElmFilesFromDirectory(elmDirectory);
+
+var cqlDirectory = new DirectoryInfo(Path.Combine(InputDirectory, "cql"));
+var cqlToolkit = new CqlToolkit(loggerFactory);
+if (ignoreErrors)
+    cqlToolkit = cqlToolkit.SetIgnoreEnumerationExceptions();
+cqlToolkit.AddCqlLibrariesFromDirectory(cqlDirectory);
+
+// Package into FHIR Resources (Translate CQL to ELM, then compile ELM to C# and DLLs)
+var packagingToolkit = elmToolkit.PackageToFhirResources(cqlToolkit);
+
+// Save packaged resources
+packagingToolkit.SaveFhirResourcesToDirectory(new DirectoryInfo(Path.Combine(OutputDirectory, "fhir")));
+
+#!csharp
+
+var invocationToolkit = new InvocationToolkit();
+if (ignoreErrors)
+    invocationToolkit = invocationToolkit.SetIgnoreEnumerationExceptions();
+invocationToolkit = invocationToolkit.AddAssemblyBinariesInFhirLibrariesFromDirectory(new DirectoryInfo(Path.Combine(OutputDirectory, "fhir")));
+var librarySetInvoker = invocationToolkit.CreateLibrarySetInvoker();
+
+#!csharp
+
+using Hl7.Fhir.Serialization;
+using Hl7.Cql.Fhir.Extensions;
+
+// load files under /input/tests/MetabolicSyndromeLogic/patient-a as a FHIR Bundle and add to the invocation context
+var patientEverything = new Bundle();                                // Add data
+
+var deserializer = new FhirJsonDeserializer();
+
+string testPatientDirectory = Path.Combine(InputDirectory, "tests", "MetabolicSyndromeLogic", "patient-b","Patient");
+foreach (var file in Directory.GetFiles(testPatientDirectory, "*.json"))
+{
+    var resource = deserializer.Deserialize<Resource>(File.ReadAllText(file));
+    patientEverything.Entry.Add(new Bundle.EntryComponent { Resource = resource });
+}
+
+testPatientDirectory = Path.Combine(InputDirectory, "tests", "MetabolicSyndromeLogic", "patient-b","Observation");
+foreach (var file in Directory.GetFiles(testPatientDirectory, "*.json"))
+{
+    var resource = deserializer.Deserialize<Resource>(File.ReadAllText(file));
+    patientEverything.Entry.Add(new Bundle.EntryComponent { Resource = resource });
+}
+
+#!csharp
+
+private readonly IDictionary<string, object> targetPatient =
+  new Dictionary<string, object>
+  {
+        {
+          "subject","Patient/patient-b"
+        }
+  };
+
+#!csharp
+
+var valueSets = Enumerable.Empty<ValueSet>().ToValueSetDictionary(); // Add valuesets
+var cqlContext = FhirCqlContext.ForBundle(patientEverything,targetPatient); // Create context with data and valuesets
+
+#!csharp
+
+cqlContext
+
+#!csharp
+
+List<(DefinitionInvoker DefinitionInvoker, Exception Exception)> errors = new List<(DefinitionInvoker DefinitionInvoker, Exception Exception)>();
+
+var results = librarySetInvoker
+    .SelectExpressions()
+    .ToList()
+    .SelectResults(
+        cqlContext,
+        selectResultsOptions:new SelectResultsOptions(InvocationExceptionCallback: (definition, exception, _) => errors.Add((definition,exception)))).ToList();
+
+#!csharp
+
+results.ForEach(result =>
+{
+    Console.WriteLine($"Expression: {result.definitionInvoker.DefinitionName}");
+    if (result.invocationResult is Exception exception)
+    {
+        Console.WriteLine($"  Error: {exception.Message}");
+    }
+    else
+    {
+        Console.WriteLine($"  Result: {result.invocationResult}");
+    }
+});

@@ -145,3 +145,1143 @@ Evaluation logs:
 2277019 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@efae2e0 
 
 elapsed: 0.34 seconds
+CQL: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\cql
+Terminology: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\vocabulary\valueset
+Test cases:
+patient-a - c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a
+
+Abnormal_Count=3
+Is_Abnormal_BP=true
+Is_Abnormal_Glucose=false
+Is_Abnormal_HDL=false
+Is_Abnormal_TG=true
+Is_Abnormal_Waist=true
+Is_Metabolic_Syndrome=true
+LatestBP=Observation(id=bp-a)
+LatestDiastolicBPValue=decimal
+LatestGlucose=Observation(id=glucose-a)
+LatestGlucoseValue=decimal
+LatestHDL=Observation(id=hdl-a)
+LatestHDLValue=decimal
+LatestSystolicBPValue=decimal
+LatestTG=Observation(id=tg-a)
+LatestTGValue=decimal
+LatestWaist=Observation(id=waist-a)
+LatestWaistValue=decimal
+Patient=Patient(id=patient-a)
+
+
+Evaluation logs:
+122074 [pool-2-thread-1] INFO  ca.uhn.fhir.util.VersionUtil HAPI FHIR version 8.6.0 - Rev 66e4809c55 
+122079 [pool-2-thread-1] INFO  ca.uhn.fhir.context.FhirContext Creating new FHIR context for FHIR version [R4] 
+122080 [pool-2-thread-1] INFO  o.o.c.c.l.s.m.IgContextManager Searching for ini file in file:///c%3A/Hongyu/Project/Firely-NET-SDK-Labs/input 
+122080 [pool-2-thread-1] INFO  o.o.c.c.l.s.m.IgContextManager Attempting to read ini from path file:///c%3A/Hongyu/Project/Firely-NET-SDK-Labs/ig.ini 
+122081 [pool-2-thread-1] INFO  o.o.c.c.l.s.m.IgContextManager Attempting to read ini from path file:///c%3A/Hongyu/Project/ig.ini 
+122127 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=DIRECTORY_PER_TYPE, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=TYPE_AND_ID] 
+122163 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=FLAT, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=ID_ONLY] 
+122246 [pool-2-thread-1] DEBUG c.u.f.l.terminology_troubleshooting Invalidating caches in 0 validation support modules 
+122246 [pool-2-thread-1] DEBUG c.u.f.l.terminology_troubleshooting Invalidating caches in 1 validation support modules 
+122246 [pool-2-thread-1] DEBUG c.u.f.l.terminology_troubleshooting Invalidating caches in 2 validation support modules 
+122246 [pool-2-thread-1] DEBUG c.u.f.l.terminology_troubleshooting Invalidating caches in 3 validation support modules 
+122316 [pool-2-thread-1] INFO  c.u.f.c.s.DefaultProfileValidationSupport Loading structure definitions from classpath: /org/hl7/fhir/r4/model/profile/profiles-resources.xml 
+122349 [pool-2-thread-1] DEBUG ca.uhn.fhir.util.XmlUtil FHIR XML procesing will use StAX implementation at jar:file:/C:/Users/hongy/.vscode/extensions/cqframework.cql-0.7.11/dist/java-support/jars/cql-ls-service-4.2.0.jar!/BOOT-INF/lib/woodstox-core-6.4.0.jar!/
+  Title:         Woodstox
+  Symbolic name: com.fasterxml.woodstox.woodstox-core
+  Vendor:        FasterXML
+  Version:       6.4.0 
+122931 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.UriType 
+122932 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.TimeType 
+122932 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.UrlType 
+122932 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.RelatedArtifact 
+122937 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.MoneyQuantity 
+122937 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CanonicalType 
+122941 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.IdType 
+122941 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CodeType 
+122941 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.SampledData 
+122941 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Base64BinaryType 
+122941 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.DataRequirement 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Coding 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Period 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.UnsignedIntType 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Identifier 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.BooleanType 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.SimpleQuantity 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Address 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Age 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Attachment 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Timing 
+122943 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ContactDetail 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Meta 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.utilities.xhtml.XhtmlNode 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.OidType 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Enumeration 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ParameterDefinition 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.UuidType 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Extension 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.UsageContext 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.PositiveIntType 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MarkdownType 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Dosage 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.IntegerType 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.HumanName 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Population 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Ratio 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ProductShelfLife 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ProdCharacteristic 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.MarketingStatus 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Signature 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.TriggerDefinition 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Duration 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DateTimeType 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Contributor 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Distance 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.InstantType 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ElementDefinition 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Count 
+122945 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Range 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Money 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DecimalType 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Reference 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Quantity 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.StringType 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DateType 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Annotation 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.CodeableConcept 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Expression 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Narrative 
+122950 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.SubstanceAmount 
+122951 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ContactPoint 
+122953 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.HealthcareService 
+122964 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Practitioner 
+122967 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionBaseComponent 
+122967 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Dosage$DosageDoseAndRateComponent 
+122967 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionConstraintComponent 
+122967 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.RelatedPerson 
+122971 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Group 
+122973 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$TypeRefComponent 
+122977 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.PlanDefinition 
+122979 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Device 
+122980 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Timing$TimingRepeatComponent 
+122982 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.PractitionerRole 
+122984 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DataRequirement$DataRequirementSortComponent 
+122984 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Location 
+122985 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionBindingComponent 
+122986 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DataRequirement$DataRequirementCodeFilterComponent 
+122986 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionMappingComponent 
+122986 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionSlicingComponent 
+122988 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceAmount$SubstanceAmountReferenceRangeComponent 
+122988 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Organization 
+122989 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionExampleComponent 
+122991 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Schedule 
+122992 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Patient 
+122994 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ResearchStudy 
+122995 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DataRequirement$DataRequirementDateFilterComponent 
+122996 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.InsurancePlan 
+122997 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Group$GroupCharacteristicComponent 
+122998 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DeviceVersionComponent 
+122998 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Patient$ContactComponent 
+123000 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanCoverageComponent 
+123001 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.HealthcareService$HealthcareServiceEligibilityComponent 
+123001 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.HealthcareService$HealthcareServiceAvailableTimeComponent 
+123002 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanContactComponent 
+123003 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ResearchStudy$ResearchStudyArmComponent 
+123004 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Patient$PatientCommunicationComponent 
+123005 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DeviceSpecializationComponent 
+123005 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.HealthcareService$HealthcareServiceNotAvailableComponent 
+123005 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DeviceDefinition 
+123007 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionGoalComponent 
+123010 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Location$LocationHoursOfOperationComponent 
+123011 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanPlanComponent 
+123012 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RelatedPerson$RelatedPersonCommunicationComponent 
+123014 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DeviceUdiCarrierComponent 
+123014 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PractitionerRole$PractitionerRoleAvailableTimeComponent 
+123015 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DeviceDeviceNameComponent 
+123015 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Group$GroupMemberComponent 
+123016 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Patient$PatientLinkComponent 
+123016 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Endpoint 
+123018 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionComponent 
+123023 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionSlicingDiscriminatorComponent 
+123023 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Practitioner$PractitionerQualificationComponent 
+123024 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PractitionerRole$PractitionerRoleNotAvailableComponent 
+123024 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Organization$OrganizationContactComponent 
+123024 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Location$LocationPositionComponent 
+123025 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ResearchStudy$ResearchStudyObjectiveComponent 
+123025 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DevicePropertyComponent 
+123025 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionGoalTargetComponent 
+123026 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanPlanGeneralCostComponent 
+123026 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Substance 
+123028 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanPlanSpecificCostComponent 
+123029 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionParticipantComponent 
+123029 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionCapabilityComponent 
+123029 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionConditionComponent 
+123030 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$CoverageBenefitComponent 
+123032 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionDynamicValueComponent 
+123033 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionSpecializationComponent 
+123033 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionUdiDeviceIdentifierComponent 
+123033 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionPropertyComponent 
+123034 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Medication 
+123037 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionRelatedActionComponent 
+123038 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionMaterialComponent 
+123038 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionDeviceNameComponent 
+123039 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$CoverageBenefitLimitComponent 
+123039 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Substance$SubstanceIngredientComponent 
+123039 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$PlanBenefitComponent 
+123041 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Substance$SubstanceInstanceComponent 
+123041 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Medication$MedicationBatchComponent 
+123041 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Medication$MedicationIngredientComponent 
+123042 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$PlanBenefitCostComponent 
+123143 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 141 model entries in 750ms 
+123146 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Bundle 
+123147 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleEntryComponent 
+123150 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleLinkComponent 
+123151 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleEntryResponseComponent 
+123151 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleEntryRequestComponent 
+123152 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleEntrySearchComponent 
+123154 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 6 model entries in 10ms 
+123175 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CapabilityStatement 
+123175 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementDocumentComponent 
+123177 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementImplementationComponent 
+123177 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementSoftwareComponent 
+123177 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementMessagingComponent 
+123177 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestComponent 
+123183 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestSecurityComponent 
+123183 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestResourceSearchParamComponent 
+123183 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementMessagingEndpointComponent 
+123183 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementMessagingSupportedMessageComponent 
+123183 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestResourceComponent 
+123187 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestResourceOperationComponent 
+123187 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$SystemInteractionComponent 
+123187 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$ResourceInteractionComponent 
+123201 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 14 model entries in 29ms 
+123340 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CompartmentDefinition 
+123341 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CompartmentDefinition$CompartmentDefinitionResourceComponent 
+123345 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 2 model entries in 7ms 
+123361 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.OperationDefinition 
+123362 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.OperationDefinition$OperationDefinitionOverloadComponent 
+123362 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.OperationDefinition$OperationDefinitionParameterComponent 
+123365 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.OperationDefinition$OperationDefinitionParameterBindingComponent 
+123366 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.OperationDefinition$OperationDefinitionParameterReferencedFromComponent 
+123371 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 5 model entries in 11ms 
+123410 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.StructureDefinition 
+123412 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureDefinition$StructureDefinitionDifferentialComponent 
+123412 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureDefinition$StructureDefinitionMappingComponent 
+123414 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureDefinition$StructureDefinitionSnapshotComponent 
+123414 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureDefinition$StructureDefinitionContextComponent 
+123422 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 5 model entries in 13ms 
+123985 [pool-2-thread-1] INFO  c.u.f.c.s.DefaultProfileValidationSupport Loading structure definitions from classpath: /org/hl7/fhir/r4/model/profile/profiles-types.xml 
+124057 [pool-2-thread-1] INFO  c.u.f.c.s.DefaultProfileValidationSupport Loading structure definitions from classpath: /org/hl7/fhir/r4/model/profile/profiles-others.xml 
+124232 [pool-2-thread-1] INFO  c.u.f.c.s.DefaultProfileValidationSupport Loading structure definitions from classpath: /org/hl7/fhir/r4/model/extension/extension-definitions.xml 
+124351 [pool-2-thread-1] INFO  ca.uhn.fhir.context.FhirContext Creating new FHIR context for FHIR version [R4] 
+124375 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.UriType 
+124375 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.TimeType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.UrlType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.RelatedArtifact 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.MoneyQuantity 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CanonicalType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.IdType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CodeType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.SampledData 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Base64BinaryType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.DataRequirement 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Coding 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Period 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.UnsignedIntType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Identifier 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.BooleanType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.SimpleQuantity 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Address 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Age 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Attachment 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Timing 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ContactDetail 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Meta 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.utilities.xhtml.XhtmlNode 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.OidType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Enumeration 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ParameterDefinition 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.UuidType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Extension 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.UsageContext 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.PositiveIntType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MarkdownType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Dosage 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.IntegerType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.HumanName 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Population 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Ratio 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ProductShelfLife 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ProdCharacteristic 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.MarketingStatus 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Signature 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.TriggerDefinition 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Duration 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DateTimeType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Contributor 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Distance 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.InstantType 
+124376 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ElementDefinition 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Count 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Range 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Money 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DecimalType 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Reference 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Quantity 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.StringType 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DateType 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.AnnotatedUuidType 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Annotation 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.CodeableConcept 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Expression 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.Narrative 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.SubstanceAmount 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning datatype class: org.hl7.fhir.r4.model.ContactPoint 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.HealthcareService 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Practitioner 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionBaseComponent 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Dosage$DosageDoseAndRateComponent 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionConstraintComponent 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.RelatedPerson 
+124378 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Group 
+124379 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$TypeRefComponent 
+124379 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.PlanDefinition 
+124379 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Device 
+124379 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Timing$TimingRepeatComponent 
+124379 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.PractitionerRole 
+124379 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DataRequirement$DataRequirementSortComponent 
+124379 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Location 
+124380 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionBindingComponent 
+124380 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DataRequirement$DataRequirementCodeFilterComponent 
+124380 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionMappingComponent 
+124380 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionSlicingComponent 
+124380 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceAmount$SubstanceAmountReferenceRangeComponent 
+124380 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Organization 
+124380 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionExampleComponent 
+124380 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Schedule 
+124380 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Patient 
+124381 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ResearchStudy 
+124381 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DataRequirement$DataRequirementDateFilterComponent 
+124381 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.InsurancePlan 
+124381 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Group$GroupCharacteristicComponent 
+124381 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DeviceVersionComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Patient$ContactComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanCoverageComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.HealthcareService$HealthcareServiceEligibilityComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.HealthcareService$HealthcareServiceAvailableTimeComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanContactComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ResearchStudy$ResearchStudyArmComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Patient$PatientCommunicationComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DeviceSpecializationComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.HealthcareService$HealthcareServiceNotAvailableComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DeviceDefinition 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionGoalComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Location$LocationHoursOfOperationComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanPlanComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RelatedPerson$RelatedPersonCommunicationComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DeviceUdiCarrierComponent 
+124382 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PractitionerRole$PractitionerRoleAvailableTimeComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DeviceDeviceNameComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Group$GroupMemberComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Patient$PatientLinkComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Endpoint 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ElementDefinition$ElementDefinitionSlicingDiscriminatorComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Practitioner$PractitionerQualificationComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PractitionerRole$PractitionerRoleNotAvailableComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Organization$OrganizationContactComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Location$LocationPositionComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ResearchStudy$ResearchStudyObjectiveComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Device$DevicePropertyComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionGoalTargetComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanPlanGeneralCostComponent 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Substance 
+124383 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$InsurancePlanPlanSpecificCostComponent 
+124384 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionParticipantComponent 
+124384 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionCapabilityComponent 
+124384 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionConditionComponent 
+124384 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$CoverageBenefitComponent 
+124384 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionDynamicValueComponent 
+124384 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionSpecializationComponent 
+124384 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionUdiDeviceIdentifierComponent 
+124384 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionPropertyComponent 
+124384 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Medication 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PlanDefinition$PlanDefinitionActionRelatedActionComponent 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionMaterialComponent 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceDefinition$DeviceDefinitionDeviceNameComponent 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$CoverageBenefitLimitComponent 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Substance$SubstanceIngredientComponent 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$PlanBenefitComponent 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Substance$SubstanceInstanceComponent 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Medication$MedicationBatchComponent 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Medication$MedicationIngredientComponent 
+124385 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.InsurancePlan$PlanBenefitCostComponent 
+124416 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 142 model entries in 42ms 
+124419 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Account 
+124420 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Account$GuarantorComponent 
+124421 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Account$CoverageComponent 
+124422 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Coverage 
+124422 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Coverage$ClassComponent 
+124423 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Contract 
+124423 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Coverage$CostToBeneficiaryComponent 
+124423 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DocumentReference 
+124427 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.QuestionnaireResponse 
+124427 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$LegalLanguageComponent 
+124427 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Coverage$ExemptionComponent 
+124427 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$FriendlyLanguageComponent 
+124427 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$TermComponent 
+124436 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Composition 
+124437 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ContentDefinitionComponent 
+124437 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Provenance 
+124437 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$SignatoryComponent 
+124437 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ComputableLanguageComponent 
+124437 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Composition$CompositionAttesterComponent 
+124437 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Observation 
+124437 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DocumentReference$DocumentReferenceContentComponent 
+124443 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CarePlan 
+124443 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Provenance$ProvenanceAgentComponent 
+124443 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ServiceRequest 
+124445 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ContractOfferComponent 
+124447 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ContractAssetComponent 
+124449 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Provenance$ProvenanceEntityComponent 
+124449 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ActionComponent 
+124452 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Encounter 
+124456 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DocumentReference$DocumentReferenceRelatesToComponent 
+124456 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$SecurityLabelComponent 
+124457 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Composition$SectionComponent 
+124458 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Composition$CompositionRelatesToComponent 
+124458 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Procedure 
+124461 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DocumentReference$DocumentReferenceContextComponent 
+124462 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.QuestionnaireResponse$QuestionnaireResponseItemComponent 
+124464 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Composition$CompositionEventComponent 
+124465 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Specimen 
+124466 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ImagingStudy 
+124468 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$EncounterParticipantComponent 
+124468 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$ClassHistoryComponent 
+124469 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DeviceMetric 
+124469 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Media 
+124471 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.QuestionnaireResponse$QuestionnaireResponseItemAnswerComponent 
+124471 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicationStatement 
+124472 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.EpisodeOfCare 
+124473 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CareTeam 
+124473 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Appointment 
+124475 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ImmunizationRecommendation 
+124475 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicationDispense 
+124476 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$AnswerComponent 
+124476 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DiagnosticReport 
+124478 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MolecularSequence 
+124479 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Condition 
+124480 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ActionSubjectComponent 
+124480 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$EncounterLocationComponent 
+124481 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicationAdministration 
+124483 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Observation$ObservationReferenceRangeComponent 
+124483 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DeviceRequest 
+124485 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$DiagnosisComponent 
+124485 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$EncounterHospitalizationComponent 
+124487 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Immunization 
+124488 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Goal 
+124488 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CarePlan$CarePlanActivityComponent 
+124488 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Questionnaire 
+124488 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.NutritionOrder 
+124488 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ValuedItemComponent 
+124495 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ClaimResponse 
+124495 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Procedure$ProcedureFocalDeviceComponent 
+124495 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Procedure$ProcedurePerformerComponent 
+124495 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Observation$ObservationComponentComponent 
+124498 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ContractPartyComponent 
+124498 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$AssetContextComponent 
+124498 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$StatusHistoryComponent 
+124498 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicationRequest 
+124501 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderSupplementComponent 
+124501 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EpisodeOfCare$EpisodeOfCareStatusHistoryComponent 
+124502 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Specimen$SpecimenContainerComponent 
+124503 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Specimen$SpecimenProcessingComponent 
+124503 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceMetric$DeviceMetricCalibrationComponent 
+124503 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceQualityComponent 
+124503 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$PaymentComponent 
+124503 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationDispense$MedicationDispenseSubstitutionComponent 
+124509 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.RiskAssessment 
+124509 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Specimen$SpecimenCollectionComponent 
+124509 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceReferenceSeqComponent 
+124509 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.VisionPrescription 
+124509 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationRequest$MedicationRequestDispenseRequestComponent 
+124513 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceStructureVariantComponent 
+124513 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Goal$GoalTargetComponent 
+124513 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Immunization$ImmunizationPerformerComponent 
+124513 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CarePlan$CarePlanActivityDetailComponent 
+124519 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationAdministration$MedicationAdministrationDosageComponent 
+124519 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$InsuranceComponent 
+124519 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.AppointmentResponse 
+124521 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationDispense$MedicationDispensePerformerComponent 
+124521 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Condition$ConditionStageComponent 
+124521 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationRequest$MedicationRequestSubstitutionComponent 
+124521 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CommunicationRequest 
+124523 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Appointment$AppointmentParticipantComponent 
+124524 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$ErrorComponent 
+124524 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EpisodeOfCare$DiagnosisComponent 
+124524 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Immunization$ImmunizationReactionComponent 
+124526 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$NoteComponent 
+124526 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Claim 
+124527 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImmunizationRecommendation$ImmunizationRecommendationRecommendationComponent 
+124529 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Immunization$ImmunizationEducationComponent 
+124530 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationAdministration$MedicationAdministrationPerformerComponent 
+124530 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Task 
+124530 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CareTeam$CareTeamParticipantComponent 
+124530 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceRequest$DeviceRequestParameterComponent 
+124532 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DiagnosticReport$DiagnosticReportMediaComponent 
+124532 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.AllergyIntolerance 
+124534 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$AddedItemComponent 
+124535 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Slot 
+124537 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.RequestGroup 
+124537 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderOralDietComponent 
+124539 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderEnteralFormulaComponent 
+124539 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImagingStudy$ImagingStudySeriesComponent 
+124540 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$AdjudicationComponent 
+124540 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceVariantComponent 
+124542 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$TotalComponent 
+124542 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceRepositoryComponent 
+124542 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Condition$ConditionEvidenceComponent 
+124542 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DetectedIssue 
+124542 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Immunization$ImmunizationProtocolAppliedComponent 
+124542 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$ItemComponent 
+124542 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Questionnaire$QuestionnaireItemComponent 
+124545 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$AccidentComponent 
+124545 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.VisionPrescription$VisionPrescriptionLensSpecificationComponent 
+124547 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Task$ParameterComponent 
+124547 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImmunizationRecommendation$ImmunizationRecommendationRecommendationDateCriterionComponent 
+124547 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$ProcedureComponent 
+124547 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Questionnaire$QuestionnaireItemInitialComponent 
+124547 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ImmunizationEvaluation 
+124547 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CommunicationRequest$CommunicationRequestPayloadComponent 
+124547 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.AllergyIntolerance$AllergyIntoleranceReactionComponent 
+124547 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RequestGroup$RequestGroupActionComponent 
+124551 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RiskAssessment$RiskAssessmentPredictionComponent 
+124552 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$ItemDetailComponent 
+124553 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Questionnaire$QuestionnaireItemAnswerOptionComponent 
+124553 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$ItemComponent 
+124554 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceStructureVariantOuterComponent 
+124554 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceQualityRocComponent 
+124554 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderOralDietTextureComponent 
+124554 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Questionnaire$QuestionnaireItemEnableWhenComponent 
+124554 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Task$TaskRestrictionComponent 
+124554 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$PayeeComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DetectedIssue$DetectedIssueMitigationComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$RelatedClaimComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImagingStudy$ImagingStudySeriesInstanceComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$AddedItemDetailComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$DiagnosisComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationRequest$MedicationRequestDispenseRequestInitialFillComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderOralDietNutrientComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DetectedIssue$DetectedIssueEvidenceComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceStructureVariantInnerComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$InsuranceComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$CareTeamComponent 
+124557 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$SupportingInformationComponent 
+124561 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ClinicalImpression 
+124562 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImagingStudy$ImagingStudySeriesPerformerComponent 
+124562 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Task$TaskOutputComponent 
+124562 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderEnteralFormulaAdministrationComponent 
+124562 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$AddedItemSubDetailComponent 
+124562 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$SubDetailComponent 
+124563 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClinicalImpression$ClinicalImpressionInvestigationComponent 
+124563 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RequestGroup$RequestGroupActionConditionComponent 
+124563 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$DetailComponent 
+124563 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.VisionPrescription$PrismComponent 
+124563 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClinicalImpression$ClinicalImpressionFindingComponent 
+124565 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RequestGroup$RequestGroupActionRelatedActionComponent 
+124565 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$SubDetailComponent 
+124565 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.FamilyMemberHistory 
+124566 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.FamilyMemberHistory$FamilyMemberHistoryConditionComponent 
+124719 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 175 model entries in 303ms 
+124723 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProductIndication 
+124724 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ConceptMap 
+124724 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.OrganizationAffiliation 
+124724 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SubstanceProtein 
+124724 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SubstanceSourceMaterial 
+124724 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.GraphDefinition 
+124724 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.TestScript 
+124724 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SpecimenDefinition 
+124724 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.StructureDefinition 
+124726 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ActivityDefinition 
+124726 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProductContraindication 
+124726 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DocumentManifest 
+124726 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SupplyRequest 
+124729 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Flag 
+124729 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CompartmentDefinition 
+124729 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicationKnowledge 
+124729 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Library 
+124729 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ImplementationGuide 
+124729 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Measure 
+124733 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CoverageEligibilityRequest 
+124733 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ChargeItemDefinition 
+124735 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProductPackaged 
+124735 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Parameters 
+124735 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.BodyStructure 
+124735 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.EvidenceVariable 
+124735 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Invoice 
+124735 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProductAuthorization 
+124735 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ListResource 
+124735 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CodeSystem 
+124739 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProductManufactured 
+124739 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ResearchDefinition 
+124740 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ResearchElementDefinition 
+124740 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.EnrollmentResponse 
+124740 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.PaymentNotice 
+124740 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.GuidanceResponse 
+124742 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ChargeItem 
+124742 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.AdverseEvent 
+124742 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.NamingSystem 
+124742 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.AuditEvent 
+124744 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CoverageEligibilityResponse 
+124745 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProductUndesirableEffect 
+124745 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ResearchSubject 
+124745 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.TerminologyCapabilities 
+124747 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProductIngredient 
+124748 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.EffectEvidenceSynthesis 
+124749 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.EnrollmentRequest 
+124749 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.OperationOutcome 
+124749 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.RiskEvidenceSynthesis 
+124750 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Consent 
+124750 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Evidence 
+124750 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.TestReport 
+124750 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SubstanceReferenceInformation 
+124750 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.PaymentReconciliation 
+124750 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SubstancePolymer 
+124750 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SubstanceSpecification 
+124750 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SearchParameter 
+124750 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MessageHeader 
+124754 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CatalogEntry 
+124754 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.EventDefinition 
+124754 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MessageDefinition 
+124754 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.BiologicallyDerivedProduct 
+124756 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SubstanceNucleicAcid 
+124756 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ExplanationOfBenefit 
+124756 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Linkage 
+124756 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.StructureMap 
+124758 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MeasureReport 
+124759 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CapabilityStatement 
+124759 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Communication 
+124759 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Person 
+124760 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.SupplyDelivery 
+124760 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProduct 
+124760 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Binary 
+124760 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProductInteraction 
+124760 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ObservationDefinition 
+124760 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Basic 
+124760 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Bundle 
+124760 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DeviceUseStatement 
+124760 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ValueSet 
+124764 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicinalProductPharmaceutical 
+124765 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.OperationDefinition 
+124765 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Subscription 
+124765 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.VerificationResult 
+124765 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ExampleScenario 
+124765 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Consent$ConsentPolicyComponent 
+124767 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DocumentManifest$DocumentManifestRelatedComponent 
+124767 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CodeSystem$CodeSystemFilterComponent 
+124768 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ConceptMap$ConceptMapGroupComponent 
+124768 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$PayeeComponent 
+124770 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementImplementationComponent 
+124770 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureDefinition$StructureDefinitionSnapshotComponent 
+124770 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SupplyDelivery$SupplyDeliverySuppliedItemComponent 
+124770 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Consent$ConsentVerificationComponent 
+124770 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.GraphDefinition$GraphDefinitionLinkComponent 
+124772 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestReport$TestReportSetupComponent 
+124772 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ImplementationGuideDefinitionComponent 
+124777 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.VerificationResult$VerificationResultValidatorComponent 
+124777 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ObservationDefinition$ObservationDefinitionQualifiedIntervalComponent 
+124777 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductIngredient$MedicinalProductIngredientSpecifiedSubstanceComponent 
+124777 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$ProcedureComponent 
+124777 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptVariableComponent 
+124777 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$InsuranceComponent 
+124777 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ImplementationGuideDependsOnComponent 
+124777 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationCodeComponent 
+124777 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MeasureReport$MeasureReportGroupComponent 
+124781 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementDocumentComponent 
+124781 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProduct$MedicinalProductNameComponent 
+124781 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductInteraction$MedicinalProductInteractionInteractantComponent 
+124781 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PaymentReconciliation$DetailsComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceReferenceInformation$SubstanceReferenceInformationTargetComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MessageHeader$MessageSourceComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductAuthorization$MedicinalProductAuthorizationJurisdictionalAuthorizationComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureDefinition$StructureDefinitionDifferentialComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationRelationshipComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductPharmaceutical$MedicinalProductPharmaceuticalCharacteristicsComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EffectEvidenceSynthesis$EffectEvidenceSynthesisSampleSizeComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$DiagnosisComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$AccidentComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureDefinition$StructureDefinitionContextComponent 
+124783 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CodeSystem$ConceptDefinitionComponent 
+124786 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptTeardownComponent 
+124786 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ImplementationGuideManifestComponent 
+124786 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.VerificationResult$VerificationResultAttestationComponent 
+124790 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Invoice$InvoiceLineItemPriceComponentComponent 
+124790 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductIndication$MedicinalProductIndicationOtherTherapyComponent 
+124790 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeIngredientComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureMap$StructureMapStructureComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$AdjudicationComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EvidenceVariable$EvidenceVariableCharacteristicComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleEntryComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptTestComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RiskEvidenceSynthesis$RiskEvidenceSynthesisCertaintyComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductAuthorization$MedicinalProductAuthorizationProcedureComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeDrugCharacteristicComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MessageDefinition$MessageDefinitionAllowedResponseComponent 
+124791 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ValueSet$ValueSetComposeComponent 
+124795 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesTranslationComponent 
+124795 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeAdministrationGuidelinesComponent 
+124797 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeRelatedMedicationKnowledgeComponent 
+124797 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.VerificationResult$VerificationResultPrimarySourceComponent 
+124797 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.OperationDefinition$OperationDefinitionOverloadComponent 
+124797 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Person$PersonLinkComponent 
+124797 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ChargeItem$ChargeItemPerformerComponent 
+124797 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.BiologicallyDerivedProduct$BiologicallyDerivedProductStorageComponent 
+124797 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SearchParameter$SearchParameterComponentComponent 
+124799 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CatalogEntry$CatalogEntryRelatedEntryComponent 
+124800 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.BiologicallyDerivedProduct$BiologicallyDerivedProductCollectionComponent 
+124800 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.PaymentReconciliation$NotesComponent 
+124800 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestComponent 
+124800 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ResearchElementDefinition$ResearchElementDefinitionCharacteristicComponent 
+124800 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.BiologicallyDerivedProduct$BiologicallyDerivedProductManipulationComponent 
+124800 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgePackagingComponent 
+124800 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Measure$MeasureGroupComponent 
+124802 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Communication$CommunicationPayloadComponent 
+124802 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesValidateCodeComponent 
+124802 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationStructureComponent 
+124804 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptSetupComponent 
+124805 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EffectEvidenceSynthesis$EffectEvidenceSynthesisCertaintyComponent 
+124805 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationPropertyComponent 
+124805 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductPackaged$MedicinalProductPackagedPackageItemComponent 
+124805 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.AuditEvent$AuditEventAgentComponent 
+124808 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ChargeItemDefinition$ChargeItemDefinitionPropertyGroupComponent 
+124808 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ChargeItemDefinition$ChargeItemDefinitionApplicabilityComponent 
+124808 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesImplementationComponent 
+124808 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RiskEvidenceSynthesis$RiskEvidenceSynthesisSampleSizeComponent 
+124808 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$AddedItemComponent 
+124810 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CoverageEligibilityResponse$ErrorsComponent 
+124810 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureDefinition$StructureDefinitionMappingComponent 
+124810 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.AuditEvent$AuditEventSourceComponent 
+124810 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$PaymentComponent 
+124810 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptFixtureComponent 
+124811 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleLinkComponent 
+124811 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Consent$ProvisionComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Linkage$LinkageItemComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptOriginComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeKineticsComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeMedicineClassificationComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$RelatedClaimComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeMonitoringProgramComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeRegulatoryComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProduct$MedicinalProductManufacturingBusinessOperationComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Subscription$SubscriptionChannelComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeMonographComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.AdverseEvent$AdverseEventSuspectEntityComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestReport$TestReportTeardownComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExampleScenario$ExampleScenarioActorComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestReport$TestReportParticipantComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$TotalComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ValueSet$ValueSetExpansionComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceProtein$SubstanceProteinSubunitComponent 
+124813 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceNucleicAcid$SubstanceNucleicAcidSubunitComponent 
+124820 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EffectEvidenceSynthesis$EffectEvidenceSynthesisEffectEstimateComponent 
+124822 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptDestinationComponent 
+124822 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductContraindication$MedicinalProductContraindicationOtherTherapyComponent 
+124822 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductPackaged$MedicinalProductPackagedBatchIdentifierComponent 
+124823 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EffectEvidenceSynthesis$EffectEvidenceSynthesisResultsByExposureComponent 
+124823 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstancePolymer$SubstancePolymerMonomerSetComponent 
+124823 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ImplementationGuideGlobalComponent 
+124823 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.OperationOutcome$OperationOutcomeIssueComponent 
+124823 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$SupportingInformationComponent 
+124823 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeCostComponent 
+124825 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RiskEvidenceSynthesis$RiskEvidenceSynthesisRiskEstimateComponent 
+124825 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$ItemComponent 
+124827 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CoverageEligibilityRequest$InsuranceComponent 
+124827 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementSoftwareComponent 
+124827 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Parameters$ParametersParameterComponent 
+124827 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NamingSystem$NamingSystemUniqueIdComponent 
+124827 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesCodeSystemComponent 
+124829 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationNameComponent 
+124829 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesSoftwareComponent 
+124831 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CoverageEligibilityResponse$InsuranceComponent 
+124831 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceReferenceInformation$SubstanceReferenceInformationClassificationComponent 
+124831 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSourceMaterial$SubstanceSourceMaterialFractionDescriptionComponent 
+124831 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExampleScenario$ExampleScenarioProcessComponent 
+124833 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesExpansionComponent 
+124833 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SupplyRequest$SupplyRequestParameterComponent 
+124833 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$NoteComponent 
+124835 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductIngredient$MedicinalProductIngredientSubstanceComponent 
+124835 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.AuditEvent$AuditEventEntityComponent 
+124835 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CoverageEligibilityRequest$DetailsComponent 
+124837 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ActivityDefinition$ActivityDefinitionParticipantComponent 
+124837 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MessageHeader$MessageDestinationComponent 
+124839 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MessageHeader$MessageHeaderResponseComponent 
+124839 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceReferenceInformation$SubstanceReferenceInformationGeneElementComponent 
+124840 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductPharmaceutical$MedicinalProductPharmaceuticalRouteOfAdministrationComponent 
+124841 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProduct$MedicinalProductSpecialDesignationComponent 
+124842 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSourceMaterial$SubstanceSourceMaterialPartDescriptionComponent 
+124842 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Invoice$InvoiceLineItemComponent 
+124842 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ObservationDefinition$ObservationDefinitionQuantitativeDetailsComponent 
+124842 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExampleScenario$ExampleScenarioInstanceComponent 
+124844 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$BenefitBalanceComponent 
+124846 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$CareTeamComponent 
+124846 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstancePolymer$SubstancePolymerRepeatComponent 
+124849 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSourceMaterial$SubstanceSourceMaterialOrganismComponent 
+124852 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementMessagingComponent 
+124852 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MessageDefinition$MessageDefinitionFocusComponent 
+124852 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.OperationDefinition$OperationDefinitionParameterComponent 
+124852 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptMetadataComponent 
+124854 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationStructureIsotopeMolecularWeightComponent 
+124854 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CodeSystem$PropertyComponent 
+124854 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SpecimenDefinition$SpecimenDefinitionTypeTestedComponent 
+124856 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestReport$TestReportTestComponent 
+124858 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.BiologicallyDerivedProduct$BiologicallyDerivedProductProcessingComponent 
+124858 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureMap$StructureMapGroupComponent 
+124861 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CoverageEligibilityRequest$SupportingInformationComponent 
+124861 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesClosureComponent 
+124861 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceReferenceInformation$SubstanceReferenceInformationGeneComponent 
+124862 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ActivityDefinition$ActivityDefinitionDynamicValueComponent 
+124862 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ListResource$ListEntryComponent 
+124862 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Invoice$InvoiceParticipantComponent 
+124862 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CompartmentDefinition$CompartmentDefinitionResourceComponent 
+124862 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Measure$MeasureSupplementalDataComponent 
+124862 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationMoietyComponent 
+124863 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductIngredient$MedicinalProductIngredientSpecifiedSubstanceStrengthComponent 
+124864 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSourceMaterial$SubstanceSourceMaterialOrganismHybridComponent 
+124864 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestResourceSearchParamComponent 
+124864 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationStructureIsotopeComponent 
+124865 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementMessagingEndpointComponent 
+124865 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ConceptMap$SourceElementComponent 
+124865 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CoverageEligibilityResponse$ItemsComponent 
+124866 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ValueSet$ValueSetExpansionParameterComponent 
+124867 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MeasureReport$MeasureReportGroupPopulationComponent 
+124867 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestReport$TestActionComponent 
+124868 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ImplementationGuideDefinitionTemplateComponent 
+124868 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.AuditEvent$AuditEventAgentNetworkComponent 
+124868 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SpecimenDefinition$SpecimenDefinitionTypeTestedContainerComponent 
+124869 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Measure$MeasureGroupPopulationComponent 
+124869 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementMessagingSupportedMessageComponent 
+124869 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SpecimenDefinition$SpecimenDefinitionTypeTestedHandlingComponent 
+124869 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestActionComponent 
+124872 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsComponent 
+124872 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TeardownActionComponent 
+124872 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestReport$SetupActionComponent 
+124872 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceNucleicAcid$SubstanceNucleicAcidSubunitLinkageComponent 
+124873 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ImplementationGuideDefinitionResourceComponent 
+124874 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ManifestResourceComponent 
+124874 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProduct$MedicinalProductNameNamePartComponent 
+124874 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ImplementationGuideDefinitionPageComponent 
+124874 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Consent$provisionDataComponent 
+124874 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ValueSet$ValueSetExpansionContainsComponent 
+124875 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeAdministrationGuidelinesDosageComponent 
+124876 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptMetadataCapabilityComponent 
+124876 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceNucleicAcid$SubstanceNucleicAcidSubunitSugarComponent 
+124876 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ImplementationGuideDefinitionParameterComponent 
+124877 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RiskEvidenceSynthesis$RiskEvidenceSynthesisCertaintyCertaintySubcomponentComponent 
+124877 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$DetailComponent 
+124879 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductPharmaceutical$MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesComponent 
+124881 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleEntrySearchComponent 
+124881 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstancePolymer$SubstancePolymerMonomerSetStartingMaterialComponent 
+124882 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.AdverseEvent$AdverseEventSuspectEntityCausalityComponent 
+124882 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesCodeSystemVersionComponent 
+124883 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProduct$MedicinalProductNameCountryLanguageComponent 
+124884 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeRegulatorySubstitutionComponent 
+124884 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExampleScenario$ExampleScenarioInstanceVersionComponent 
+124884 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureMap$StructureMapGroupInputComponent 
+124884 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstancePolymer$SubstancePolymerRepeatRepeatUnitComponent 
+124886 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationStructureRepresentationComponent 
+124886 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$AddedItemDetailComponent 
+124888 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestResourceOperationComponent 
+124888 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.OperationDefinition$OperationDefinitionParameterBindingComponent 
+124888 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleEntryRequestComponent 
+124888 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EffectEvidenceSynthesis$EffectEvidenceSynthesisEffectEstimatePrecisionEstimateComponent 
+124888 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CoverageEligibilityRequest$DiagnosisComponent 
+124889 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestReport$TeardownActionComponent 
+124889 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSourceMaterial$SubstanceSourceMaterialOrganismAuthorComponent 
+124889 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.AuditEvent$AuditEventEntityDetailComponent 
+124889 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CodeSystem$ConceptDefinitionDesignationComponent 
+124890 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ManifestPageComponent 
+124890 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeRegulatoryScheduleComponent 
+124890 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Consent$provisionActorComponent 
+124890 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.OperationDefinition$OperationDefinitionParameterReferencedFromComponent 
+124890 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Bundle$BundleEntryResponseComponent 
+124890 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$SetupActionComponent 
+124891 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.GraphDefinition$GraphDefinitionLinkTargetComponent 
+124892 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationKnowledge$MedicationKnowledgeRegulatoryMaxDispenseComponent 
+124893 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ChargeItemDefinition$ChargeItemDefinitionPropertyGroupPriceComponentComponent 
+124893 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$BenefitComponent 
+124893 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSpecification$SubstanceSpecificationNameOfficialComponent 
+124894 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImplementationGuide$ImplementationGuideDefinitionGroupingComponent 
+124894 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesExpansionParameterComponent 
+124894 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExampleScenario$ExampleScenarioProcessStepComponent 
+124896 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$TestScriptMetadataLinkComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CodeSystem$ConceptPropertyComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RiskEvidenceSynthesis$RiskEvidenceSynthesisRiskEstimatePrecisionEstimateComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestResourceComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExampleScenario$ExampleScenarioInstanceContainedInstanceComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$SystemInteractionComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ValueSet$ConceptSetComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EffectEvidenceSynthesis$EffectEvidenceSynthesisCertaintyCertaintySubcomponentComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Measure$MeasureGroupStratifierComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$CapabilityStatementRestSecurityComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstanceSourceMaterial$SubstanceSourceMaterialOrganismOrganismGeneralComponent 
+124897 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureMap$StructureMapGroupRuleComponent 
+124904 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MeasureReport$MeasureReportGroupStratifierComponent 
+124905 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ConceptMap$ConceptMapGroupUnmappedComponent 
+124905 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureMap$StructureMapGroupRuleDependentComponent 
+124905 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExampleScenario$ExampleScenarioProcessStepAlternativeComponent 
+124907 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ConceptMap$TargetElementComponent 
+124907 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ValueSet$ConceptReferenceComponent 
+124909 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ValueSet$ConceptSetFilterComponent 
+124909 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CapabilityStatement$ResourceInteractionComponent 
+124909 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstancePolymer$SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent 
+124909 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductIngredient$MedicinalProductIngredientSpecifiedSubstanceStrengthReferenceStrengthComponent 
+124909 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestReport$SetupActionAssertComponent 
+124909 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TerminologyCapabilities$TerminologyCapabilitiesCodeSystemVersionFilterComponent 
+124909 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.GraphDefinition$GraphDefinitionLinkTargetCompartmentComponent 
+124909 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureMap$StructureMapGroupRuleTargetComponent 
+124911 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Measure$MeasureGroupStratifierComponentComponent 
+124911 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SpecimenDefinition$SpecimenDefinitionTypeTestedContainerAdditiveComponent 
+124912 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MeasureReport$StratifierGroupComponent 
+124913 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestReport$SetupActionOperationComponent 
+124913 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ValueSet$ConceptReferenceDesignationComponent 
+124914 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CoverageEligibilityResponse$BenefitComponent 
+124914 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.SubstancePolymer$SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent 
+124914 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureMap$StructureMapGroupRuleSourceComponent 
+124915 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$SubDetailComponent 
+124915 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicinalProductPharmaceutical$MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent 
+124916 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExplanationOfBenefit$AddedItemDetailSubDetailComponent 
+124916 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ExampleScenario$ExampleScenarioProcessStepOperationComponent 
+124916 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$SetupActionOperationComponent 
+124918 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$SetupActionAssertComponent 
+124919 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.StructureMap$StructureMapGroupRuleTargetParameterComponent 
+124919 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.TestScript$SetupActionOperationRequestHeaderComponent 
+124919 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MeasureReport$StratifierGroupPopulationComponent 
+124919 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MeasureReport$StratifierGroupComponentComponent 
+124920 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ConceptMap$OtherElementComponent 
+125112 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 365 model entries in 389ms 
+125173 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Library 
+125173 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 1 model entries in 0ms 
+125607 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: FHIRHelpers 
+125673 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: FHIRHelpers 
+125692 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: MetabolicSyndromeLogic 
+125730 [pool-2-thread-1] DEBUG o.o.c.c.engine.execution.CqlEngine Evaluating library: MetabolicSyndromeLogic with expressions: [Abnormal_Count, Is_Abnormal_BP, Is_Abnormal_Glucose, Is_Abnormal_HDL, Is_Abnormal_TG, Is_Abnormal_Waist, Is_Metabolic_Syndrome, LatestBP, LatestDiastolicBPValue, LatestGlucose, LatestGlucoseValue, LatestHDL, LatestHDLValue, LatestSystolicBPValue, LatestTG, LatestTGValue, LatestWaist, LatestWaistValue, Patient] 
+125752 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+125764 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\patient\Patient-patient-a.json 
+126098 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Patient@43ea0ebc 
+126100 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Patient@43ea0ebc 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Observation 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Specimen 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ImagingStudy 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Observation$ObservationReferenceRangeComponent 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CarePlan 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DocumentReference 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.QuestionnaireResponse 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DeviceRequest 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DeviceMetric 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Media 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ServiceRequest 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicationStatement 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Immunization 
+126122 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CareTeam 
+126124 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.NutritionOrder 
+126124 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Encounter 
+126124 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ImmunizationRecommendation 
+126124 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicationDispense 
+126124 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Procedure 
+126124 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MolecularSequence 
+126124 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Observation$ObservationComponentComponent 
+126124 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicationAdministration 
+126124 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.MedicationRequest 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderSupplementComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Specimen$SpecimenContainerComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Specimen$SpecimenProcessingComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceMetric$DeviceMetricCalibrationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$ClassHistoryComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceQualityComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Appointment 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Provenance 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DiagnosticReport 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$EncounterLocationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationDispense$MedicationDispenseSubstitutionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Specimen$SpecimenCollectionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DocumentReference$DocumentReferenceContentComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceReferenceSeqComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationRequest$MedicationRequestDispenseRequestComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$DiagnosisComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceStructureVariantComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Immunization$ImmunizationPerformerComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationAdministration$MedicationAdministrationDosageComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Composition 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.AppointmentResponse 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DocumentReference$DocumentReferenceContextComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationDispense$MedicationDispensePerformerComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationRequest$MedicationRequestSubstitutionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$EncounterParticipantComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Immunization$ImmunizationReactionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.EpisodeOfCare 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImmunizationRecommendation$ImmunizationRecommendationRecommendationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Immunization$ImmunizationEducationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationAdministration$MedicationAdministrationPerformerComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Task 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Condition 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.QuestionnaireResponse$QuestionnaireResponseItemComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CareTeam$CareTeamParticipantComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Coverage 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DeviceRequest$DeviceRequestParameterComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.AllergyIntolerance 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$EncounterHospitalizationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Goal 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CarePlan$CarePlanActivityComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DocumentReference$DocumentReferenceRelatesToComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderOralDietComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderEnteralFormulaComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImagingStudy$ImagingStudySeriesComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ClaimResponse 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Procedure$ProcedureFocalDeviceComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceVariantComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Procedure$ProcedurePerformerComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Account 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceRepositoryComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.DetectedIssue 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Immunization$ImmunizationProtocolAppliedComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Encounter$StatusHistoryComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EpisodeOfCare$EpisodeOfCareStatusHistoryComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Task$ParameterComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImmunizationRecommendation$ImmunizationRecommendationRecommendationDateCriterionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.QuestionnaireResponse$QuestionnaireResponseItemAnswerComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Account$CoverageComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ImmunizationEvaluation 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.AllergyIntolerance$AllergyIntoleranceReactionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Composition$SectionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$PaymentComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.RiskAssessment 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Coverage$ClassComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Account$GuarantorComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.VisionPrescription 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceStructureVariantOuterComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceQualityRocComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderOralDietTextureComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Goal$GoalTargetComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Provenance$ProvenanceEntityComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Task$TaskRestrictionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CarePlan$CarePlanActivityDetailComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$InsuranceComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Composition$CompositionEventComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Coverage$CostToBeneficiaryComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DetectedIssue$DetectedIssueMitigationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Condition$ConditionStageComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImagingStudy$ImagingStudySeriesInstanceComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.CommunicationRequest 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Provenance$ProvenanceAgentComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Appointment$AppointmentParticipantComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$ErrorComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.EpisodeOfCare$DiagnosisComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$NoteComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Claim 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MedicationRequest$MedicationRequestDispenseRequestInitialFillComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderOralDietNutrientComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Composition$CompositionRelatesToComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DetectedIssue$DetectedIssueEvidenceComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.MolecularSequence$MolecularSequenceStructureVariantInnerComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Composition$CompositionAttesterComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.DiagnosticReport$DiagnosticReportMediaComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$AddedItemComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Slot 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.RequestGroup 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$AdjudicationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Contract 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$TotalComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Condition$ConditionEvidenceComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ImagingStudy$ImagingStudySeriesPerformerComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Task$TaskOutputComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$ItemComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.NutritionOrder$NutritionOrderEnteralFormulaAdministrationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$AccidentComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.VisionPrescription$VisionPrescriptionLensSpecificationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$ProcedureComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$FriendlyLanguageComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$TermComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ContentDefinitionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.CommunicationRequest$CommunicationRequestPayloadComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RequestGroup$RequestGroupActionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RiskAssessment$RiskAssessmentPredictionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$ItemDetailComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$ItemComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$LegalLanguageComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Coverage$ExemptionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$SignatoryComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ComputableLanguageComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$PayeeComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$RelatedClaimComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$AddedItemDetailComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$DiagnosisComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$InsuranceComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$CareTeamComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$SupportingInformationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.ClinicalImpression 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$AddedItemSubDetailComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClaimResponse$SubDetailComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClinicalImpression$ClinicalImpressionInvestigationComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ContractOfferComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ContractAssetComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RequestGroup$RequestGroupActionConditionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$DetailComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ActionComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$SecurityLabelComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.VisionPrescription$PrismComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.ClinicalImpression$ClinicalImpressionFindingComponent 
+126125 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.RequestGroup$RequestGroupActionRelatedActionComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$AnswerComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ActionSubjectComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.Questionnaire 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ValuedItemComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$AssetContextComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Claim$SubDetailComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Contract$ContractPartyComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource class: org.hl7.fhir.r4.model.FamilyMemberHistory 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.FamilyMemberHistory$FamilyMemberHistoryConditionComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Questionnaire$QuestionnaireItemComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Questionnaire$QuestionnaireItemInitialComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Questionnaire$QuestionnaireItemAnswerOptionComponent 
+126129 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Scanning resource block class: org.hl7.fhir.r4.model.Questionnaire$QuestionnaireItemEnableWhenComponent 
+126167 [pool-2-thread-1] DEBUG ca.uhn.fhir.context.ModelScanner Done scanning FHIR library, found 175 model entries in 47ms 
+126167 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+126167 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-bp-a.json 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@1f30f5cb 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@1f30f5cb 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-glucose-a.json 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@60ca2436 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@60ca2436 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-hdl-a.json 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@77074eb0 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@77074eb0 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-tg-a.json 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@26abcfb1 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@26abcfb1 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\MetabolicSyndromeLogic\patient-a\observation\Observation-waist-a.json 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@3eade802 
+126174 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@3eade802 
+126195 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+126199 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1f30f5cb 
+126199 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@60ca2436 
+126199 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@77074eb0 
+126199 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@26abcfb1 
+126199 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@3eade802 
+126207 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+126209 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1f30f5cb 
+126209 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@60ca2436 
+126209 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@77074eb0 
+126209 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@26abcfb1 
+126209 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@3eade802 
+126215 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+126215 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1f30f5cb 
+126215 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@60ca2436 
+126215 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@77074eb0 
+126215 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@26abcfb1 
+126215 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@3eade802 
+126216 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+126216 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@1f30f5cb 
+126216 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@60ca2436 
+126216 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@77074eb0 
+126216 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@26abcfb1 
+126216 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@3eade802 
+
+elapsed: 4.382 seconds
