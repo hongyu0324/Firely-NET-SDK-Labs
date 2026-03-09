@@ -12,6 +12,8 @@ using Hl7.Fhir.Model;
 using Range = Hl7.Fhir.Model.Range;
 using Task = Hl7.Fhir.Model.Task;
 
+namespace tmhtc.Demos;
+
 [System.CodeDom.Compiler.GeneratedCode(".NET Code Generation", "5.0.0.0")]
 [CqlLibrary("MetabolicSyndromeLogic", "1.0.0")]
 public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<MetabolicSyndromeLogic_1_0_0>
@@ -84,7 +86,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
 
             bool? d_(Observation O) {
                 Code<ObservationStatus> i_ = O?.StatusElement;
-                string j_ = FHIRHelpers_4_0_1.Instance.ToString(context, i_);
+                string j_ = FHIRHelpers_4_0_001.Instance.ToString(context, i_);
                 string[] k_ = [
                     "final",
                     "amended",
@@ -125,7 +127,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
 
             bool? d_(Observation BP) {
                 Code<ObservationStatus> i_ = BP?.StatusElement;
-                string j_ = FHIRHelpers_4_0_1.Instance.ToString(context, i_);
+                string j_ = FHIRHelpers_4_0_001.Instance.ToString(context, i_);
                 string[] k_ = [
                     "final",
                     "amended",
@@ -198,7 +200,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
 
             bool? d_(Observation O) {
                 Code<ObservationStatus> i_ = O?.StatusElement;
-                string j_ = FHIRHelpers_4_0_1.Instance.ToString(context, i_);
+                string j_ = FHIRHelpers_4_0_001.Instance.ToString(context, i_);
                 string[] k_ = [
                     "final",
                     "amended",
@@ -239,7 +241,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
 
             bool? d_(Observation O) {
                 Code<ObservationStatus> i_ = O?.StatusElement;
-                string j_ = FHIRHelpers_4_0_1.Instance.ToString(context, i_);
+                string j_ = FHIRHelpers_4_0_001.Instance.ToString(context, i_);
                 string[] k_ = [
                     "final",
                     "amended",
@@ -280,7 +282,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
 
             bool? d_(Observation O) {
                 Code<ObservationStatus> i_ = O?.StatusElement;
-                string j_ = FHIRHelpers_4_0_1.Instance.ToString(context, i_);
+                string j_ = FHIRHelpers_4_0_001.Instance.ToString(context, i_);
                 string[] k_ = [
                     "final",
                     "amended",
@@ -321,7 +323,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
                 bool b_() {
                     Patient d_ = this.Patient(context);
                     Code<AdministrativeGender> e_ = d_?.GenderElement;
-                    string f_ = FHIRHelpers_4_0_1.Instance.ToString(context, e_);
+                    string f_ = FHIRHelpers_4_0_001.Instance.ToString(context, e_);
                     bool? g_ = context.Operators.Equal(f_, "male");
                     return g_ ?? false;
                 }
@@ -330,7 +332,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
                 bool c_() {
                     Patient h_ = this.Patient(context);
                     Code<AdministrativeGender> i_ = h_?.GenderElement;
-                    string j_ = FHIRHelpers_4_0_1.Instance.ToString(context, i_);
+                    string j_ = FHIRHelpers_4_0_001.Instance.ToString(context, i_);
                     bool? k_ = context.Operators.Equal(j_, "female");
                     return k_ ?? false;
                 }
@@ -339,18 +341,18 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
                 {
                     Observation l_ = this.LatestWaist(context);
                     DataType m_ = l_?.Value;
-                    CqlQuantity n_ = FHIRHelpers_4_0_1.Instance.ToQuantity(context, m_ as Quantity);
-                    CqlQuantity o_ = context.Operators.Quantity(90m, "cm");
-                    bool? p_ = context.Operators.GreaterOrEqual(n_, o_);
+                    FhirDecimal n_ = (m_ as Quantity)?.ValueElement;
+                    decimal? o_ = FHIRHelpers_4_0_001.Instance.ToDecimal(context, n_);
+                    bool? p_ = context.Operators.GreaterOrEqual(o_, 90.0m);
                     return p_;
                 }
                 else if (c_())
                 {
                     Observation q_ = this.LatestWaist(context);
                     DataType r_ = q_?.Value;
-                    CqlQuantity s_ = FHIRHelpers_4_0_1.Instance.ToQuantity(context, r_ as Quantity);
-                    CqlQuantity t_ = context.Operators.Quantity(80m, "cm");
-                    bool? u_ = context.Operators.GreaterOrEqual(s_, t_);
+                    FhirDecimal s_ = (r_ as Quantity)?.ValueElement;
+                    decimal? t_ = FHIRHelpers_4_0_001.Instance.ToDecimal(context, s_);
+                    bool? u_ = context.Operators.GreaterOrEqual(t_, 80.0m);
                     return u_;
                 }
                 else
@@ -374,9 +376,9 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
                 CqlCode m_ = this.SystolicBP(context);
                 bool? n_ = context.Operators.Equivalent(l_, m_);
                 DataType o_ = C?.Value;
-                CqlQuantity p_ = FHIRHelpers_4_0_1.Instance.ToQuantity(context, o_ as Quantity);
-                CqlQuantity q_ = context.Operators.Quantity(130m, "mm[Hg]");
-                bool? r_ = context.Operators.GreaterOrEqual(p_, q_);
+                FhirDecimal p_ = (o_ as Quantity)?.ValueElement;
+                decimal? q_ = FHIRHelpers_4_0_001.Instance.ToDecimal(context, p_);
+                bool? r_ = context.Operators.GreaterOrEqual(q_, 130.0m);
                 bool? s_ = context.Operators.And(n_, r_);
                 return s_;
             }
@@ -390,9 +392,9 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
                 CqlCode u_ = this.DiastolicBP(context);
                 bool? v_ = context.Operators.Equivalent(t_, u_);
                 DataType w_ = C?.Value;
-                CqlQuantity x_ = FHIRHelpers_4_0_1.Instance.ToQuantity(context, w_ as Quantity);
-                CqlQuantity y_ = context.Operators.Quantity(85m, "mm[Hg]");
-                bool? z_ = context.Operators.GreaterOrEqual(x_, y_);
+                FhirDecimal x_ = (w_ as Quantity)?.ValueElement;
+                decimal? y_ = FHIRHelpers_4_0_001.Instance.ToDecimal(context, x_);
+                bool? z_ = context.Operators.GreaterOrEqual(y_, 85.0m);
                 bool? aa_ = context.Operators.And(v_, z_);
                 return aa_;
             }
@@ -409,9 +411,9 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
         ((ICqlContextInternals)context).GetOrCompute<bool?>(-1770660604515673044L, () => {
             Observation a_ = this.LatestGlucose(context);
             DataType b_ = a_?.Value;
-            CqlQuantity c_ = FHIRHelpers_4_0_1.Instance.ToQuantity(context, b_ as Quantity);
-            CqlQuantity d_ = context.Operators.Quantity(100m, "mg/dL");
-            bool? e_ = context.Operators.GreaterOrEqual(c_, d_);
+            FhirDecimal c_ = (b_ as Quantity)?.ValueElement;
+            decimal? d_ = FHIRHelpers_4_0_001.Instance.ToDecimal(context, c_);
+            bool? e_ = context.Operators.GreaterOrEqual(d_, 100.0m);
             return e_;
         });
 
@@ -421,9 +423,9 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
         ((ICqlContextInternals)context).GetOrCompute<bool?>(1487575114652636267L, () => {
             Observation a_ = this.LatestTG(context);
             DataType b_ = a_?.Value;
-            CqlQuantity c_ = FHIRHelpers_4_0_1.Instance.ToQuantity(context, b_ as Quantity);
-            CqlQuantity d_ = context.Operators.Quantity(150m, "mg/dL");
-            bool? e_ = context.Operators.GreaterOrEqual(c_, d_);
+            FhirDecimal c_ = (b_ as Quantity)?.ValueElement;
+            decimal? d_ = FHIRHelpers_4_0_001.Instance.ToDecimal(context, c_);
+            bool? e_ = context.Operators.GreaterOrEqual(d_, 150.0m);
             return e_;
         });
 
@@ -437,7 +439,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
                 bool b_() {
                     Patient d_ = this.Patient(context);
                     Code<AdministrativeGender> e_ = d_?.GenderElement;
-                    string f_ = FHIRHelpers_4_0_1.Instance.ToString(context, e_);
+                    string f_ = FHIRHelpers_4_0_001.Instance.ToString(context, e_);
                     bool? g_ = context.Operators.Equal(f_, "male");
                     return g_ ?? false;
                 }
@@ -446,7 +448,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
                 bool c_() {
                     Patient h_ = this.Patient(context);
                     Code<AdministrativeGender> i_ = h_?.GenderElement;
-                    string j_ = FHIRHelpers_4_0_1.Instance.ToString(context, i_);
+                    string j_ = FHIRHelpers_4_0_001.Instance.ToString(context, i_);
                     bool? k_ = context.Operators.Equal(j_, "female");
                     return k_ ?? false;
                 }
@@ -455,18 +457,18 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
                 {
                     Observation l_ = this.LatestHDL(context);
                     DataType m_ = l_?.Value;
-                    CqlQuantity n_ = FHIRHelpers_4_0_1.Instance.ToQuantity(context, m_ as Quantity);
-                    CqlQuantity o_ = context.Operators.Quantity(40m, "mg/dL");
-                    bool? p_ = context.Operators.Less(n_, o_);
+                    FhirDecimal n_ = (m_ as Quantity)?.ValueElement;
+                    decimal? o_ = FHIRHelpers_4_0_001.Instance.ToDecimal(context, n_);
+                    bool? p_ = context.Operators.Less(o_, 40.0m);
                     return p_;
                 }
                 else if (c_())
                 {
                     Observation q_ = this.LatestHDL(context);
                     DataType r_ = q_?.Value;
-                    CqlQuantity s_ = FHIRHelpers_4_0_1.Instance.ToQuantity(context, r_ as Quantity);
-                    CqlQuantity t_ = context.Operators.Quantity(50m, "mg/dL");
-                    bool? u_ = context.Operators.Less(s_, t_);
+                    FhirDecimal s_ = (r_ as Quantity)?.ValueElement;
+                    decimal? t_ = FHIRHelpers_4_0_001.Instance.ToDecimal(context, s_);
+                    bool? u_ = context.Operators.Less(t_, 50.0m);
                     return u_;
                 }
                 else
@@ -527,7 +529,7 @@ public partial class MetabolicSyndromeLogic_1_0_0 : ILibrary, ISingleton<Metabol
 
     public string Name => "MetabolicSyndromeLogic";
     public string Version => "1.0.0";
-    public ILibrary[] Dependencies => [FHIRHelpers_4_0_1.Instance];
+    public ILibrary[] Dependencies => [FHIRHelpers_4_0_001.Instance];
 
     #endregion ILibrary Implementation
 

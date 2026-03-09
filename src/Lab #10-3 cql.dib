@@ -54,22 +54,50 @@ var OutputDirectory = Path.Combine(InitialDirectory, @"output");
 Console.WriteLine($"Input directory: {InputDirectory}");
 Console.WriteLine($"Output directory: {OutputDirectory}");
 
+#!markdown
+
+cqlToolkit.TranslateToElm()產生的ELM檔案有誤，思考中
+
 #!csharp
 
-var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+var loggerFactory = LoggerFactory.Create(logging =>
+{
+    logging.AddConsole();
+    logging.AddFilter("Hl7.Cql.Compiler.ExpressionBuilder", LogLevel.Error);
+});
 
-// Add ELM libraries from Demos directory
-var elmDirectory = new DirectoryInfo(Path.Combine(OutputDirectory, "elm"));
-var elmToolkit = new ElmToolkit(loggerFactory, enableDebugging ? new ElmToolkitConfig(DebugSymbolsFormat.Embedded) : null);
-if (ignoreErrors)
-    elmToolkit = elmToolkit.SetIgnoreEnumerationExceptions();
-elmToolkit.AddElmFilesFromDirectory(elmDirectory);
 
 var cqlDirectory = new DirectoryInfo(Path.Combine(InputDirectory, "cql"));
 var cqlToolkit = new CqlToolkit(loggerFactory);
 if (ignoreErrors)
     cqlToolkit = cqlToolkit.SetIgnoreEnumerationExceptions();
 cqlToolkit.AddCqlLibrariesFromDirectory(cqlDirectory);
+cqlToolkit.TranslateToElm();
+cqlToolkit.SaveElmFilesToDirectory(new DirectoryInfo(Path.Combine(OutputDirectory, "elm")), writeIndented: true);
+
+#!csharp
+
+// Add ELM libraries from Demos directory
+var elmDirectory = new DirectoryInfo(Path.Combine(OutputDirectory, "elm"));
+var loggerFactory = LoggerFactory.Create(logging =>
+{
+    logging.AddConsole();
+    logging.AddFilter("Hl7.Cql.Compiler.ExpressionBuilder", LogLevel.Error);
+});
+var elmToolkitConfig = new ElmToolkitConfig(CSharpNamespace: "tmhtc.Demos");
+var elmToolkit = new ElmToolkit(loggerFactory, elmToolkitConfig);
+if (ignoreErrors)
+    elmToolkit = elmToolkit.SetIgnoreEnumerationExceptions();
+elmToolkit.AddElmFilesFromDirectory(elmDirectory);
+
+// Compile to Assemblies
+elmToolkit.CompileToAssemblies();
+
+// Save compiled assemblies and C# files
+elmToolkit.SaveCSharpFilesToDirectory(new DirectoryInfo(Path.Combine(OutputDirectory, "csharp")));
+elmToolkit.SaveAssemblyBinariesToDirectory(new DirectoryInfo(Path.Combine(OutputDirectory, "dll")));
+
+#!csharp
 
 // Package into FHIR Resources (Translate CQL to ELM, then compile ELM to C# and DLLs)
 var packagingToolkit = elmToolkit.PackageToFhirResources(cqlToolkit);
@@ -123,10 +151,6 @@ private readonly IDictionary<string, object> targetPatient =
 
 var valueSets = Enumerable.Empty<ValueSet>().ToValueSetDictionary(); // Add valuesets
 var cqlContext = FhirCqlContext.ForBundle(patientEverything,targetPatient); // Create context with data and valuesets
-
-#!csharp
-
-cqlContext
 
 #!csharp
 

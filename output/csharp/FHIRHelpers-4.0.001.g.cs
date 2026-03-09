@@ -12,11 +12,22 @@ using Hl7.Fhir.Model;
 using Range = Hl7.Fhir.Model.Range;
 using Task = Hl7.Fhir.Model.Task;
 
+namespace tmhtc.Demos;
+
 [System.CodeDom.Compiler.GeneratedCode(".NET Code Generation", "5.0.0.0")]
-[CqlLibrary("FHIRHelpers", "4.0.1")]
-public partial class FHIRHelpers_4_0_1 : ILibrary, ISingleton<FHIRHelpers_4_0_1>
+[CqlLibrary("FHIRHelpers", "4.0.001")]
+public partial class FHIRHelpers_4_0_001 : ILibrary, ISingleton<FHIRHelpers_4_0_001>
 {
     #region Functions and Expressions
+
+    [CqlExpressionDefinition("Patient")]
+    public Patient Patient(CqlContext context) =>
+        ((ICqlContextInternals)context).GetOrCompute<Patient>(651719980278808684L, () => {
+            IEnumerable<Patient> a_ = context.Operators.Retrieve<Patient>(new RetrieveParameters(default, default, default, "http://hl7.org/fhir/StructureDefinition/Patient"));
+            Patient b_ = context.Operators.SingletonFrom<Patient>(a_);
+            return b_;
+        });
+
 
     [CqlFunctionDefinition("ToInterval")]
     public CqlInterval<CqlDateTime> ToInterval(CqlContext context, Period period)
@@ -27,112 +38,14 @@ public partial class FHIRHelpers_4_0_1 : ILibrary, ISingleton<FHIRHelpers_4_0_1>
             {
                 return null as CqlInterval<CqlDateTime>;
             }
-            else if ((period?.StartElement as object) is null)
+            else
             {
                 FhirDateTime b_ = period?.StartElement;
                 CqlDateTime c_ = context.Operators.Convert<CqlDateTime>(b_);
                 FhirDateTime d_ = period?.EndElement;
                 CqlDateTime e_ = context.Operators.Convert<CqlDateTime>(d_);
-                CqlInterval<CqlDateTime> f_ = context.Operators.Interval(c_, e_, false, true);
+                CqlInterval<CqlDateTime> f_ = context.Operators.Interval(c_, e_, true, true);
                 return f_;
-            }
-            else
-            {
-                FhirDateTime g_ = period?.StartElement;
-                CqlDateTime h_ = context.Operators.Convert<CqlDateTime>(g_);
-                FhirDateTime i_ = period?.EndElement;
-                CqlDateTime j_ = context.Operators.Convert<CqlDateTime>(i_);
-                CqlInterval<CqlDateTime> k_ = context.Operators.Interval(h_, j_, true, true);
-                return k_;
-            };
-        }
-
-        return a_();
-    }
-
-
-    [CqlFunctionDefinition("ToInterval")]
-    public CqlInterval<CqlQuantity> ToInterval(CqlContext context, Quantity quantity)
-    {
-
-        CqlInterval<CqlQuantity> a_() {
-            if ((quantity as object) is null)
-            {
-                return null as CqlInterval<CqlQuantity>;
-            }
-            else
-            {
-
-                CqlInterval<CqlQuantity> b_() {
-
-                    bool c_() {
-                        Code<Quantity.QuantityComparator> g_ = quantity?.ComparatorElement;
-                        Quantity.QuantityComparator? h_ = g_?.Value;
-                        string i_ = context.Operators.Convert<string>(h_);
-                        bool? j_ = context.Operators.Equal(i_, "<");
-                        return j_ ?? false;
-                    }
-
-
-                    bool d_() {
-                        Code<Quantity.QuantityComparator> k_ = quantity?.ComparatorElement;
-                        Quantity.QuantityComparator? l_ = k_?.Value;
-                        string m_ = context.Operators.Convert<string>(l_);
-                        bool? n_ = context.Operators.Equal(m_, "<=");
-                        return n_ ?? false;
-                    }
-
-
-                    bool e_() {
-                        Code<Quantity.QuantityComparator> o_ = quantity?.ComparatorElement;
-                        Quantity.QuantityComparator? p_ = o_?.Value;
-                        string q_ = context.Operators.Convert<string>(p_);
-                        bool? r_ = context.Operators.Equal(q_, ">=");
-                        return r_ ?? false;
-                    }
-
-
-                    bool f_() {
-                        Code<Quantity.QuantityComparator> s_ = quantity?.ComparatorElement;
-                        Quantity.QuantityComparator? t_ = s_?.Value;
-                        string u_ = context.Operators.Convert<string>(t_);
-                        bool? v_ = context.Operators.Equal(u_, ">");
-                        return v_ ?? false;
-                    }
-
-                    if (c_())
-                    {
-                        CqlQuantity w_ = this.ToQuantityIgnoringComparator(context, quantity);
-                        CqlInterval<CqlQuantity> x_ = context.Operators.Interval(null as CqlQuantity, w_, true, false);
-                        return x_;
-                    }
-                    else if (d_())
-                    {
-                        CqlQuantity y_ = this.ToQuantityIgnoringComparator(context, quantity);
-                        CqlInterval<CqlQuantity> z_ = context.Operators.Interval(null as CqlQuantity, y_, true, true);
-                        return z_;
-                    }
-                    else if (e_())
-                    {
-                        CqlQuantity aa_ = this.ToQuantityIgnoringComparator(context, quantity);
-                        CqlInterval<CqlQuantity> ab_ = context.Operators.Interval(aa_, null as CqlQuantity, true, true);
-                        return ab_;
-                    }
-                    else if (f_())
-                    {
-                        CqlQuantity ac_ = this.ToQuantityIgnoringComparator(context, quantity);
-                        CqlInterval<CqlQuantity> ad_ = context.Operators.Interval(ac_, null as CqlQuantity, false, true);
-                        return ad_;
-                    }
-                    else
-                    {
-                        CqlQuantity ae_ = this.ToQuantity(context, quantity);
-                        CqlInterval<CqlQuantity> ag_ = context.Operators.Interval(ae_, ae_, true, true);
-                        return ag_;
-                    };
-                }
-
-                return b_();
             };
         }
 
@@ -164,176 +77,22 @@ public partial class FHIRHelpers_4_0_1 : ILibrary, ISingleton<FHIRHelpers_4_0_1>
     }
 
 
-    [CqlFunctionDefinition("ToCalendarUnit")]
-    public string ToCalendarUnit(CqlContext context, string unit)
-    {
-
-        string a_() {
-            if ((context.Operators.Equal(unit, "ms")) ?? false)
-            {
-                return "millisecond";
-            }
-            else if ((context.Operators.Equal(unit, "s")) ?? false)
-            {
-                return "second";
-            }
-            else if ((context.Operators.Equal(unit, "min")) ?? false)
-            {
-                return "minute";
-            }
-            else if ((context.Operators.Equal(unit, "h")) ?? false)
-            {
-                return "hour";
-            }
-            else if ((context.Operators.Equal(unit, "d")) ?? false)
-            {
-                return "day";
-            }
-            else if ((context.Operators.Equal(unit, "wk")) ?? false)
-            {
-                return "week";
-            }
-            else if ((context.Operators.Equal(unit, "mo")) ?? false)
-            {
-                return "month";
-            }
-            else if ((context.Operators.Equal(unit, "a")) ?? false)
-            {
-                return "year";
-            }
-            else
-            {
-                return unit;
-            };
-        }
-
-        return a_();
-    }
-
-
     [CqlFunctionDefinition("ToQuantity")]
     public CqlQuantity ToQuantity(CqlContext context, Quantity quantity)
     {
 
         CqlQuantity a_() {
-
-            bool b_() {
-                Code<Quantity.QuantityComparator> d_ = quantity?.ComparatorElement;
-                bool? e_ = context.Operators.Not((bool?)((d_ as object) is null));
-                return e_ ?? false;
-            }
-
-
-            bool c_() {
-                FhirUri f_ = quantity?.SystemElement;
-                string h_ = f_?.Value;
-                bool? i_ = context.Operators.Equal(h_, "http://unitsofmeasure.org");
-                bool? j_ = context.Operators.Or((bool?)((f_ as object) is null), i_);
-                string l_ = f_?.Value;
-                bool? m_ = context.Operators.Equal(l_, "http://hl7.org/fhirpath/CodeSystem/calendar-units");
-                bool? n_ = context.Operators.Or(j_, m_);
-                return n_ ?? false;
-            }
-
             if ((quantity as object) is null)
             {
                 return null as CqlQuantity;
             }
-            else if ((quantity?.ValueElement as object) is null)
-            {
-                return null as CqlQuantity;
-            }
-            else if (b_())
-            {
-                object o_ = context.Operators.Message<object>(null, "FHIRHelpers.ToQuantity.ComparatorQuantityNotSupported", "Error", "FHIR Quantity value has a comparator and cannot be converted to a System.Quantity value.");
-                return o_ as CqlQuantity;
-            }
-            else if (c_())
-            {
-                FhirDecimal p_ = quantity?.ValueElement;
-                decimal? q_ = p_?.Value;
-                Code r_ = quantity?.CodeElement;
-                string s_ = r_?.Value;
-                FhirString t_ = quantity?.UnitElement;
-                string u_ = t_?.Value;
-                string v_ = this.ToCalendarUnit(context, (s_ ?? u_) ?? "1");
-                return new CqlQuantity(q_, v_);
-            }
             else
             {
-                FhirString w_ = quantity?.UnitElement;
-                string x_ = w_?.Value;
-                string y_ = context.Operators.Concatenate("Invalid FHIR Quantity code: ", x_);
-                string z_ = context.Operators.Concatenate(y_, " (");
-                FhirUri aa_ = quantity?.SystemElement;
-                string ab_ = aa_?.Value;
-                string ac_ = context.Operators.Concatenate(z_, ab_);
-                string ad_ = context.Operators.Concatenate(ac_, "|");
-                Code ae_ = quantity?.CodeElement;
-                string af_ = ae_?.Value;
-                string ag_ = context.Operators.Concatenate(ad_, af_);
-                string ah_ = context.Operators.Concatenate(ag_, ")");
-                object ai_ = context.Operators.Message<object>(null, "FHIRHelpers.ToQuantity.InvalidFHIRQuantity", "Error", ah_);
-                return ai_ as CqlQuantity;
-            };
-        }
-
-        return a_();
-    }
-
-
-    [CqlFunctionDefinition("ToQuantityIgnoringComparator")]
-    public CqlQuantity ToQuantityIgnoringComparator(CqlContext context, Quantity quantity)
-    {
-
-        CqlQuantity a_() {
-
-            bool b_() {
-                FhirUri c_ = quantity?.SystemElement;
-                string e_ = c_?.Value;
-                bool? f_ = context.Operators.Equal(e_, "http://unitsofmeasure.org");
-                bool? g_ = context.Operators.Or((bool?)((c_ as object) is null), f_);
-                string i_ = c_?.Value;
-                bool? j_ = context.Operators.Equal(i_, "http://hl7.org/fhirpath/CodeSystem/calendar-units");
-                bool? k_ = context.Operators.Or(g_, j_);
-                return k_ ?? false;
-            }
-
-            if ((quantity as object) is null)
-            {
-                return null as CqlQuantity;
-            }
-            else if ((quantity?.ValueElement as object) is null)
-            {
-                return null as CqlQuantity;
-            }
-            else if (b_())
-            {
-                FhirDecimal l_ = quantity?.ValueElement;
-                decimal? m_ = l_?.Value;
-                Code n_ = quantity?.CodeElement;
-                string o_ = n_?.Value;
-                FhirString p_ = quantity?.UnitElement;
-                string q_ = p_?.Value;
-                string r_ = this.ToCalendarUnit(context, (o_ ?? q_) ?? "1");
-                return new CqlQuantity(m_, r_);
-            }
-            else
-            {
-                FhirString s_ = quantity?.UnitElement;
-                string t_ = s_?.Value;
-                string u_ = context.Operators.Concatenate("Invalid FHIR Quantity code: ", t_);
-                string v_ = context.Operators.Concatenate(u_, " (");
-                FhirUri w_ = quantity?.SystemElement;
-                string x_ = w_?.Value;
-                string y_ = context.Operators.Concatenate(v_, x_);
-                string z_ = context.Operators.Concatenate(y_, "|");
-                Code aa_ = quantity?.CodeElement;
-                string ab_ = aa_?.Value;
-                string ac_ = context.Operators.Concatenate(z_, ab_);
-                string ad_ = context.Operators.Concatenate(ac_, ")");
-                object ae_ = context.Operators.Message<object>(null, "FHIRHelpers.ToQuantity.InvalidFHIRQuantity", "Error", ad_);
-                return ae_ as CqlQuantity;
+                FhirDecimal b_ = quantity?.ValueElement;
+                decimal? c_ = b_?.Value;
+                FhirString d_ = quantity?.UnitElement;
+                string e_ = d_?.Value;
+                return new CqlQuantity(c_, e_);
             };
         }
 
@@ -419,335 +178,6 @@ public partial class FHIRHelpers_4_0_1 : ILibrary, ISingleton<FHIRHelpers_4_0_1>
 
         return a_();
     }
-
-
-    [CqlFunctionDefinition("ToValueSet")]
-    public CqlValueSet ToValueSet(CqlContext context, string uri) =>
-    ((uri as object) is null
-        ? null as CqlValueSet
-        : new CqlValueSet(uri, default));
-
-
-    [CqlFunctionDefinition("reference")]
-    public ResourceReference reference(CqlContext context, string reference)
-    {
-
-        ResourceReference a_() {
-            if ((reference as object) is null)
-            {
-                return null as ResourceReference;
-            }
-            else
-            {
-                ResourceReference b_ = new ResourceReference
-                {
-                    ReferenceElement = new FhirString(reference),
-                };
-                return b_;
-            };
-        }
-
-        return a_();
-    }
-
-
-    [CqlFunctionDefinition("reference")]
-    public ResourceReference reference(CqlContext context, Resource resource) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.reference is not implemented."));
-
-
-    [CqlFunctionDefinition("ToValue")]
-    public object ToValue(CqlContext context, object value)
-    {
-
-        object a_() {
-            if (value is Base64Binary)
-            {
-                byte[] b_ = (value as Base64Binary)?.Value;
-                string c_ = context.Operators.Convert<string>(b_);
-                return c_ as object;
-            }
-            else if (value is FhirBoolean)
-            {
-                bool? d_ = (value as FhirBoolean)?.Value;
-                return d_;
-            }
-            else if (value is Canonical)
-            {
-                string e_ = (value as Canonical)?.Value;
-                return e_ as object;
-            }
-            else if (value is Code)
-            {
-                string f_ = (value as Code)?.Value;
-                return f_ as object;
-            }
-            else if (value is Date)
-            {
-                string g_ = (value as Date)?.Value;
-                CqlDate h_ = context.Operators.ConvertStringToDate(g_);
-                return h_ as object;
-            }
-            else if (value is FhirDateTime)
-            {
-                CqlDateTime i_ = context.Operators.Convert<CqlDateTime>(value as FhirDateTime);
-                return i_ as object;
-            }
-            else if (value is FhirDecimal)
-            {
-                decimal? j_ = (value as FhirDecimal)?.Value;
-                return j_;
-            }
-            else if (value is Id)
-            {
-                string k_ = (value as Id)?.Value;
-                return k_ as object;
-            }
-            else if (value is Instant)
-            {
-                DateTimeOffset? l_ = (value as Instant)?.Value;
-                CqlDateTime m_ = context.Operators.Convert<CqlDateTime>(l_);
-                return m_ as object;
-            }
-            else if (value is Integer)
-            {
-                int? n_ = (value as Integer)?.Value;
-                return n_;
-            }
-            else if (value is Markdown)
-            {
-                string o_ = (value as Markdown)?.Value;
-                return o_ as object;
-            }
-            else if (value is Oid)
-            {
-                string p_ = (value as Oid)?.Value;
-                return p_ as object;
-            }
-            else if (value is Integer)
-            {
-                int? q_ = (value as Integer)?.Value;
-                return q_;
-            }
-            else if (value is FhirString)
-            {
-                string r_ = (value as FhirString)?.Value;
-                return r_ as object;
-            }
-            else if (value is Time)
-            {
-                string s_ = (value as Time)?.Value;
-                CqlTime t_ = context.Operators.ConvertStringToTime(s_);
-                return t_ as object;
-            }
-            else if (value is Integer)
-            {
-                int? u_ = (value as Integer)?.Value;
-                return u_;
-            }
-            else if (value is FhirUri)
-            {
-                string v_ = (value as FhirUri)?.Value;
-                return v_ as object;
-            }
-            else if (value is FhirUrl)
-            {
-                string w_ = (value as FhirUrl)?.Value;
-                return w_ as object;
-            }
-            else if (value is Uuid)
-            {
-                string x_ = (value as Uuid)?.Value;
-                return x_ as object;
-            }
-            else if (value is Age)
-            {
-                CqlQuantity y_ = this.ToQuantity(context, (value as Age) as Quantity);
-                return y_ as object;
-            }
-            else if (value is CodeableConcept)
-            {
-                CqlConcept z_ = this.ToConcept(context, value as CodeableConcept);
-                return z_ as object;
-            }
-            else if (value is Coding)
-            {
-                CqlCode aa_ = this.ToCode(context, value as Coding);
-                return aa_ as object;
-            }
-            else if (value is Count)
-            {
-                CqlQuantity ab_ = this.ToQuantity(context, (value as Count) as Quantity);
-                return ab_ as object;
-            }
-            else if (value is Distance)
-            {
-                CqlQuantity ac_ = this.ToQuantity(context, (value as Distance) as Quantity);
-                return ac_ as object;
-            }
-            else if (value is Duration)
-            {
-                CqlQuantity ad_ = this.ToQuantity(context, (value as Duration) as Quantity);
-                return ad_ as object;
-            }
-            else if (value is Quantity)
-            {
-                CqlQuantity ae_ = this.ToQuantity(context, value as Quantity);
-                return ae_ as object;
-            }
-            else if (value is Range)
-            {
-                CqlInterval<CqlQuantity> af_ = this.ToInterval(context, value as Range);
-                return af_ as object;
-            }
-            else if (value is Period)
-            {
-                CqlInterval<CqlDateTime> ag_ = this.ToInterval(context, value as Period);
-                return ag_ as object;
-            }
-            else if (value is Ratio)
-            {
-                CqlRatio ah_ = this.ToRatio(context, value as Ratio);
-                return ah_ as object;
-            }
-            else
-            {
-                return (value as object) as object;
-            };
-        }
-
-        return a_();
-    }
-
-
-    [CqlFunctionDefinition("resolve")]
-    public Resource resolve(CqlContext context, string reference) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.resolve is not implemented."));
-
-
-    [CqlFunctionDefinition("resolve")]
-    public Resource resolve(CqlContext context, ResourceReference reference) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.resolve is not implemented."));
-
-
-    [CqlFunctionDefinition("extension")]
-    public IEnumerable<Extension> extension(CqlContext context, Element element, string url) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.extension is not implemented."));
-
-
-    [CqlFunctionDefinition("extension")]
-    public IEnumerable<Extension> extension(CqlContext context, DomainResource resource, string url) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.extension is not implemented."));
-
-
-    [CqlFunctionDefinition("modifierExtension")]
-    public IEnumerable<Extension> modifierExtension(CqlContext context, BackboneElement element, string url) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.modifierExtension is not implemented."));
-
-
-    [CqlFunctionDefinition("modifierExtension")]
-    public IEnumerable<Extension> modifierExtension(CqlContext context, DomainResource resource, string url) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.modifierExtension is not implemented."));
-
-
-    [CqlFunctionDefinition("hasValue")]
-    public bool? hasValue(CqlContext context, Element element) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.hasValue is not implemented."));
-
-
-    [CqlFunctionDefinition("getValue")]
-    public object getValue(CqlContext context, Element element) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.getValue is not implemented."));
-
-
-    [CqlFunctionDefinition("ofType")]
-    public IEnumerable<object> ofType(CqlContext context, string identifier) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.ofType is not implemented."));
-
-
-    [CqlFunctionDefinition("is")]
-    public bool? @is(CqlContext context, string identifier) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.is is not implemented."));
-
-
-    [CqlFunctionDefinition("as")]
-    public object @as(CqlContext context, string identifier) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.as is not implemented."));
-
-
-    [CqlFunctionDefinition("elementDefinition")]
-    public ElementDefinition elementDefinition(CqlContext context, Element element) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.elementDefinition is not implemented."));
-
-
-    [CqlFunctionDefinition("slice")]
-    public IEnumerable<Element> slice(CqlContext context, Element element, string url, string name) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.slice is not implemented."));
-
-
-    [CqlFunctionDefinition("checkModifiers")]
-    public Resource checkModifiers(CqlContext context, Resource resource) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.checkModifiers is not implemented."));
-
-
-    [CqlFunctionDefinition("checkModifiers")]
-    public Resource checkModifiers(CqlContext context, Resource resource, string modifier) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.checkModifiers is not implemented."));
-
-
-    [CqlFunctionDefinition("checkModifiers")]
-    public Element checkModifiers(CqlContext context, Element element) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.checkModifiers is not implemented."));
-
-
-    [CqlFunctionDefinition("checkModifiers")]
-    public Element checkModifiers(CqlContext context, Element element, string modifier) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.checkModifiers is not implemented."));
-
-
-    [CqlFunctionDefinition("conformsTo")]
-    public bool? conformsTo(CqlContext context, Resource resource, string structure) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.conformsTo is not implemented."));
-
-
-    [CqlFunctionDefinition("memberOf")]
-    public bool? memberOf(CqlContext context, Code code, string valueSet) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.memberOf is not implemented."));
-
-
-    [CqlFunctionDefinition("memberOf")]
-    public bool? memberOf(CqlContext context, Coding coding, string valueSet) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.memberOf is not implemented."));
-
-
-    [CqlFunctionDefinition("memberOf")]
-    public bool? memberOf(CqlContext context, CodeableConcept concept, string valueSet) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.memberOf is not implemented."));
-
-
-    [CqlFunctionDefinition("subsumes")]
-    public bool? subsumes(CqlContext context, Coding coding, Coding subsumedCoding) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.subsumes is not implemented."));
-
-
-    [CqlFunctionDefinition("subsumes")]
-    public bool? subsumes(CqlContext context, CodeableConcept concept, CodeableConcept subsumedConcept) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.subsumes is not implemented."));
-
-
-    [CqlFunctionDefinition("subsumedBy")]
-    public bool? subsumedBy(CqlContext context, Coding coding, Coding subsumingCoding) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.subsumedBy is not implemented."));
-
-
-    [CqlFunctionDefinition("subsumedBy")]
-    public bool? subsumedBy(CqlContext context, CodeableConcept concept, CodeableConcept subsumingConcept) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.subsumedBy is not implemented."));
-
-
-    [CqlFunctionDefinition("htmlChecks")]
-    public bool? htmlChecks(CqlContext context, Element element) =>
-    throw (new NotImplementedException("External function FHIRHelpers-4.0.1.htmlChecks is not implemented."));
 
 
     [CqlFunctionDefinition("ToString")]
@@ -2676,6 +2106,14 @@ public partial class FHIRHelpers_4_0_1 : ILibrary, ISingleton<FHIRHelpers_4_0_1>
 
 
     [CqlFunctionDefinition("ToString")]
+    public string ToString(CqlContext context, Id value)
+    {
+        string a_ = value?.Value;
+        return a_;
+    }
+
+
+    [CqlFunctionDefinition("ToString")]
     public string ToString(CqlContext context, FhirString value)
     {
         string a_ = value?.Value;
@@ -2762,16 +2200,16 @@ public partial class FHIRHelpers_4_0_1 : ILibrary, ISingleton<FHIRHelpers_4_0_1>
 
     #region Singleton Lifetime Members
 
-    private FHIRHelpers_4_0_1() {}
+    private FHIRHelpers_4_0_001() {}
 
-    public static FHIRHelpers_4_0_1 Instance { get; } = new();
+    public static FHIRHelpers_4_0_001 Instance { get; } = new();
 
     #endregion
 
     #region ILibrary Implementation
 
     public string Name => "FHIRHelpers";
-    public string Version => "4.0.1";
+    public string Version => "4.0.001";
     public ILibrary[] Dependencies => [];
 
     #endregion ILibrary Implementation

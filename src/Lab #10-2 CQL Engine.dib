@@ -12,7 +12,7 @@ dotnet tool install Hl7.Cql.Packager --global
 
 #!pwsh
 
-cql-package.exe cql --cql ../input/cql --fhir ../output/fhir --cs ../output/csharp --json-pretty --elm ../output/elm
+cql-package.exe cql --cql ../input/cql --fhir ../output/fhir --cs ../output/csharp --json-pretty --elm ../output/elm --dll ../output/dll --canonical-root-url https://tmhtc.net
 
 #!pwsh
 

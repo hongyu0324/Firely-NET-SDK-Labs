@@ -1,11 +1,11 @@
 ____
 INFO: - PackageCLI ------------------------------------
 Path                 : C:\Users\hongy\.dotnet\tools\.store\hl7.cql.packager\2.5.0\hl7.cql.packager\2.5.0\tools\net10.0\any\Hl7.Cql.Packager.dll
-Command Line Args    : cql --cql ../input/cql --fhir ../output/fhir --cs ../output/csharp --json-pretty --elm ../output/elm
+Command Line Args    : cql --cql ../input/cql --fhir ../output/fhir --cs ../output/csharp --json-pretty --elm ../output/elm --dll ../output/dll --canonical-root-url https://tmhtc.net
 Build                : Release
 Version              : 2.5.0
 - Environment -----------------------------------
-Current Time         : 2026-03-04T00:16:48.4147438+08:00
+Current Time         : 2026-03-09T11:57:25.4431386+08:00
 Current Directory    : C:\Hongyu\Project\Firely-NET-SDK-Labs\src
 - Configuration ---------------------------------
 {
@@ -38,7 +38,7 @@ Current Directory    : C:\Hongyu\Project\Firely-NET-SDK-Labs\src
   "Packaging": {
     "JsonPretty": true,
     "ExitOnError": false,
-    "CanonicalRootUrl": "https://fire.ly/fhir/",
+    "CanonicalRootUrl": "https://tmhtc.net",
     "OverrideDate": null,
     "FixedLibraryCanonicals": {
       "FHIRHelpers": "https://fhir.org/guides/cqf/common/Library/FHIRHelpers"
@@ -212,6 +212,10 @@ INFO: Saved C# source code to file: C:\Hongyu\Project\Firely-NET-SDK-Labs\output
 ____
 INFO: Saved C# source code to file: C:\Hongyu\Project\Firely-NET-SDK-Labs\output\csharp\FHIRHelpers-4.0.1.g.cs
 ____
+INFO: Saved assembly to file: C:\Hongyu\Project\Firely-NET-SDK-Labs\output\dll\MetabolicSyndromeLogic-1.0.0.dll
+____
+INFO: Saved assembly to file: C:\Hongyu\Project\Firely-NET-SDK-Labs\output\dll\FHIRHelpers-4.0.1.dll
+____
 INFO: Adding CQL, ELM, C# and .NET Assembly Binary to PackagingToolkit: MetabolicSyndromeLogic-1.0.0
 ____
 INFO: Adding CQL, ELM, C# and .NET Assembly Binary to PackagingToolkit: FHIRHelpers-4.0.1
@@ -235,11 +239,12 @@ INFO:
 * Loaded 2 CQL libraries from directory C:\Hongyu\Project\Firely-NET-SDK-Labs\input\cql.
 * Saved 2 ELM files to directory C:\Hongyu\Project\Firely-NET-SDK-Labs\output\elm.
 * Saved 2 C# files (*.g.cs) to directory C:\Hongyu\Project\Firely-NET-SDK-Labs\output\csharp.
+* Saved 2 .NET Assembly files (*.dll) to directory C:\Hongyu\Project\Firely-NET-SDK-Labs\output\dll.
 * Saved 2 FHIR libraries (Library-*.json) to directory C:\Hongyu\Project\Firely-NET-SDK-Labs\output\fhir.
 
-| Library                      | CQL         | ELM         | C#          | .NET     | FHIR Resource        |
-| ---------------------------- | ----------- | ----------- | ----------- | -------- | -------------------- |
-| **Total**                    | **2**       | **2**       | **2**       | **2**    | **2**                |
-| FHIRHelpers-4.0.1            | loaded .cql | saved .json | saved .g.cs | ok       | saved Library-*.json |
-| MetabolicSyndromeLogic-1.0.0 | loaded .cql | saved .json | saved .g.cs | ok       | saved Library-*.json |
+| Library                      | CQL         | ELM         | C#          | .NET       | FHIR Resource        |
+| ---------------------------- | ----------- | ----------- | ----------- | ---------- | -------------------- |
+| **Total**                    | **2**       | **2**       | **2**       | **2**      | **2**                |
+| FHIRHelpers-4.0.1            | loaded .cql | saved .json | saved .g.cs | saved .dll | saved Library-*.json |
+| MetabolicSyndromeLogic-1.0.0 | loaded .cql | saved .json | saved .g.cs | saved .dll | saved Library-*.json |
 

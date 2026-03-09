@@ -1,6 +1,6 @@
 library MetabolicSyndromeLogic version '1.0.0'
 using FHIR version '4.0.1'
-include FHIRHelpers version '4.0.1'
+include FHIRHelpers version '4.0.001'
 
 // 1. 定義代碼系統與代碼 (Terminology) [1]
 codesystem "LOINC": 'http://loinc.org'
@@ -25,7 +25,7 @@ define "LatestWaist":
   )
 
 define "LatestWaistValue":  
-  (("LatestWaist".value) as Quantity).value
+  (("LatestWaist".value) as FHIR.Quantity).value
 
 define "LatestBP":
   First([Observation: "BloodPressure"] BP 
@@ -33,10 +33,10 @@ define "LatestBP":
     sort by effective descending)
 
 define "LatestSystolicBPValue":
-  (First("LatestBP".component C where C.code ~ "SystolicBP").value as Quantity).value
+  (First("LatestBP".component C where C.code ~ "SystolicBP").value as FHIR.Quantity).value
 
 define "LatestDiastolicBPValue":  
-  (First("LatestBP".component C where C.code ~ "DiastolicBP").value as Quantity).value
+  (First("LatestBP".component C where C.code ~ "DiastolicBP").value as FHIR.Quantity).value
 
 define "LatestGlucose":
   First(
@@ -46,7 +46,7 @@ define "LatestGlucose":
   )
 
 define "LatestGlucoseValue":  
-  (("LatestGlucose".value) as Quantity).value
+  (("LatestGlucose".value) as FHIR.Quantity).value
 
 
 define "LatestTG":
@@ -57,7 +57,7 @@ define "LatestTG":
   )
 
 define "LatestTGValue": 
-  (("LatestTG".value) as Quantity).value
+  (("LatestTG".value) as FHIR.Quantity).value
 
 define "LatestHDL":
   First(
@@ -67,36 +67,36 @@ define "LatestHDL":
   )
 
 define "LatestHDLValue": 
-  (("LatestHDL".value) as Quantity).value
+  (("LatestHDL".value) as FHIR.Quantity).value
 
 // 3. 各別指標異常判定邏輯 (Indicator Assessment) [1]
 
 // 指標 1：腰圍異常 (男 >= 90cm, 女 >= 80cm) [1]
 define "Is_Abnormal_Waist":  
   case 
-    when Patient.gender = 'male' then "LatestWaist".value as Quantity >= 90 'cm'
-    when Patient.gender = 'female' then "LatestWaist".value as Quantity >= 80 'cm'
+    when Patient.gender = 'male' then ("LatestWaist".value as FHIR.Quantity).value >= 90.0
+    when Patient.gender = 'female' then ("LatestWaist".value as FHIR.Quantity).value >= 80.0
     else false
   end
 
 // 指標 2：血壓異常 (收縮壓 >= 130 或 舒張壓 >= 85 mmHg) [1]
 define "Is_Abnormal_BP":
-  exists ("LatestBP".component C where C.code ~ "SystolicBP" and C.value as Quantity >= 130 'mm[Hg]')
-  or exists ("LatestBP".component C where C.code ~ "DiastolicBP" and C.value as Quantity >= 85 'mm[Hg]')
+  exists ("LatestBP".component C where C.code ~ "SystolicBP" and (C.value as FHIR.Quantity).value >= 130.0)
+  or exists ("LatestBP".component C where C.code ~ "DiastolicBP" and (C.value as FHIR.Quantity).value >= 85.0)
 
 // 指標 3：飯前血糖異常 (>= 100 mg/dL) [1]
 define "Is_Abnormal_Glucose":
-  "LatestGlucose".value as Quantity >= 100 'mg/dL'
+  (("LatestGlucose".value) as FHIR.Quantity).value >= 100.0
 
 // 指標 4：三酸甘油酯異常 (>= 150 mg/dL) [1]
 define "Is_Abnormal_TG":
-  "LatestTG".value as Quantity >= 150 'mg/dL'
+      ("LatestTG".value as FHIR.Quantity).value >= 150.0
 
 // 指標 5：高密度脂蛋白膽固醇異常 (男 < 40, 女 < 50 mg/dL) [1]
 define "Is_Abnormal_HDL":
   case 
-    when Patient.gender = 'male' then "LatestHDL".value as Quantity < 40 'mg/dL'
-    when Patient.gender = 'female' then "LatestHDL".value as Quantity < 50 'mg/dL'
+    when Patient.gender = 'male' then ("LatestHDL".value as FHIR.Quantity).value < 40.0
+    when Patient.gender = 'female' then ("LatestHDL".value as FHIR.Quantity).value < 50.0
     else false
   end
 
