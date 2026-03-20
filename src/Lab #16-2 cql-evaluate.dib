@@ -38,7 +38,7 @@ using Newtonsoft.Json.Linq;
 
 // Load Library from FHIR Server
 var fhirClient = new FhirClient("http://localhost:8080/fhir");
-var library = await fhirClient.ReadAsync<Library>("Library/CRCPanitumumabRule1");
+var library = await fhirClient.ReadAsync<Library>("Library/BCCDK46Rule1");
 
 Console.WriteLine($"Loaded Library: {library.Name} (version: {library.Version})");
 
@@ -58,7 +58,7 @@ var applyParameters = new Parameters
 };
 
 var applyResult = await fhirClient.OperationAsync(
-    new Uri("http://localhost:8080/fhir/Library/CRCPanitumumabRule1/$evaluate"),
+    new Uri("http://localhost:8080/fhir/Library/BCCDK46Rule1/$evaluate"),
     applyParameters);
 
 // Serialize the apply result to JSON and print it

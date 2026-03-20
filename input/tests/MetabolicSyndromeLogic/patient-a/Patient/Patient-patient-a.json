@@ -2,6 +2,6 @@
   "resourceType": "Patient",
   "id": "patient-a",
   "gender": "male",
-  "birthDate": "1990-01-01",
+  "birthDate": "1969-03-04",
   "active": true
 }

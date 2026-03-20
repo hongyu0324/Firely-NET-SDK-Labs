@@ -41,7 +41,7 @@ using Newtonsoft.Json.Linq;
 /// This code reads CQL library files in JSON format from a specified directory, deserializes them into FHIR Library resources, and prints their URLs.
 /// </summary>
 
-var libraryFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\cql\pas", "*.json");
+var libraryFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\cql\pas\大腸直腸癌", "*.json");
 foreach(var library in libraryFiles)
 {
     // read each library file
@@ -51,11 +51,32 @@ foreach(var library in libraryFiles)
     // parse the library content as JSON
     var fhirDeserializer = new FhirJsonDeserializer();
     var fhirLibrary = fhirDeserializer.Deserialize<Library>(libraryContent);
-    fhirLibrary.Url = "https://nhicore.nhi.gov.tw/cql/Library/" + fhirLibrary.Name;
+    fhirLibrary.Url = "https://nhicore.nhi.gov.tw/cql/Library/" + fhirLibrary.Id;
+    fhirLibrary.Name = fhirLibrary.Id;
     Console.WriteLine($"Library {library} has {fhirLibrary.Url}");
-    //FhirClient client = new FhirClient("http://localhost:8080/fhir");
-    //var result = await client.UpdateAsync<Library>(fhirLibrary);
+    // FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    // var result = await client.UpdateAsync<Library>(fhirLibrary);
     //Console.WriteLine($"Uploaded Library {library} with ID: {result.Id}");
+}
+
+#!csharp
+
+// This code reads measure files in JSON format from a specified directory, 
+// deserializes them into FHIR Measure resources, and prints their URLs.
+
+var measureFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\品質管理", "*.json");
+foreach(var measure in measureFiles)
+{
+    // read each measure file
+    Console.WriteLine($"Reading measure file: {measure}");
+    var measureContent = System.IO.File.ReadAllText(measure);
+    // parse the measure content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirMeasure = fhirDeserializer.Deserialize<Measure>(measureContent);
+
+    FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    var result = await client.UpdateAsync<Measure>(fhirMeasure);
+    Console.WriteLine($"Uploaded Measure {measure} with ID: {result.Id}");
 }
 
 #!csharp
@@ -124,136 +145,139 @@ List<string> GetReferenceFromNode(PocoNodeOrList node)
 
 #!csharp
 
-using Hl7.Fhir.ElementModel;
-using Hl7.Fhir.Model;
-using System.Linq;
-
-string bundleFile = @"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle\12426591_bundle.json";
-
-// read the bundle file
-// Console.WriteLine($"Reading patient bundle file: {bundleFile}");
-var bundleContent = System.IO.File.ReadAllText(bundleFile);
-// parse the bundle content as JSON
-var fhirDeserializer = new FhirJsonDeserializer();
-var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
-Console.WriteLine($"Patient Bundle {bundleFile} has {fhirBundle.Entry.Count} entries.");
-
-List<(Resource, List<string>)> resources = new List<(Resource, List<string>)>();
-
-foreach(var profile in fhirBundle.Entry)
-{
-    if(profile.Resource is Resource resource)
-    {
-        var pocoReferences = resource.ToPocoNode();
-        var referenceList = new List<string>();
-        foreach(var child in pocoReferences.Children())
-        {         
-            List<string> childReferences = GetReferenceFromNode(child);
-            referenceList.AddRange(childReferences);    
-        }
-        resources.Add((resource, referenceList));
-    }
-}
-
-foreach(var (resource, references) in resources)
-{
-    Console.WriteLine($"\nResource type: {resource.TypeName}, ID: {resource.Id}");
-    foreach(var reference in references)
-    {
-        Console.WriteLine($"Found reference: {reference}");
-    }
-}
-
-#!csharp
-
 // Order by reference count by accending order
-resources = resources.OrderBy(r => r.Item2.Count).ToList();
-List<Resource> resourcesList = new List<Resource>();
-List<string> allReferences = new List<string>();
-
-int count = 0;    
-Console.WriteLine($"Total resources count: {resources.Count}");
-while(allReferences.Count < resources.Count)
+List<Resource> OrderResource(List<(Resource, List<string>)> resources)
 {
-    foreach(var(checkResource, checkReferences) in resources)
+    resources = resources.OrderBy(r => r.Item2.Count).ToList();
+    List<Resource> resourcesList = new List<Resource>();
+    List<string> allReferences = new List<string>();
+
+    int count = 0;    
+    Console.WriteLine($"Total resources count: {resources.Count}");
+    while(allReferences.Count < resources.Count)
     {
-        if(allReferences.Contains(checkResource.Id))
+        foreach(var(checkResource, checkReferences) in resources)
         {
-            continue;
-        }
-        bool isExisted = false;
-        foreach(var reference in checkReferences)
-        {
-            if(allReferences.Contains(reference))
+            if(allReferences.Contains(checkResource.Id))
             {
-                isExisted = true;
-                break;
+                continue;
+            }
+            bool isExisted = false;
+            foreach(var reference in checkReferences)
+            {
+                if(allReferences.Contains(reference))
+                {
+                    isExisted = true;
+                    break;
+                }
+            }
+            if(isExisted == false)
+            {
+                resourcesList.Add(checkResource);
+                allReferences.Add(checkResource.Id);
             }
         }
-        if(isExisted == false)
+        //Console.WriteLine($"Current reference count: {allReferences.Count}, Current resource count: {resourcesList.Count}");
+        count++;
+        if(count > 10)
         {
-            resourcesList.Add(checkResource);
-            allReferences.Add(checkResource.Id);
+            break;
         }
     }
-    //Console.WriteLine($"Current reference count: {allReferences.Count}, Current resource count: {resourcesList.Count}");
-    count++;
-    if(count > 10)
-    {
-        break;
-    }
-}
 
-foreach(var res in resourcesList)
-{
-    Console.WriteLine($"Final Resource type: {res.TypeName}, ID: {res.Id}");
-}   
+    
+    return resourcesList;
+}
 
 #!csharp
 
 // upload resources in order
-FhirClient client = new FhirClient("http://localhost:8080/fhir");
-Dictionary<string,string> uploadedResources = new Dictionary<string,string>();
-List<Resource> uploadResourceList = new List<Resource>();
-foreach(var res in resourcesList) 
+async Task<List<string>> UploadResourceListForBundle(List<Resource> resourcesList,FhirClient client)
 {
-    // serialize the resource to JSON string
-    var fhirSerializer = new FhirJsonSerializer();
-    var jsonString = fhirSerializer.SerializeToString(res);
-
-    // get all reference in the resource
-    var pocoReferences = res.ToPocoNode();
-    //var referenceList = new List<string>();
-
-    bool hasReference = false;
-    foreach(var child in pocoReferences.Children())
+    var fhirDeserializer = new FhirJsonDeserializer();
+    Dictionary<string,string> uploadedResources = new Dictionary<string,string>();
+    List<Resource> uploadResourceList = new List<Resource>();
+    foreach(var res in resourcesList) 
     {
-        List<string> childReferences = GetReferenceFromNode(child);
-        for(int i = 0; i < childReferences.Count; i++)
+        // serialize the resource to JSON string
+        var fhirSerializer = new FhirJsonSerializer();
+        var jsonString = fhirSerializer.SerializeToString(res);
+
+        // get all reference in the resource
+        var pocoReferences = res.ToPocoNode();
+        //var referenceList = new List<string>();
+
+        bool hasReference = false;
+        foreach(var child in pocoReferences.Children())
         {
-            string referenceId = childReferences[i].Split("/").LastOrDefault();
-            if(uploadedResources.ContainsKey(referenceId))
+            List<string> childReferences = GetReferenceFromNode(child);
+            for(int i = 0; i < childReferences.Count; i++)
             {
-                jsonString = jsonString.Replace("urn:uuid:" + referenceId, uploadedResources[referenceId]);
-            }
-            else
-            {
-                //Console.WriteLine($"Resource {res.TypeName}/{res.Id} has reference {childReferences[i]} which is not uploaded yet.");
-                hasReference = true;
+                string referenceId = childReferences[i].Split("/").LastOrDefault();
+                if(uploadedResources.ContainsKey(referenceId))
+                {
+                    jsonString = jsonString.Replace("urn:uuid:" + referenceId, uploadedResources[referenceId]);
+                }
+                else
+                {
+                    //Console.WriteLine($"Resource {res.TypeName}/{res.Id} has reference {childReferences[i]} which is not uploaded yet.");
+                    hasReference = true;
+                }
             }
         }
+        if(hasReference == false)
+        {
+            var deserializedResource = fhirDeserializer.Deserialize<Resource>(jsonString);
+            uploadResourceList.Add(deserializedResource);
+            var result = await client.UpdateAsync<Resource>(deserializedResource);
+            uploadedResources[res.Id] = res.TypeName + "/" + res.Id;
+        }
     }
-    if(hasReference == false)
-    {
-        var deserializedResource = fhirDeserializer.Deserialize<Resource>(jsonString);
-        uploadResourceList.Add(deserializedResource);
-        var result = await client.UpdateAsync<Resource>(deserializedResource);
-        uploadedResources[res.Id] = res.TypeName + "/" + res.Id;
-    }
-} 
 
+    List<string> uploadedResourceIds = uploadedResources.Keys.ToList();
+    return uploadedResourceIds;
+}
 
-foreach(var key in uploadedResources.Keys)
+#!csharp
+
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Model;
+using System.Linq;
+
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+string bundleDirectory = @"C:\Hongyu\Data\測試資料\CQL測試-參考個案\大腸直腸癌";
+//string bundleFile = @"C:\Hongyu\Data\測試資料\嘉基十筆個案Bundle\7315190_bundle_4.json";
+
+// get all bundle files in the directory
+var bundleFiles = System.IO.Directory.GetFiles(bundleDirectory, "*.json");
+
+foreach(var bundleFile in bundleFiles)
 {
-    Console.WriteLine($"Uploaded resource: {uploadedResources[key]}");
+    // Console.WriteLine($"Reading patient bundle file: {bundleFile}");
+    var bundleContent = System.IO.File.ReadAllText(bundleFile);
+    // parse the bundle content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
+    Console.WriteLine($"Patient Bundle {bundleFile} has {fhirBundle.Entry.Count} entries.");
+
+    List<(Resource, List<string>)> resources = new List<(Resource, List<string>)>();
+
+    foreach(var profile in fhirBundle.Entry)
+    {
+        if(profile.Resource is Resource resource)
+        {
+            var pocoReferences = resource.ToPocoNode();
+            var referenceList = new List<string>();
+            foreach(var child in pocoReferences.Children())
+            {         
+                List<string> childReferences = GetReferenceFromNode(child);
+                referenceList.AddRange(childReferences);    
+            }
+            resources.Add((resource, referenceList));
+        }
+    }
+
+    var orderedResources = OrderResource(resources);
+
+    await UploadResourceListForBundle(orderedResources, client);
 }

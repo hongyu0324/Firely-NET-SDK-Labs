@@ -54,10 +54,6 @@ var OutputDirectory = Path.Combine(InitialDirectory, @"output");
 Console.WriteLine($"Input directory: {InputDirectory}");
 Console.WriteLine($"Output directory: {OutputDirectory}");
 
-#!markdown
-
-cqlToolkit.TranslateToElm()產生的ELM檔案有誤，思考中
-
 #!csharp
 
 var loggerFactory = LoggerFactory.Create(logging =>
@@ -65,7 +61,6 @@ var loggerFactory = LoggerFactory.Create(logging =>
     logging.AddConsole();
     logging.AddFilter("Hl7.Cql.Compiler.ExpressionBuilder", LogLevel.Error);
 });
-
 
 var cqlDirectory = new DirectoryInfo(Path.Combine(InputDirectory, "cql"));
 var cqlToolkit = new CqlToolkit(loggerFactory);
@@ -79,11 +74,13 @@ cqlToolkit.SaveElmFilesToDirectory(new DirectoryInfo(Path.Combine(OutputDirector
 
 // Add ELM libraries from Demos directory
 var elmDirectory = new DirectoryInfo(Path.Combine(OutputDirectory, "elm"));
+/*
 var loggerFactory = LoggerFactory.Create(logging =>
 {
     logging.AddConsole();
     logging.AddFilter("Hl7.Cql.Compiler.ExpressionBuilder", LogLevel.Error);
 });
+*/
 var elmToolkitConfig = new ElmToolkitConfig(CSharpNamespace: "tmhtc.Demos");
 var elmToolkit = new ElmToolkit(loggerFactory, elmToolkitConfig);
 if (ignoreErrors)
@@ -151,6 +148,27 @@ private readonly IDictionary<string, object> targetPatient =
 
 var valueSets = Enumerable.Empty<ValueSet>().ToValueSetDictionary(); // Add valuesets
 var cqlContext = FhirCqlContext.ForBundle(patientEverything,targetPatient); // Create context with data and valuesets
+
+#!csharp
+
+librarySetInvoker.SelectDefinitions().ToList().ForEach(definition =>
+{
+    try
+    {
+        //Console.WriteLine($"Invoking definition: {definition.LibraryIdentifier}.{definition.DefinitionName}");
+        if(definition.LibraryIdentifier == "MetabolicSyndromeLogic-1.0.0") 
+        {
+            var result = definition.Invoke(cqlContext);
+            Console.WriteLine($"Definition: {definition.DefinitionName}, Result: {result}");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error invoking definition {definition.DefinitionName}: {ex.Message}");
+        if (!ignoreErrors)
+            throw;
+    }
+});
 
 #!csharp
 

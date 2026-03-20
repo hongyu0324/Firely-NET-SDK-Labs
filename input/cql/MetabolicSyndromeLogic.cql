@@ -115,3 +115,11 @@ define "Abnormal_Count":
 // 若符合三項(含)以上，即判定為代謝症候群 [1, 2]
 define "Is_Metabolic_Syndrome": 
   "Abnormal_Count" >= 3
+
+// 5. 年齡篩選邏輯 (Age Filter) [1]
+define "Is_Age_40_60":
+  AgeInYears() >= 40 and AgeInYears() <= 60
+
+// 6. 最終綜合判定：年齡在40-60歲且符合代謝症候群定義 [1]
+define "Is_Age_40_60_And_MetS":
+  "Is_Age_40_60" and "Is_Metabolic_Syndrome"
