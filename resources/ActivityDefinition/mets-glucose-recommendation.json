@@ -1,0 +1,19 @@
+{
+  "resourceType": "ActivityDefinition",
+  "id": "mets-glucose-recommendation",
+  "status": "active",
+  "kind": "ServiceRequest",
+  "url": "https://www.tmhtc.net/ActivityDefinition/mets-glucose-recommendation",
+  "name": "Fasting Glucose Recommendation",
+  "title": "Fasting Glucose Recommendation",
+  "description": "Recommendation for abnormal fasting glucose.",
+  "dynamicValue": [
+    {
+      "path": "note[0].text",
+      "expression": {
+        "language": "text/cql",
+        "expression": "'偵測到飯前血糖異常，建議飲食控制、體重管理並評估糖尿病風險。'"
+      }
+    }
+  ]
+}

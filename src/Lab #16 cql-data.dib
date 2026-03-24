@@ -35,6 +35,10 @@ using Hl7.Cql.Abstractions;
 // include JObject and JArray
 using Newtonsoft.Json.Linq;
 
+#!markdown
+
+上傳 Library Resource ...
+
 #!csharp
 
 /// <summary>
@@ -54,10 +58,58 @@ foreach(var library in libraryFiles)
     fhirLibrary.Url = "https://nhicore.nhi.gov.tw/cql/Library/" + fhirLibrary.Id;
     fhirLibrary.Name = fhirLibrary.Id;
     Console.WriteLine($"Library {library} has {fhirLibrary.Url}");
-    // FhirClient client = new FhirClient("http://localhost:8080/fhir");
-    // var result = await client.UpdateAsync<Library>(fhirLibrary);
-    //Console.WriteLine($"Uploaded Library {library} with ID: {result.Id}");
+    FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    var result = await client.UpdateAsync<Library>(fhirLibrary);
+    Console.WriteLine($"Uploaded Library {library} with ID: {result.Id}");
 }
+
+#!markdown
+
+上傳 PlanDefinition、ActivityDefinition ...
+
+#!csharp
+
+// This code reads measure files in JSON format from a specified directory, 
+// deserializes them into FHIR Measure resources, and prints their URLs.
+
+var activityDefinitionFiles = System.IO.Directory.GetFiles(@"..\resources\ActivityDefinition", "*.json");
+foreach(var activityDefinition in activityDefinitionFiles)
+{
+    // read each activity definition file
+    Console.WriteLine($"Reading activity definition file: {activityDefinition}");
+    var activityDefinitionContent = System.IO.File.ReadAllText(activityDefinition);
+    // parse the activity definition content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirActivityDefinition = fhirDeserializer.Deserialize<ActivityDefinition>(activityDefinitionContent);
+
+    //FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    //var result = await client.UpdateAsync<ActivityDefinition>(fhirActivityDefinition);
+    //Console.WriteLine($"Uploaded ActivityDefinition {activityDefinition} with ID: {result.Id}");
+}
+
+#!csharp
+
+// This code reads measure files in JSON format from a specified directory, 
+// deserializes them into FHIR Measure resources, and prints their URLs.
+
+var planDefinitionFiles = System.IO.Directory.GetFiles(@"..\resources\PlanDefinition", "*.json");
+foreach(var planDefinition in planDefinitionFiles)
+{
+    // read each plan definition file
+    Console.WriteLine($"Reading plan definition file: {planDefinition}");
+    var planDefinitionContent = System.IO.File.ReadAllText(planDefinition);
+    // parse the plan definition content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirPlanDefinition = fhirDeserializer.Deserialize<PlanDefinition>(planDefinitionContent);
+
+    //FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    //var result = await client.UpdateAsync<PlanDefinition>(fhirPlanDefinition);
+    //Console.WriteLine($"Uploaded PlanDefinition {planDefinition} with ID: {result.Id}");
+}
+
+#!markdown
+
+上傳 Measure Resource ...
 
 #!csharp
 
@@ -78,6 +130,10 @@ foreach(var measure in measureFiles)
     var result = await client.UpdateAsync<Measure>(fhirMeasure);
     Console.WriteLine($"Uploaded Measure {measure} with ID: {result.Id}");
 }
+
+#!markdown
+
+上傳 Patient Bundle ...
 
 #!csharp
 

@@ -1,0 +1,301 @@
+{
+    "resourceType": "Questionnaire",
+    "id": "metabolic-syndrome-assessment",
+    "url": "https://www.tmhtc.net/Questionnaire/metabolic-syndrome-assessment",
+    "version": "1.0.0",
+    "name": "MetabolicSyndromeAssessment",
+    "title": "代謝症候群風險評估表 (國健署標準)",
+    "status": "active",
+    "publisher": "大同醫護股份有限公司",
+    "date": "2026-02-26",
+    "jurisdiction": [
+        {
+            "coding": [
+                {
+                    "system": "urn:iso:std:iso:3166",
+                    "code": "TW",
+                    "display": "Taiwan"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "profile": [
+            "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire"
+        ]
+    },
+    "extension": [
+        {
+            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationExtract",
+            "valueBoolean": true
+        },
+        {
+            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-launchContext",
+            "extension": [
+                {
+                    "url": "name",
+                    "valueCoding": {
+                        "system": "http://hl7.org/fhir/uv/sdc/CodeSystem/launchContext",
+                        "code": "patient"
+                    }
+                },
+                {
+                    "url": "type",
+                    "valueCode": "Patient"
+                }
+            ]
+        },
+        {
+            "url": "http://hl7.org/fhir/StructureDefinition/cqf-library",
+            "valueCanonical": "https://www.tmhtc.net/Library/MetabolicSyndromeLogic"
+        }
+    ],
+    "item": [
+        {
+            "linkId": "date-of-birth",
+            "text": "病患生日",
+            "type": "date",
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                    "valueExpression": {
+                        "language": "text/cql-expression",
+                        "expression": "Patient.birthDate"
+                    }
+                }
+            ]
+        },
+        {
+            "linkId": "waist-circumference",
+            "code": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "21482-5",
+                    "display": "Waist circumference"
+                }
+            ],
+            "text": "1. 腹部肥胖：腰圍 (男≧90cm, 女≧80cm)",
+            "type": "decimal",
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                    "valueCoding": {
+                        "system": "http://unitsofmeasure.org",
+                        "code": "cm"
+                    }
+                },
+                {
+                    "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                    "valueExpression": {
+                        "language": "text/cql-identifier",
+                        "expression": "LatestWaistValue"
+                    }
+                }
+            ]
+        },
+        {
+            "linkId": "blood-pressure-group",
+            "text": "2. 血壓偏高 (收縮壓≧130mmHg 或 舒張壓≧85mmHg)",
+            "type": "group",
+            "item": [
+                {
+                    "linkId": "systolic-bp",
+                    "code": [
+                        {
+                            "system": "http://loinc.org",
+                            "code": "8480-6",
+                            "display": "Systolic blood pressure"
+                        }
+                    ],
+                    "text": "收縮壓 (mmHg)",
+                    "type": "decimal",
+                    "extension": [
+                        {
+                            "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                            "valueCoding": {
+                                "system": "http://unitsofmeasure.org",
+                                "code": "mm[Hg]"
+                            }
+                        },
+                        {
+                            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                            "valueExpression": {
+                                "language": "text/cql-identifier",
+                                "expression": "LatestSystolicBPValue"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "linkId": "diastolic-bp",
+                    "code": [
+                        {
+                            "system": "http://loinc.org",
+                            "code": "8462-4",
+                            "display": "Diastolic blood pressure"
+                        }
+                    ],
+                    "text": "舒張壓 (mmHg)",
+                    "type": "decimal",
+                    "extension": [
+                        {
+                            "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                            "valueCoding": {
+                                "system": "http://unitsofmeasure.org",
+                                "code": "mm[Hg]"
+                            }
+                        },
+                        {
+                            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                            "valueExpression": {
+                                "language": "text/cql-identifier",
+                                "expression": "LatestDiastolicBPValue"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "linkId": "fasting-glucose",
+            "code": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "1558-6",
+                    "display": "Fasting glucose"
+                }
+            ],
+            "text": "3. 空腹血糖偏高 (≧100mg/dL)",
+            "type": "decimal",
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                    "valueCoding": {
+                        "system": "http://unitsofmeasure.org",
+                        "code": "mg/dL"
+                    }
+                },
+                {
+                    "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                    "valueExpression": {
+                        "language": "text/cql-identifier",
+                        "expression": "LatestGlucoseValue"
+                    }
+                }
+            ]
+        },
+        {
+            "linkId": "triglycerides",
+            "code": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "2571-8",
+                    "display": "Triglycerides"
+                }
+            ],
+            "text": "4. 空腹三酸甘油酯偏高 (≧150mg/dL)",
+            "type": "decimal",
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                    "valueCoding": {
+                        "system": "http://unitsofmeasure.org",
+                        "code": "mg/dL"
+                    }
+                },
+                {
+                    "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                    "valueExpression": {
+                        "language": "text/cql-identifier",
+                        "expression": "LatestTGValue"
+                    }
+                }
+            ]
+        },
+        {
+            "linkId": "hdl-cholesterol",
+            "code": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "2085-9",
+                    "display": "HDL cholesterol"
+                }
+            ],
+            "text": "5. 高密度脂蛋白膽固醇偏低 (男<40mg/dL, 女<50mg/dL)",
+            "type": "decimal",
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                    "valueCoding": {
+                        "system": "http://unitsofmeasure.org",
+                        "code": "mg/dL"
+                    }
+                },
+                {
+                    "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                    "valueExpression": {
+                        "language": "text/cql-identifier",
+                        "expression": "LatestHDLValue"
+                    }
+                }
+            ]
+        },
+        {
+            "linkId": "diagnosis-group",
+            "text": "自動診斷結果",
+            "type": "group",
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationExtract",
+                    "valueBoolean": false
+                }
+            ],
+            "item": [
+                {
+                    "linkId": "abnormal-count",
+                    "text": "符合指標項數",
+                    "type": "integer",
+                    "readOnly": true,
+                    "extension": [
+                        {
+                            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                            "valueExpression": {
+                                "language": "text/cql-identifier",
+                                "expression": "Abnormal_Count"
+                            }
+                        },
+                        {
+                            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+                            "valueExpression": {
+                                "language": "text/cql-identifier",
+                                "expression": "Abnormal_Count"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "linkId": "diagnosis-result",
+                    "text": "判定為代謝症候群",
+                    "type": "boolean",
+                    "readOnly": true,
+                    "extension": [
+                        {
+                            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                            "valueExpression": {
+                                "language": "text/cql-identifier",
+                                "expression": "Is_Metabolic_Syndrome"
+                            }
+                        },
+                        {
+                            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+                            "valueExpression": {
+                                "language": "text/cql-identifier",
+                                "expression": "Is_Metabolic_Syndrome"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

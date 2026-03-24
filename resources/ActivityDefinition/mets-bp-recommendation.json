@@ -1,0 +1,19 @@
+{
+  "resourceType": "ActivityDefinition",
+  "id": "mets-bp-recommendation",
+  "status": "active",
+  "kind": "ServiceRequest",
+  "url": "https://www.tmhtc.net/ActivityDefinition/mets-bp-recommendation",
+  "name": "Blood Pressure Recommendation",
+  "title": "Blood Pressure Recommendation",
+  "description": "Recommendation for abnormal blood pressure.",
+  "dynamicValue": [
+    {
+      "path": "note[0].text",
+      "expression": {
+        "language": "text/cql",
+        "expression": "'偵測到血壓異常，建議生活型態調整並評估是否需要降壓治療。'"
+      }
+    }
+  ]
+}

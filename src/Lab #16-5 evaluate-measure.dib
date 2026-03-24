@@ -1,0 +1,90 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:hl7.fhir.specification.Data.r4"
+#r "nuget:Firely.Fhir.Packages"
+#r "nuget:Hl7.Cql.Packaging"
+#r "nuget:Hl7.Cql.Fhir"
+#r "nuget:Hl7.Cql.Iso8601"
+
+#!csharp
+
+using Hl7.Cql.Fhir;
+using Hl7.Cql.Packaging;
+using Hl7.Cql.Primitives;
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using Hl7.Fhir.ElementModel;
+using Firely.Fhir.Packages;
+using Hl7.Fhir.Validation;
+using Hl7.Fhir.Serialization; 
+using Hl7.Fhir.Rest;
+using System.IO;
+using Hl7.Fhir.FhirPath;
+
+using Hl7.Cql;
+using Hl7.Cql.Runtime;
+
+using Hl7.Cql.Abstractions;
+
+// include JObject and JArray
+using Newtonsoft.Json.Linq;
+
+#!csharp
+
+// read Measure resource from FHIR Server
+var fhirClient = new FhirClient("http://127.0.0.1:8080/fhir");
+
+var measures = await fhirClient.SearchAsync<Measure>();
+
+// print the names and ids of the measures
+foreach (var entry in measures.Entry)
+{
+    if (entry.Resource is Measure measure)
+    {
+        Console.WriteLine($"Name: {measure.Name}, Id: {measure.Id}");
+    }
+}
+
+#!csharp
+
+// 執行 evaluate-measure operation
+var parameters = new Parameters();
+parameters.Add("periodStart", new Date("2023-01-01"));
+parameters.Add("periodEnd", new Date("2023-12-31"));
+parameters.Add("reportType", new Code("subject-list"));
+
+var result = await fhirClient.OperationAsync(
+    new Uri("http://localhost:8080/fhir/Measure/MetabolicSyndrome-40-60/$evaluate-measure"),
+    parameters: parameters);
+
+MeasureReport measureReport = (MeasureReport)result;
+
+// print the measure report
+//Console.WriteLine($"Measure Report Id: {measureReport.Id}");
+//Console.WriteLine($"Measure Report Status: {measureReport.Status}");
+//Console.WriteLine($"Measure Report Type: {measureReport.Type}");    
+
+// print patient list in ContainedResource
+if (measureReport.Contained != null)
+{
+    foreach (var resource in measureReport.Contained)
+    {
+        if (resource is List patientList)
+        {
+            Console.WriteLine($"Patient List Id: {patientList.Id}");
+            foreach (var entry in patientList.Entry)
+            {
+                if (entry.Item is ResourceReference patientRef)
+                {
+                    Console.WriteLine($"Patient Reference: {patientRef.Reference}");
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+  "resourceType": "ActivityDefinition",
+  "id": "mets-tg-recommendation",
+  "status": "active",
+  "kind": "ServiceRequest",
+  "url": "https://www.tmhtc.net/ActivityDefinition/mets-tg-recommendation",
+  "name": "Triglycerides Recommendation",
+  "title": "Triglycerides Recommendation",
+  "description": "Recommendation for abnormal triglycerides.",
+  "dynamicValue": [
+    {
+      "path": "note[0].text",
+      "expression": {
+        "language": "text/cql",
+        "expression": "'偵測到三酸甘油酯偏高，建議減少精緻糖攝取並評估血脂管理策略。'"
+      }
+    }
+  ]
+}
