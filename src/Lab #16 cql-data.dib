@@ -82,9 +82,9 @@ foreach(var activityDefinition in activityDefinitionFiles)
     var fhirDeserializer = new FhirJsonDeserializer();
     var fhirActivityDefinition = fhirDeserializer.Deserialize<ActivityDefinition>(activityDefinitionContent);
 
-    //FhirClient client = new FhirClient("http://localhost:8080/fhir");
-    //var result = await client.UpdateAsync<ActivityDefinition>(fhirActivityDefinition);
-    //Console.WriteLine($"Uploaded ActivityDefinition {activityDefinition} with ID: {result.Id}");
+    FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    var result = await client.UpdateAsync<ActivityDefinition>(fhirActivityDefinition);
+    Console.WriteLine($"Uploaded ActivityDefinition {activityDefinition} with ID: {result.Id}");
 }
 
 #!csharp
@@ -102,9 +102,9 @@ foreach(var planDefinition in planDefinitionFiles)
     var fhirDeserializer = new FhirJsonDeserializer();
     var fhirPlanDefinition = fhirDeserializer.Deserialize<PlanDefinition>(planDefinitionContent);
 
-    //FhirClient client = new FhirClient("http://localhost:8080/fhir");
-    //var result = await client.UpdateAsync<PlanDefinition>(fhirPlanDefinition);
-    //Console.WriteLine($"Uploaded PlanDefinition {planDefinition} with ID: {result.Id}");
+    FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    var result = await client.UpdateAsync<PlanDefinition>(fhirPlanDefinition);
+    Console.WriteLine($"Uploaded PlanDefinition {planDefinition} with ID: {result.Id}");
 }
 
 #!markdown
@@ -129,6 +129,67 @@ foreach(var measure in measureFiles)
     FhirClient client = new FhirClient("http://localhost:8080/fhir");
     var result = await client.UpdateAsync<Measure>(fhirMeasure);
     Console.WriteLine($"Uploaded Measure {measure} with ID: {result.Id}");
+}
+
+#!markdown
+
+上傳 Questionnaire
+
+#!csharp
+
+// This code reads measure files in JSON format from a specified directory, 
+// deserializes them into FHIR Measure resources, and prints their URLs.
+
+var questionnaireFiles = System.IO.Directory.GetFiles(@"../resources/questionnaire", "*.json");
+foreach(var questionnaire in questionnaireFiles)
+{
+    // read each questionnaire file
+    Console.WriteLine($"Reading questionnaire file: {questionnaire}");
+    var questionnaireContent = System.IO.File.ReadAllText(questionnaire);
+    // parse the questionnaire content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirQuestionnaire = fhirDeserializer.Deserialize<Questionnaire>(questionnaireContent);
+
+    FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    var result = await client.UpdateAsync<Questionnaire>(fhirQuestionnaire);
+    Console.WriteLine($"Uploaded Questionnaire {questionnaire} with ID: {result.Id}");
+}
+
+#!markdown
+
+上傳FHIR Data From Directory
+
+#!csharp
+
+// input\tests\MetabolicSyndromeLogic
+var testDirectory = @"..\input\tests\MetabolicSyndromeLogic";
+
+// Get directory list and read each patient file
+var patientDirectorys = System.IO.Directory.GetDirectories(testDirectory);
+foreach(var patientDirectory in patientDirectorys){
+    var patientFiles = System.IO.Directory.GetFiles(patientDirectory+@"\Patient", "*.json");
+    foreach(var patientFile in patientFiles)
+    {
+        Console.WriteLine($"Reading patient file: {patientFile}");
+        var patientContent = System.IO.File.ReadAllText(patientFile);
+        var fhirDeserializer = new FhirJsonDeserializer();
+        var fhirPatient = fhirDeserializer.Deserialize<Patient>(patientContent);
+
+        FhirClient client = new FhirClient("http://localhost:8080/fhir");
+        var result = await client.UpdateAsync<Patient>(fhirPatient);
+        Console.WriteLine($"Uploaded Patient {patientFile} with ID: {result.Id}");
+    }
+    var observationFiles = System.IO.Directory.GetFiles(patientDirectory+@"\Observation", "*.json");
+    foreach(var observationFile in observationFiles){
+        Console.WriteLine($"Reading observation file: {observationFile}");
+        var observationContent = System.IO.File.ReadAllText(observationFile);
+        var fhirDeserializer = new FhirJsonDeserializer();
+        var fhirObservation = fhirDeserializer.Deserialize<Observation>(observationContent);
+
+        FhirClient client = new FhirClient("http://localhost:8080/fhir");
+        var result = await client.UpdateAsync<Observation>(fhirObservation);
+        Console.WriteLine($"Uploaded Observation {observationFile} with ID: {result.Id}");
+    }
 }
 
 #!markdown

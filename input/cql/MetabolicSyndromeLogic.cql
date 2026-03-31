@@ -1,6 +1,6 @@
 library MetabolicSyndromeLogic version '1.0.0'
 using FHIR version '4.0.1'
-include FHIRHelpers version '4.0.001'
+include FHIRHelpers version '4.0.1'
 
 // 1. 定義代碼系統與代碼 (Terminology) [1]
 codesystem "LOINC": 'http://loinc.org'

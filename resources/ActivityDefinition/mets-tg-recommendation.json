@@ -11,7 +11,7 @@
     {
       "path": "note[0].text",
       "expression": {
-        "language": "text/cql",
+        "language": "text/fhirpath",
         "expression": "'偵測到三酸甘油酯偏高，建議減少精緻糖攝取並評估血脂管理策略。'"
       }
     }

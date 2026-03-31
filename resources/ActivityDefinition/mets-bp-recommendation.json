@@ -11,7 +11,7 @@
     {
       "path": "note[0].text",
       "expression": {
-        "language": "text/cql",
+        "language": "text/fhirpath",
         "expression": "'偵測到血壓異常，建議生活型態調整並評估是否需要降壓治療。'"
       }
     }

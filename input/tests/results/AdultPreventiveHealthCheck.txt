@@ -1,0 +1,62 @@
+CQL: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\cql
+Terminology: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\vocabulary\valueset
+Test cases:
+undefined - undefined
+
+AlcoholUseObservation=null
+BMIObservation=null
+BetelNutUseObservation=null
+DiastolicBPObservation=null
+FastingGlucoseObservation=null
+Gender=null
+HasDiabetes=false
+HasHypertension=false
+HeightObservation=null
+LastAdultCheckEncounter=null
+Patient=null
+PatientAge=null
+SmokingStatusObservation=null
+SystolicBPObservation=null
+TotalCholesterolObservation=null
+WaistCircumferenceObservation=null
+WeightObservation=null
+
+
+Evaluation logs:
+1257916 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=FLAT, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=ID_ONLY] 
+1258186 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: FHIRHelpers 
+1258264 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: FHIRHelpers 
+1258267 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: AdultPreventiveHealthCheck 
+1258268 [pool-2-thread-1] DEBUG o.o.c.c.engine.execution.CqlEngine Evaluating library: AdultPreventiveHealthCheck with expressions: [AlcoholUseObservation, BMIObservation, BetelNutUseObservation, DiastolicBPObservation, FastingGlucoseObservation, Gender, HasDiabetes, HasHypertension, HeightObservation, LastAdultCheckEncounter, LatestObservation, Patient, PatientAge, SmokingStatusObservation, SystolicBPObservation, TotalCholesterolObservation, WaistCircumferenceObservation, WeightObservation] 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258268 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Patient to Patient context with contextPath: id and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Condition to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Condition to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Encounter to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Observation to Patient context with contextPath: subject and contextValue: null. Returning unfiltered resources. 
+1258269 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+
+elapsed: 0.372 seconds

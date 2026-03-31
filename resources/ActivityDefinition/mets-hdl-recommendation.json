@@ -11,7 +11,7 @@
     {
       "path": "note[0].text",
       "expression": {
-        "language": "text/cql",
+        "language": "text/fhirpath",
         "expression": "'偵測到 HDL 偏低，建議增加運動量並評估心血管風險。'"
       }
     }

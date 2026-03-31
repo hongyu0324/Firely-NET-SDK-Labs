@@ -11,7 +11,7 @@
     {
       "path": "note[0].text",
       "expression": {
-        "language": "text/cql",
+        "language": "text/fhirpath",
         "expression": "'偵測到腰圍異常，建議評估肥胖相關風險、飲食調整與運動計畫。'"
       }
     }

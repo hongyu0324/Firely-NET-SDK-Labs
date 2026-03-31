@@ -11,7 +11,7 @@
     {
       "path": "note[0].text",
       "expression": {
-        "language": "text/cql",
+        "language": "text/fhirpath",
         "expression": "'偵測到飯前血糖異常，建議飲食控制、體重管理並評估糖尿病風險。'"
       }
     }
