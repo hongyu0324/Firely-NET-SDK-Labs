@@ -35,6 +35,31 @@ using Hl7.Cql.Abstractions;
 // include JObject and JArray
 using Newtonsoft.Json.Linq;
 
+#!csharp
+
+/// <summary>
+/// This code reads CQL library files in JSON format from a specified directory, deserializes them into FHIR Library resources, and prints their URLs.
+/// </summary>
+
+var questionnaireFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\公衛表單", "*.json");
+foreach(var questionnaire in questionnaireFiles)
+{
+    // read each questionnaire file
+    Console.WriteLine($"Reading questionnaire file: {questionnaire}");
+    var questionnaireContent = System.IO.File.ReadAllText(questionnaire);
+
+    //replace "_" with "-" in the content to match FHIR naming conventions
+    questionnaireContent = questionnaireContent.Replace("_", "-"); 
+    
+    // parse the library content as JSON
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirQuestionnaire = fhirDeserializer.Deserialize<Questionnaire>(questionnaireContent);
+    Console.WriteLine($"Questionnaire {questionnaire} has {fhirQuestionnaire.Url}");
+    FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    var result = await client.UpdateAsync<Questionnaire>(fhirQuestionnaire);
+    Console.WriteLine($"Uploaded Questionnaire {questionnaire} with ID: {result.Id}");
+}
+
 #!markdown
 
 上傳 Library Resource ...
@@ -45,7 +70,7 @@ using Newtonsoft.Json.Linq;
 /// This code reads CQL library files in JSON format from a specified directory, deserializes them into FHIR Library resources, and prints their URLs.
 /// </summary>
 
-var libraryFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\cql\pas\大腸直腸癌", "*.json");
+var libraryFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\cql\pas\乳癌", "*.json");
 foreach(var library in libraryFiles)
 {
     // read each library file
