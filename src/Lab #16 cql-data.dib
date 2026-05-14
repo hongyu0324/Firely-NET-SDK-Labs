@@ -8,6 +8,7 @@
 #r "nuget:hl7.fhir.specification.Data.r4"
 #r "nuget:Firely.Fhir.Packages"
 #r "nuget:Hl7.Cql.Packaging"
+#r "nuget: CsvHelper, 33.0.1"
 #r "nuget:Hl7.Cql.Fhir"
 #r "nuget:Hl7.Cql.Iso8601"
 
@@ -70,7 +71,7 @@ foreach(var questionnaire in questionnaireFiles)
 /// This code reads CQL library files in JSON format from a specified directory, deserializes them into FHIR Library resources, and prints their URLs.
 /// </summary>
 
-var libraryFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\cql\pas\乳癌", "*.json");
+var libraryFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\cql\pas\大腸直腸癌", "*.json");
 foreach(var library in libraryFiles)
 {
     // read each library file
@@ -86,6 +87,65 @@ foreach(var library in libraryFiles)
     FhirClient client = new FhirClient("http://localhost:8080/fhir");
     var result = await client.UpdateAsync<Library>(fhirLibrary);
     Console.WriteLine($"Uploaded Library {library} with ID: {result.Id}");
+}
+
+#!csharp
+
+// Load csv from the specified file name and parse it into a list of tuples
+// Some CSV fields contain "," so CsvHelper is used to parse correctly.
+var csvFilePath = @"C:\Users\hongy\Downloads\臺灣健保預檢規則 (PAS Library) 元數據匯總表 - Table 1.csv";
+
+// id,type,name,topic,jurisdiction,useContext,relatedArtifact,source
+List<dynamic> records;
+
+using (var reader = new StreamReader(csvFilePath))
+using (var csv = new CsvHelper.CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture))
+{
+    records = csv.GetRecords<dynamic>().ToList();
+}
+
+// Load Library resources from the FHIR server and print their URLs
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+var libraries = await client.SearchAsync<Library>() as Bundle;
+foreach (var library in libraries.Entry)
+{
+    if (library.Resource is Library lib)
+    {
+        // print records topic with the same id as the library
+        var record = records.FirstOrDefault(r => r.id == lib.Id);
+        if (record != null)
+        {
+            lib.Type = new CodeableConcept
+            {
+                Coding = new List<Coding>
+                {
+                    new Coding
+                    {
+                        System = "http://terminology.hl7.org/CodeSystem/library-type",
+                        Code = record.type?.ToString()
+                    }
+                }
+            };
+            lib.Topic = new List<CodeableConcept> { new CodeableConcept { Text = record.topic } };
+            lib.Jurisdiction = new List<CodeableConcept> { new CodeableConcept { Text = record.jurisdiction } };
+            lib.UseContext = new List<UsageContext>
+            {
+                new UsageContext
+                {
+                    Code = new Coding
+                    {
+                        Code = "workflow",
+                        System = "http://terminology.hl7.org/CodeSystem/usage-context-type"
+                    },
+                    Value = new CodeableConcept
+                    {
+                        Text = record.useContext
+                    }
+                }
+            };
+            var result = await client.UpdateAsync<Library>(lib);
+        }
+    }
 }
 
 #!markdown
@@ -165,7 +225,9 @@ foreach(var measure in measureFiles)
 // This code reads measure files in JSON format from a specified directory, 
 // deserializes them into FHIR Measure resources, and prints their URLs.
 
-var questionnaireFiles = System.IO.Directory.GetFiles(@"../resources/questionnaire", "*.json");
+
+string questionnaireDirectory = @"C:\Hongyu\Data\cql\03-糞便潛血";
+var questionnaireFiles = System.IO.Directory.GetFiles(questionnaireDirectory, "*.json");
 foreach(var questionnaire in questionnaireFiles)
 {
     // read each questionnaire file
@@ -182,39 +244,117 @@ foreach(var questionnaire in questionnaireFiles)
 
 #!markdown
 
+上傳Bundle
+
+#!csharp
+
+string bundleFile = @"C:\Hongyu\Data\cql\AdultHealthCheckup\patient-test-001\Bundle-Case1-General.json";
+var bundleContent = System.IO.File.ReadAllText(bundleFile);
+var fhirDeserializer = new FhirJsonDeserializer();
+var fhirBundle = fhirDeserializer.Deserialize<Bundle>(bundleContent);
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+var result = await client.UpdateAsync<Bundle>(fhirBundle);
+Console.WriteLine($"Uploaded Bundle {bundleFile} with ID: {result.Id}");
+
+#!markdown
+
+重組檔案結構
+
+#!csharp
+
+var patientDirectory = @"C:\Hongyu\Data\cql\02-口腔黏膜\OralMucosaScreening\patient-case03";
+
+var resourceFiles = System.IO.Directory.GetFiles(patientDirectory, "*.json");
+
+foreach(var resourceFile in resourceFiles)
+{
+    if (resourceFile.Split("\\").ToList().Last().StartsWith("bundle"))
+    {
+        continue;
+    }
+    string typeName = resourceFile.Split("\\").ToList().Last().Split("_").ToList()[0];
+    string directory = patientDirectory + "\\" + typeName;
+    if (!Directory.Exists(directory))
+    {
+        Directory.CreateDirectory(directory);
+    }
+
+    // move the file to the directory
+    string fileName = resourceFile.Split("\\").ToList().Last();
+    string newFilePath = directory + "\\" + fileName;
+    System.IO.File.Move(resourceFile, newFilePath);
+}
+
+#!markdown
+
 上傳FHIR Data From Directory
 
 #!csharp
 
+async Task<string> UploadResourceToFhirServer(string resourceFile)
+{
+    var resourceContent = System.IO.File.ReadAllText(resourceFile);
+    var fhirDeserializer = new FhirJsonDeserializer();
+    var fhirResource = fhirDeserializer.Deserialize<Resource>(resourceContent);
+
+    FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    var result = await client.UpdateAsync(fhirResource);
+    
+    return result.Id;
+}
 // input\tests\MetabolicSyndromeLogic
-var testDirectory = @"..\input\tests\MetabolicSyndromeLogic";
+var patientDirectory = @"C:\Hongyu\Data\cql\03-糞便潛血\Fecal_Occult_Blood_Test\fobt-B01";
+List<string> resourceTypes = new List<string> { 
+    "Organization",
+    "location",
+    "Practitioner",
+    "Patient", 
+    "RelatedPerson",
+    "Encounter",
+    "Observation", 
+    "Coverage"
+};
 
-// Get directory list and read each patient file
-var patientDirectorys = System.IO.Directory.GetDirectories(testDirectory);
-foreach(var patientDirectory in patientDirectorys){
-    var patientFiles = System.IO.Directory.GetFiles(patientDirectory+@"\Patient", "*.json");
-    foreach(var patientFile in patientFiles)
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+foreach(var type in resourceTypes)
+{
+    var files = System.IO.Directory.GetFiles(patientDirectory + $@"\{type}", "*.json");
+    foreach(var file in files)
     {
-        Console.WriteLine($"Reading patient file: {patientFile}");
-        var patientContent = System.IO.File.ReadAllText(patientFile);
-        var fhirDeserializer = new FhirJsonDeserializer();
-        var fhirPatient = fhirDeserializer.Deserialize<Patient>(patientContent);
-
-        FhirClient client = new FhirClient("http://localhost:8080/fhir");
-        var result = await client.UpdateAsync<Patient>(fhirPatient);
-        Console.WriteLine($"Uploaded Patient {patientFile} with ID: {result.Id}");
+        string resultId = await UploadResourceToFhirServer(file);
+        Console.WriteLine($"Uploaded Resource {file} with ID: {resultId}");
     }
-    var observationFiles = System.IO.Directory.GetFiles(patientDirectory+@"\Observation", "*.json");
-    foreach(var observationFile in observationFiles){
-        Console.WriteLine($"Reading observation file: {observationFile}");
-        var observationContent = System.IO.File.ReadAllText(observationFile);
-        var fhirDeserializer = new FhirJsonDeserializer();
-        var fhirObservation = fhirDeserializer.Deserialize<Observation>(observationContent);
+}
 
-        FhirClient client = new FhirClient("http://localhost:8080/fhir");
-        var result = await client.UpdateAsync<Observation>(fhirObservation);
-        Console.WriteLine($"Uploaded Observation {observationFile} with ID: {result.Id}");
-    }
+#!csharp
+
+string medicationCodeFile = @"C:\Hongyu\Data\ig\pas2\code\1140728_癌症用藥給付規定所列基因檢測項目.csv";
+var medicationCodes = System.IO.File.ReadAllLines(medicationCodeFile);
+
+// ignore the first two lines (header)
+medicationCodes = medicationCodes.Skip(2).ToArray();
+
+string currentDisease = "";
+string currentMedication = "";
+string currentCode = "";
+string currentChinese = "";
+string currentEnglish = "";
+string currentGene = "";
+
+foreach(var medicationCode in medicationCodes)
+{
+    var codeParts = medicationCode.Split(',');
+    if(codeParts.Length < 8) continue; // skip if the line doesn't have enough parts
+
+    if(!string.IsNullOrEmpty(codeParts[0].Trim())) currentDisease = codeParts[0].Trim();
+    if(!string.IsNullOrEmpty(codeParts[1].Trim())) currentMedication = codeParts[1].Trim();
+    if(!string.IsNullOrEmpty(codeParts[2].Trim())) currentCode = codeParts[2].Trim();
+    if(!string.IsNullOrEmpty(codeParts[3].Trim())) currentChinese = codeParts[3].Trim();
+    if(!string.IsNullOrEmpty(codeParts[4].Trim())) currentEnglish = codeParts[4].Trim();
+    if(!string.IsNullOrEmpty(codeParts[5].Trim())) currentGene = codeParts[5].Trim();
+
+
+    Console.WriteLine($"Disease: {currentDisease}, Medication: {currentMedication}, Code: {currentCode}, Chinese: {currentChinese}, English: {currentEnglish}, Gene: {currentGene}");
 }
 
 #!markdown

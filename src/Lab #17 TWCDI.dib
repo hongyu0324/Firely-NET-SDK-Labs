@@ -1,0 +1,200 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget: ExcelDataReader, 3.7.0"
+#r "nuget: ExcelDataReader.DataSet, 3.7.0"
+#r "nuget: Newtonsoft.Json"
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+using System.Data;
+using ExcelDataReader;
+using System.Text.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using Hl7.Fhir.Serialization;
+using Hl7.Fhir.Model;
+
+#!csharp
+
+// read CSV file (DataFrame.LoadCsv supports CSV input)
+string filePath = @"C:\Hongyu\Data\TWCDI\TWCDI_細部內容_V2.0.3_FHIR_PATH_1150424.xlsx";
+
+// load the Excel file into a DataFrame
+// Install ExcelDataReader to handle Excel files
+
+var stream = System.IO.File.OpenRead(filePath);
+
+
+
+System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+class TWCDIObject
+{
+    public string TWCore { get; set; }
+    public string TWCDI { get; set; }
+    public string Description { get; set; }
+    public string TWCDIIndex { get; set; }
+    public string HospitalData { get; set; }
+};
+
+Dictionary<string,string> twcdiDictionary = new Dictionary<string, string>();
+
+using (var reader = ExcelDataReader.ExcelReaderFactory.CreateReader(stream))
+{
+    var result = reader.AsDataSet();
+    var table = result.Tables[0]; // Assuming the data is in the first sheet
+    
+    string twcdi = string.IsNullOrEmpty(table.Rows[0][0].ToString()) ? "N/A" : table.Rows[0][1].ToString().Replace("\n", "|").Split("|").FirstOrDefault();
+    string twcore = string.IsNullOrEmpty(table.Rows[0][1].ToString()) ? "N/A" : table.Rows[0][1].ToString().Replace("\n", "|").Split("|").LastOrDefault();
+    string description = string.IsNullOrEmpty(table.Rows[0][2].ToString()) ? "N/A" : table.Rows[0][2].ToString().Replace("\n","|");
+    string twcdiIndex = string.IsNullOrEmpty(table.Rows[0][5].ToString()) ? "N/A" : table.Rows[0][5].ToString();
+    string hopitalData = string.IsNullOrEmpty(table.Rows[0][3].ToString()) ? "N/A" : table.Rows[0][3].ToString();
+    
+    // start from the second row (index 1) to skip the header
+    List<TWCDIObject> twcdiObjects = new List<TWCDIObject>();
+    Dictionary<string,string> twcdiDataList = new Dictionary<string, string>();
+    
+    // ignore the first row (header) and loop through the rest of the rows
+    for (int i = 1; i < table.Rows.Count; i++)
+    {
+        var row = table.Rows[i];
+        twcdi = string.IsNullOrEmpty(row[0].ToString()) ? twcore : row[1].ToString().Replace("\n","|").Split("|").FirstOrDefault();
+        twcore = string.IsNullOrEmpty(row[1].ToString()) ? twcdi : row[1].ToString().Replace("\n","|").Split("|").LastOrDefault();
+        description = string.IsNullOrEmpty(row[2].ToString()) ? description : row[2].ToString().Replace("\n","|");
+        twcdiIndex = string.IsNullOrEmpty(row[5].ToString()) ? twcdiIndex : row[5].ToString();
+        hopitalData = string.IsNullOrEmpty(row[3].ToString()) ? hopitalData : row[3].ToString();
+        // Console.WriteLine($"{twcdiIndex},{hopitalData},{twcore},{twcdi},{description}");
+        twcdiObjects.Add(new TWCDIObject
+        {
+            TWCore = twcore,
+            TWCDI = twcdi,
+            Description = description,
+            TWCDIIndex = twcdiIndex,
+            HospitalData = hopitalData
+        });
+        twcdiDataList[twcdiIndex.Replace("-","")] = hopitalData;
+    }
+
+    // convert the list of TWCDIObject to a Json string
+    // solve the problem for chinese characters in the output
+    // TWCDI\u4E4B\u6B04\u4F4D\u540D\u7A31\u53CA\u5C0D\u61C9TW Core IG\u8DEF\u5F91",
+    var options = new System.Text.Json.JsonSerializerOptions
+    {
+        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        WriteIndented = true
+    };
+    string jsonString = System.Text.Json.JsonSerializer.Serialize(twcdiObjects, options);
+    Console.WriteLine(jsonString);
+    
+    // write the json string to a file
+    string outputPath = @"C:\Hongyu\Data\TWCDI\twcdi.json";
+    System.IO.File.WriteAllText(outputPath, jsonString);
+
+    string jsonDataList = System.Text.Json.JsonSerializer.Serialize(twcdiDataList, options);
+    Console.WriteLine(jsonDataList);
+
+    string outputDataListPath = @"C:\Hongyu\Data\TWCDI\twcdi_data.json";
+    System.IO.File.WriteAllText(outputDataListPath, jsonDataList);      
+}
+
+#!csharp
+
+// read fume file and print the content
+string fumeFilePath = @"C:\Hongyu\Project\tmht-api\fumeScript\TWCDI\Patient.fume";
+string fumeContent = System.IO.File.ReadAllText(fumeFilePath);
+
+// print all CDIXXXX and order the output by the number after CDI
+var cdiLines = fumeContent.Split("\n").Where(line => line.Contains("CDI")).ToList();
+var orderedCdiLines = cdiLines.OrderBy(line => {
+    var cdiIndex = line.Split("CDI").LastOrDefault()?.Trim();
+    return int.TryParse(cdiIndex, out int index) ? index : int.MaxValue;
+}).ToList();
+foreach (var line in orderedCdiLines)
+{
+    Console.WriteLine(line);
+}
+
+#!csharp
+
+// read the json file and convert it back to a list of TWCDIObject
+string jsonFilePath = @"C:\Hongyu\Data\TWCDI\twcdi_data.json";
+string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
+var deserializedDataList = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(jsonContent);
+
+#!csharp
+
+async Task<string> TransferToFHIRByType<T>(string type, string value)
+{
+    var fumeBaseUrl = "http://127.0.0.1:5062/api/";
+    var _httpClient = new HttpClient { BaseAddress = new Uri(fumeBaseUrl) };
+    var _fhirDeserializer = new FhirJsonDeserializer();
+    string ErrorMessage = string.Empty;
+
+    var httpContent = new StringContent(value, Encoding.UTF8, "application/json");
+
+    var response = await _httpClient.PostAsync($"TWCDI/{type}", httpContent);
+
+    var responseContent = await response.Content.ReadAsStringAsync();
+
+    if (responseContent.StartsWith("\""))
+    {
+        responseContent = JsonConvert.DeserializeObject<string>(responseContent);
+    }
+
+    if (!response.IsSuccessStatusCode)
+    {
+        ErrorMessage = $"Error: {response.StatusCode}, {responseContent}";
+    }
+    else
+    {
+        Console.WriteLine("Data successfully sent to Fume API.");
+        // Console.WriteLine(responseContent);
+        Base resource = _fhirDeserializer.Deserialize<Resource>(responseContent);
+
+        string resourceJson = new FhirJsonSerializer().SerializeToString(resource, pretty: true);
+        return resourceJson;    
+    }
+    return ErrorMessage;
+}
+
+#!csharp
+
+async Task<string> UploadTWCDIData<T>(string resourceJson)
+{
+    string resourceId = string.Empty;
+    //upload the patient resource to the FHIR server
+    var fhirServerBaseUrl = "http://127.0.1:8080/fhir/";
+    var fhirClient = new HttpClient { BaseAddress = new Uri(fhirServerBaseUrl) };
+    var fhirContent = new StringContent(resourceJson, Encoding.UTF8, "application/fhir+json");
+    var fhirResponse = await fhirClient.PostAsync(typeof(T).Name, fhirContent);
+    var fhirResponseContent = await fhirResponse.Content.ReadAsStringAsync();
+
+    // Insert the patient resource id into the begining of twcdi_data.json file
+    if (fhirResponse.IsSuccessStatusCode)
+    {
+        var fhirResponseJson = JObject.Parse(fhirResponseContent);
+        resourceId = fhirResponseJson["id"]?.ToString();
+        string key = "CDI" + fhirResponseJson["resourceType"]?.ToString();
+        deserializedDataList[key] = resourceId;
+        var jsonOptions = new System.Text.Json.JsonSerializerOptions
+        {
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            WriteIndented = true
+        };
+        string updatedJsonContent = System.Text.Json.JsonSerializer.Serialize(deserializedDataList, jsonOptions);
+        System.IO.File.WriteAllText(jsonFilePath, updatedJsonContent);
+    } 
+    return resourceId;
+}
+
+#!csharp
+
+string patientJson = await TransferToFHIRByType<Patient>("Patient", jsonContent);
+string patientResourceId = await UploadTWCDIData<Patient>(patientJson);
