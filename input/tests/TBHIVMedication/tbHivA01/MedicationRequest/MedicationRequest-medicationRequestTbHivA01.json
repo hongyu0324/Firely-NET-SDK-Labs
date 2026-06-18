@@ -1,0 +1,57 @@
+{
+  "resourceType": "MedicationRequest",
+  "id": "medicationRequestTbHivA01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/MedicationRequest-twcore"
+    ]
+  },
+  "identifier": [
+    { "value": "MED-2026-A01" }
+  ],
+  "status": "active",
+  "intent": "order",
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "system": "https://twcore.mohw.gov.tw/ig/twcore/CodeSystem/medication-nhi-tw",
+        "code": "A048038100",
+        "display": "Isoniazid Tablets 300mg"
+      }
+    ],
+    "text": "Isoniazid 300mg"
+  },
+  "subject": { "reference": "Patient/tbHivA01" },
+  "encounter": { "reference": "Encounter/encounterTbHivA01" },
+  "authoredOn": "2026-05-20T09:30:00+08:00",
+  "requester": { "reference": "Practitioner/practitionerTbHivA01" },
+  "dosageInstruction": [
+    {
+      "timing": {
+        "code": { "text": "QD" }
+      },
+      "doseAndRate": [
+        {
+          "doseQuantity": {
+            "value": 1,
+            "unit": "tablet",
+            "system": "http://unitsofmeasure.org",
+            "code": "{tbl}"
+          }
+        }
+      ]
+    }
+  ],
+  "dispenseRequest": {
+    "quantity": {
+      "value": 60,
+      "unit": "tablet"
+    },
+    "expectedSupplyDuration": {
+      "value": 60,
+      "unit": "days",
+      "system": "http://unitsofmeasure.org",
+      "code": "d"
+    }
+  }
+}

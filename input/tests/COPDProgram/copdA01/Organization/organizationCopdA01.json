@@ -1,0 +1,17 @@
+{
+  "resourceType": "Organization",
+  "id": "organizationCopdA01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Organization-twcore"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "http://nhi.gov.tw/sid/organization-code",
+      "value": "0101080011"
+    }
+  ],
+  "name": "臺北市立胸腔醫院",
+  "active": true
+}

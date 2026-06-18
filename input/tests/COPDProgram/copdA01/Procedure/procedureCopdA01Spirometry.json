@@ -1,0 +1,26 @@
+{
+  "resourceType": "Procedure",
+  "id": "procedureCopdA01Spirometry",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Procedure-twcore"
+    ]
+  },
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "http://nhi.gov.tw/fhir/CodeSystem/nhi-order-code",
+        "code": "17006C",
+        "display": "Spirometry pre & post bronchodilator"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/copdA01"
+  },
+  "encounter": {
+    "reference": "Encounter/encounterCopdA01"
+  },
+  "performedDateTime": "2026-05-15T09:15:00+08:00"
+}

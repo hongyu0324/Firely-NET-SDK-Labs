@@ -1,0 +1,8 @@
+{
+  "resourceType": "Location",
+  "id": "cpw79bLoc",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"] },
+  "status": "active",
+  "name": "兒童保健診間 79B",
+  "managingOrganization": { "reference": "Organization/cpw79bClinic" }
+}

@@ -1,0 +1,35 @@
+{
+  "resourceType": "Observation",
+  "id": "observationCopdB02Smoking",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"
+    ]
+  },
+  "status": "final",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "72166-2",
+        "display": "Tobacco smoking status"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/copdB02"
+  },
+  "encounter": {
+    "reference": "Encounter/encounterCopdB02"
+  },
+  "effectiveDateTime": "2026-05-18T14:00:00+08:00",
+  "valueCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://nhi.gov.tw/fhir/CodeSystem/smoking-status-tw",
+        "code": "2",
+        "display": "Former smoker"
+      }
+    ]
+  }
+}

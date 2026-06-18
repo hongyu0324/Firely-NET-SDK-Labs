@@ -1,0 +1,12 @@
+{
+  "resourceType": "EpisodeOfCare",
+  "id": "ckdAEpisode",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/EpisodeOfCare-twcore"] },
+  "status": "active",
+  "statusHistory": [
+    { "status": "active", "period": { "start": "2026-05-22" } }
+  ],
+  "patient": { "reference": "Patient/ckdA" },
+  "managingOrganization": { "reference": "Organization/ckdAClinic" },
+  "period": { "start": "2026-05-22" }
+}

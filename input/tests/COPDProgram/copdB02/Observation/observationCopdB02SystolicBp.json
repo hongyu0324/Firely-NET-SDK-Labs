@@ -1,0 +1,31 @@
+{
+  "resourceType": "Observation",
+  "id": "observationCopdB02SystolicBp",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"
+    ]
+  },
+  "status": "final",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "8480-6",
+        "display": "Systolic blood pressure"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/copdB02"
+  },
+  "encounter": {
+    "reference": "Encounter/encounterCopdB02"
+  },
+  "effectiveDateTime": "2026-05-18T14:00:00+08:00",
+  "valueQuantity": {
+    "value": 130,
+    "unit": "mm[Hg]",
+    "system": "http://unitsofmeasure.org"
+  }
+}

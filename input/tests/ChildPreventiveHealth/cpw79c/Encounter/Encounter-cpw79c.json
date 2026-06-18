@@ -1,0 +1,50 @@
+{
+  "resourceType": "Encounter",
+  "id": "cpw79cEnc",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "https://nhi.gov.tw/fhir/identifier/nhi-order-code",
+      "value": "79"
+    }
+  ],
+  "status": "finished",
+  "class": {
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    "code": "AMB",
+    "display": "ambulatory"
+  },
+  "type": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "171048007"
+        }
+      ],
+      "text": "兒童預防保健第7次（4-7歲）"
+    }
+  ],
+  "subject": {
+    "reference": "Patient/cpw79c"
+  },
+  "period": {
+    "start": "2026-05-22T09:00:00+08:00",
+    "end": "2026-05-22T09:30:00+08:00"
+  },
+  "location": [
+    {
+      "location": {
+        "reference": "Location/cpw79cLoc"
+      },
+      "status": "completed"
+    }
+  ],
+  "serviceProvider": {
+    "reference": "Organization/cpw79cClinic"
+  }
+}

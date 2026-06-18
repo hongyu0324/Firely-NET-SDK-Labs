@@ -1,0 +1,8 @@
+{
+  "resourceType": "Location",
+  "id": "cpw77Loc",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"] },
+  "status": "active",
+  "name": "兒童保健診間 77",
+  "managingOrganization": { "reference": "Organization/cpw77Clinic" }
+}

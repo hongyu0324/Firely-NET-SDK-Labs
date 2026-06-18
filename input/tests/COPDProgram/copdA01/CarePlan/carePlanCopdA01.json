@@ -1,0 +1,20 @@
+{
+  "resourceType": "CarePlan",
+  "id": "carePlanCopdA01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/CarePlan-twcore"
+    ]
+  },
+  "status": "active",
+  "intent": "plan",
+  "subject": {
+    "reference": "Patient/copdA01"
+  },
+  "encounter": {
+    "reference": "Encounter/encounterCopdA01"
+  },
+  "period": {
+    "start": "2026-05-15"
+  }
+}

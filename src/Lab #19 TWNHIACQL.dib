@@ -28,14 +28,20 @@ var igsPath = Path.Combine(profilePath, @"package\ImplementationGuide-tw.gov.moh
 var ig = new FhirJsonDeserializer().Deserialize<ImplementationGuide>(File.ReadAllText(igsPath));
 var listResource = ig.Definition.Resource;
 
+var client = new FhirClient("http://localhost:8080/fhir");
 //printing the resources in the ImplementationGuide
 foreach (var resource in listResource)
 {
     string profileName = resource.Reference.Url.ToString();
-
-    //profileName = profileName.Substring(profileName.LastIndexOf("/") + 1);
-    Console.WriteLine(profileName);
+    profileName = profileName.Substring(profileName.LastIndexOf("/") + 1);
     
+    //read the profile file
+    var profileFilePath = Path.Combine(profilePath, @"package\Library-" + profileName + ".json");
+    var profile = new FhirJsonDeserializer().Deserialize<Resource>(File.ReadAllText(profileFilePath));
+
+    //upload the profile to the FHIR server
+    //var result = await client.UpdateAsync(profile);
+    //Console.WriteLine($"Uploaded profile: {profileName}");
 }
 
 #!csharp
@@ -76,3 +82,17 @@ foreach (var libraryResource in libraryResources){
     Console.WriteLine($"Cancer Type: {cancerType}, Drug: {drug}, Line Number: {lineNumber}");
 }
 //libraryResources[33]
+
+#!csharp
+
+// using FHIR Search to find all library resource with resource name starts with "BC" 
+var options = new SearchParams()
+    .Where("name:starts-with=BC"); // only return the summary of the resource
+
+var searchResult = await client.SearchAsync<Library>(options);
+
+foreach (var entry in searchResult.Entry)
+{
+    var library = (Library)entry.Resource;
+    Console.WriteLine($"Library Resource: {library.Name}");
+}

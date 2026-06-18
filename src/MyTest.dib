@@ -1,0 +1,106 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+#r "nuget:Firely.Fhir.Packages"
+#r "nuget:Newtonsoft.Json"
+
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Text;
+using Newtonsoft.Json.Linq;
+
+Console.WriteLine("套件載入成功！");
+
+#!csharp
+
+var libraryFiles = System.IO.Directory.GetFiles(@"C:\Hongyu\Data\工研院測試資料\工研院", "*.json");
+
+foreach(var inputFilePath in libraryFiles)
+{
+    Console.WriteLine($"Reading library file: {inputFilePath}");
+//var libraryContent = System.IO.File.ReadAllText(inputFilePath);
+// 1. 定義你的檔案路徑 (請替換成你電腦中的實際路徑)
+//string inputFilePath = @"C:\your_folder\everything_result.json"; 
+
+if (!File.Exists(inputFilePath))
+{
+    throw new FileNotFoundException($"找不到檔案，請確認路徑是否正確：{inputFilePath}");
+}
+
+// 2. 載入並解析原始 JSON
+string jsonText = File.ReadAllText(inputFilePath);
+JObject bundle = JObject.Parse(jsonText);
+
+// 3. 將總體型態修改為交易模式 (transaction)
+bundle["type"] = "transaction";
+
+// 4. 遍歷 entry 陣列，動態加上 PUT 請求
+JArray entries = (JArray)bundle["entry"];
+int count = 0;
+
+if (entries != null)
+{
+    foreach (JObject entry in entries)
+    {
+        JObject resource = (JObject)entry["resource"];
+        if (resource != null)
+        {
+            string resType = resource["resourceType"]?.ToString();
+            string resId = resource["id"]?.ToString();
+
+            if (!string.IsNullOrEmpty(resType) && !string.IsNullOrEmpty(resId))
+            {
+                // 核心改動：注入 request 屬性
+                entry["request"] = new JObject
+                {
+                    { "method", "PUT" },
+                    { "url", $"{resType}/{resId}" }
+                };
+                count++;
+            }
+        }
+    }
+}
+
+// 5. 將轉換好的結果轉回字串，並暫存在 Notebook 變數中
+string finalTransactionJson = bundle.ToString();
+
+Console.WriteLine($"處理完成！共轉換了 {count} 筆資源。");
+// 利用 Polyglot Notebooks 的內建功能直接預覽前 500 個字元
+finalTransactionJson.Substring(0, Math.Min(500, finalTransactionJson.Length));
+
+// 設定新伺服器的 Base URL (後面不要加資源名稱)
+string newServerUrl = "http://localhost:8080/fhir"; 
+
+using (var client = new HttpClient())
+{
+    // 建立符合 FHIR 標準的規格內容 (application/fhir+json)
+    var content = new StringContent(finalTransactionJson, Encoding.UTF8, "application/fhir+json");
+    
+    Console.WriteLine($"傳送中，目標伺服器：{newServerUrl} ...");
+    
+    // 發送請求
+    HttpResponseMessage response = await client.PostAsync(newServerUrl, content);
+    
+    // 輸出結果
+    Console.WriteLine($"【執行結果】HTTP 狀態碼: {response.StatusCode} ({(int)response.StatusCode})");
+    
+    string responseBody = await response.Content.ReadAsStringAsync();
+    
+    if (response.IsSuccessStatusCode)
+    {
+        Console.WriteLine("🎉 恭喜！FHIR 資源已成功同步（保留原 ID 搬家成功）。");
+    }
+    else
+    {
+        Console.WriteLine("❌ 伺服器拒絕或發生錯誤，詳細原因如下：");
+        Console.WriteLine(responseBody);
+    }
+}
+
+}

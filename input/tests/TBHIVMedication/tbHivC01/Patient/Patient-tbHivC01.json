@@ -1,0 +1,28 @@
+{
+  "resourceType": "Patient",
+  "id": "tbHivC01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "http://hl7.org/fhir/sid/tw-nid",
+      "value": "C456789012"
+    },
+    {
+      "type": {
+        "coding": [
+          { "system": "http://terminology.hl7.org/CodeSystem/v2-0203", "code": "MR" }
+        ]
+      },
+      "value": "MR-C01-33333"
+    }
+  ],
+  "name": [
+    { "use": "official", "text": "測試非結核丙" }
+  ],
+  "gender": "male",
+  "birthDate": "1985-06-25"
+}

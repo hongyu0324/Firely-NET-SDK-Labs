@@ -1,0 +1,53 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "cpw79bQR",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/QuestionnaireResponse-twcore"] },
+  "questionnaire": "Questionnaire/ChildPreventiveHealth-SDC",
+  "status": "completed",
+  "subject": { "reference": "Patient/cpw79b" },
+  "encounter": { "reference": "Encounter/cpw79bEnc" },
+  "authored": "2026-05-22T09:15:00+08:00",
+  "item": [
+    {
+      "linkId": "table1_basic",
+      "item": [
+        { "linkId": "Col1", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col2", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col3", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col4", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col5", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col6", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col7", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col8", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col9", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col10", "answer": [{ "valueString": "2" }] }
+      ]
+    },
+    {
+      "linkId": "upload_prev_health_t57",
+      "text": "表三題項（B 題組）",
+      "item": [
+        { "linkId": "upload_prev_health_t57_Col1", "answer": [{ "valueString": "2" }] },
+        { "linkId": "upload_prev_health_t57_Col15", "answer": [{ "valueString": "1" }] },
+        { "linkId": "upload_prev_health_t57_Col16", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col18", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col20", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col57", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col58", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col60", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col61", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col62", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col63", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col67", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col68", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col71", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col72", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col73", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col96", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col97", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col98", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col99", "answer": [{ "valueString": "0" }] }
+      ]
+    }
+  ]
+}

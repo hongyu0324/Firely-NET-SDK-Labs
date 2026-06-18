@@ -1,0 +1,13 @@
+{
+  "resourceType": "Organization",
+  "id": "organizationTbHivC01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Organization-twcore"
+    ]
+  },
+  "identifier": [
+    { "value": "9876543210" }
+  ],
+  "name": "測試診所丙"
+}

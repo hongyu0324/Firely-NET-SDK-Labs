@@ -1,0 +1,17 @@
+{
+  "resourceType": "Patient",
+  "id": "tbLabC01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore"
+    ]
+  },
+  "identifier": [
+    { "system": "http://hl7.org/fhir/sid/tw-nid", "value": "C456789012" }
+  ],
+  "name": [
+    { "use": "official", "text": "測試結核檢驗丙" }
+  ],
+  "gender": "male",
+  "birthDate": "1970-06-20"
+}

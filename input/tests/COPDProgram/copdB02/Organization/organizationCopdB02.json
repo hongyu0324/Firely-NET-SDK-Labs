@@ -1,0 +1,17 @@
+{
+  "resourceType": "Organization",
+  "id": "organizationCopdB02",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Organization-twcore"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "http://nhi.gov.tw/sid/organization-code",
+      "value": "0202080022"
+    }
+  ],
+  "name": "新北市仁愛診所",
+  "active": true
+}

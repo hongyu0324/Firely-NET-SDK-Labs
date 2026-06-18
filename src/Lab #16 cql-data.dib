@@ -38,6 +38,28 @@ using Newtonsoft.Json.Linq;
 
 #!csharp
 
+// using $everything operation to get all resources related to a patient
+// https://www.hl7.org/fhir/operation-patient-everything.html
+
+string patientId = "0322400R12267295200000000000000"; // replace with actual patient ID
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+var operationResult = await client.OperationAsync(
+    new Uri($"http://localhost:8080/fhir/Patient/{patientId}"),
+    "everything",
+    parameters: null,
+    useGet: true);
+
+var applyResult = operationResult as Bundle
+    ?? throw new InvalidOperationException("Patient/$everything did not return a Bundle.");
+
+// display the resources in the bundle
+foreach (var entry in applyResult.Entry)
+{    
+    Console.WriteLine($"Resource Type: {entry.Resource.TypeName}, ID: {entry.Resource.Id}");
+}
+
+#!csharp
+
 /// <summary>
 /// This code reads CQL library files in JSON format from a specified directory, deserializes them into FHIR Library resources, and prints their URLs.
 /// </summary>
@@ -226,7 +248,7 @@ foreach(var measure in measureFiles)
 // deserializes them into FHIR Measure resources, and prints their URLs.
 
 
-string questionnaireDirectory = @"C:\Hongyu\Data\cql\03-糞便潛血";
+string questionnaireDirectory = @"C:\Hongyu\Data\cql\公衛表單\04-兒童預防保健";
 var questionnaireFiles = System.IO.Directory.GetFiles(questionnaireDirectory, "*.json");
 foreach(var questionnaire in questionnaireFiles)
 {
@@ -291,38 +313,64 @@ foreach(var resourceFile in resourceFiles)
 
 #!csharp
 
-async Task<string> UploadResourceToFhirServer(string resourceFile)
+async Task<string> UploadResourceToFhirServer(string resourceFile,FhirClient client = null)
 {
     var resourceContent = System.IO.File.ReadAllText(resourceFile);
     var fhirDeserializer = new FhirJsonDeserializer();
     var fhirResource = fhirDeserializer.Deserialize<Resource>(resourceContent);
 
-    FhirClient client = new FhirClient("http://localhost:8080/fhir");
+    if (client == null)
+    {
+        client = new FhirClient("http://localhost:8080/fhir");
+    }
     var result = await client.UpdateAsync(fhirResource);
     
     return result.Id;
 }
 // input\tests\MetabolicSyndromeLogic
-var patientDirectory = @"C:\Hongyu\Data\cql\03-糞便潛血\Fecal_Occult_Blood_Test\fobt-B01";
+var patientDirectory = @"C:\Hongyu\Project\公衛表單\input\tests\Mammography\mammoA01";
 List<string> resourceTypes = new List<string> { 
     "Organization",
-    "location",
+    "Location",
     "Practitioner",
-    "Patient", 
+    "Patient",
+    "Coverage",
     "RelatedPerson",
+    "Condition",
     "Encounter",
-    "Observation", 
-    "Coverage"
+    "Specimen",
+    "Observation",  
+    "MedicationRequest",
+    "ServiceRequest",
+    "DiagnosticReport",
+    "CarePlan",
+    "MedicationStatement",
+    "Immunization",
+    "Procedure",
+    "ImagingStudy",
+    "Device"
 };
 
 FhirClient client = new FhirClient("http://localhost:8080/fhir");
 foreach(var type in resourceTypes)
 {
+    // if the directory does not exist, skip
+    if (!Directory.Exists(patientDirectory + $@"\{type}"))    {
+        Console.WriteLine($"Directory {patientDirectory + $@"\{type}"} does not exist, skipping resource type {type}");
+        continue;
+    }
     var files = System.IO.Directory.GetFiles(patientDirectory + $@"\{type}", "*.json");
+
     foreach(var file in files)
     {
-        string resultId = await UploadResourceToFhirServer(file);
-        Console.WriteLine($"Uploaded Resource {file} with ID: {resultId}");
+        try{
+            string resultId = await UploadResourceToFhirServer(file, client);
+            Console.WriteLine($"Uploaded Resource {file} with ID: {resultId}");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error uploading resource {file}: {ex.Message}");
+        }
     }
 }
 

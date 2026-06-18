@@ -1,0 +1,27 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "cpw72QR",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/QuestionnaireResponse-twcore"] },
+  "questionnaire": "Questionnaire/ChildPreventiveHealth-SDC",
+  "status": "completed",
+  "subject": { "reference": "Patient/cpw72" },
+  "encounter": { "reference": "Encounter/cpw72Enc" },
+  "authored": "2026-05-22T09:15:00+08:00",
+  "item": [
+    {
+      "linkId": "table1_basic",
+      "item": [
+        { "linkId": "Col1", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col2", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col3", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col4", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col5", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col6", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col7", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col8", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col9", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col10", "answer": [{ "valueString": "2" }] }
+      ]
+    }
+  ]
+}

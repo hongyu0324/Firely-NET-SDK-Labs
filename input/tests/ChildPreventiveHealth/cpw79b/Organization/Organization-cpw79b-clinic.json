@@ -1,0 +1,8 @@
+{
+  "resourceType": "Organization",
+  "id": "cpw79bClinic",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Organization-twcore"] },
+  "identifier": [{ "system": "https://twcore.mohw.gov.tw/ig/twcore/CodeSystem/nhi-organization-id", "value": "1234579001" }],
+  "active": true,
+  "name": "示範兒童醫院 79B"
+}

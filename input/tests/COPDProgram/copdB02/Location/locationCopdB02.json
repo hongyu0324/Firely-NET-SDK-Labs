@@ -1,0 +1,14 @@
+{
+  "resourceType": "Location",
+  "id": "locationCopdB02",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"
+    ]
+  },
+  "status": "active",
+  "name": "家庭醫學科診間",
+  "managingOrganization": {
+    "reference": "Organization/organizationCopdB02"
+  }
+}

@@ -1,0 +1,451 @@
+{
+  "resourceType": "Bundle",
+  "id": "tbLabA01-bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:conditionTbLabA01",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "conditionTbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Condition-twcore"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10-cm",
+              "code": "A15.0",
+              "display": "Tuberculosis of lung"
+            }
+          ],
+          "text": "肺結核"
+        },
+        "subject": {
+          "reference": "Patient/tbLabA01"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterTbLabA01"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Condition/conditionTbLabA01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:diagnosticReportTbLabA01",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "diagnosticReportTbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/DiagnosticReport-twcore"
+          ]
+        },
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/serviceRequestTbLabA01"
+          }
+        ],
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                "code": "LAB",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "1742-6",
+              "display": "ALT (GPT)"
+            }
+          ],
+          "text": "肝功能 ALT 報告"
+        },
+        "subject": {
+          "reference": "Patient/tbLabA01"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterTbLabA01"
+        },
+        "effectiveDateTime": "2026-05-19T09:30:00+08:00",
+        "issued": "2026-05-19T10:30:00+08:00",
+        "specimen": [
+          {
+            "reference": "Specimen/specimenTbLabA01"
+          }
+        ],
+        "result": [
+          {
+            "reference": "Observation/observationTbLabA01"
+          }
+        ],
+        "conclusion": "ALT 高於參考值上限,建議追蹤肝功能"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "DiagnosticReport/diagnosticReportTbLabA01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:encounterTbLabA01",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "encounterTbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "value": "TBLAB-HOSP-2026-A01"
+          }
+        ],
+        "status": "in-progress",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "ambulatory"
+        },
+        "subject": {
+          "reference": "Patient/tbLabA01"
+        },
+        "period": {
+          "start": "2026-05-18T09:00:00+08:00",
+          "end": "2026-05-18T09:30:00+08:00"
+        },
+        "diagnosis": [
+          {
+            "condition": {
+              "reference": "Condition/conditionTbLabA01"
+            },
+            "use": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "code": "CC",
+                  "display": "Chief complaint"
+                }
+              ]
+            },
+            "rank": 1
+          }
+        ],
+        "participant": [
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "code": "ATND",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/practitionerTbLabA01"
+            }
+          }
+        ],
+        "location": [
+          {
+            "location": {
+              "reference": "Location/locationTbLabA01"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/encounterTbLabA01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:locationTbLabA01",
+      "resource": {
+        "resourceType": "Location",
+        "id": "locationTbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"
+          ]
+        },
+        "name": "胸腔內科檢驗室",
+        "managingOrganization": {
+          "reference": "Organization/organizationTbLabA01"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/locationTbLabA01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:observationTbLabA01",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observationTbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-laboratoryResult-twcore"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "1742-6",
+              "display": "ALT [Enzymatic activity/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "ALT (GPT)"
+        },
+        "subject": {
+          "reference": "Patient/tbLabA01"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterTbLabA01"
+        },
+        "effectiveDateTime": "2026-05-19T09:30:00+08:00",
+        "method": {
+          "text": "EIA"
+        },
+        "valueQuantity": {
+          "value": 85,
+          "unit": "U/L",
+          "system": "http://unitsofmeasure.org",
+          "code": "U/L"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "H",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "referenceRange": [
+          {
+            "low": {
+              "value": 10,
+              "unit": "U/L"
+            },
+            "high": {
+              "value": 40,
+              "unit": "U/L"
+            }
+          }
+        ],
+        "specimen": {
+          "reference": "Specimen/specimenTbLabA01"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/observationTbLabA01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:organizationTbLabA01",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "organizationTbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Organization-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "value": "1234567890"
+          }
+        ],
+        "name": "測試結核醫院"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/organizationTbLabA01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:tbLabA01",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "tbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/tw-nid",
+            "value": "A234567890"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "text": "測試結核檢驗甲"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1965-03-15"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/tbLabA01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:practitionerTbLabA01",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "practitionerTbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Practitioner-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://nhi.gov.tw/sid/practitioner-license",
+            "value": "M123456789"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "text": "測試醫師甲"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/practitionerTbLabA01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:serviceRequestTbLabA01",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "serviceRequestTbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/ServiceRequest-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "value": "SR-TBLAB-2026-A01"
+          }
+        ],
+        "status": "completed",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "1742-6",
+              "display": "Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma"
+            },
+            {
+              "system": "https://twcore.mohw.gov.tw/ig/twcore/CodeSystem/medication-nhi-tw",
+              "code": "09026C",
+              "display": "血清麩胺酸丙酮酸轉氨基脢"
+            }
+          ],
+          "text": "ALT (GPT)"
+        },
+        "subject": {
+          "reference": "Patient/tbLabA01"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterTbLabA01"
+        },
+        "requester": {
+          "reference": "Practitioner/practitionerTbLabA01"
+        },
+        "authoredOn": "2026-05-18T09:15:00+08:00"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ServiceRequest/serviceRequestTbLabA01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:specimenTbLabA01",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "specimenTbLabA01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Specimen-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "value": "SAMPLE-TBLAB-A01"
+          }
+        ],
+        "status": "available",
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "119364003",
+              "display": "Serum specimen"
+            }
+          ],
+          "text": "血清"
+        },
+        "subject": {
+          "reference": "Patient/tbLabA01"
+        },
+        "collection": {
+          "collectedDateTime": "2026-05-18T09:20:00+08:00"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Specimen/specimenTbLabA01"
+      }
+    }
+  ]
+}

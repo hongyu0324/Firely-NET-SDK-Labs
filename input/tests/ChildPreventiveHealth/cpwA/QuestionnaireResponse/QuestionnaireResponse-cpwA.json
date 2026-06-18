@@ -1,0 +1,60 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "cpwAQR",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/QuestionnaireResponse-twcore"] },
+  "questionnaire": "Questionnaire/ChildPreventiveHealth-SDC",
+  "status": "completed",
+  "subject": { "reference": "Patient/cpwA" },
+  "encounter": { "reference": "Encounter/cpwAEnc" },
+  "authored": "2026-05-20T10:15:00+08:00",
+  "item": [
+    {
+      "linkId": "table1_basic",
+      "text": "表一基本欄位",
+      "item": [
+        { "linkId": "Col1", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col2", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col3", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col4", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col5", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col6", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col7", "answer": [{ "valueString": "1" }] },
+        { "linkId": "Col7Content", "answer": [{ "valueString": "皮膚紅疹" }] },
+        { "linkId": "Col8", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col9", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col10", "answer": [{ "valueString": "2" }] },
+        { "linkId": "ColExt", "answer": [{ "valueString": "3" }] },
+        { "linkId": "ColExtContent", "answer": [{ "valueString": "28週早產" }] }
+      ]
+    },
+    {
+      "linkId": "upload_prev_health_t57",
+      "text": "表三題項",
+      "item": [
+        { "linkId": "upload_prev_health_t57_Col1", "answer": [{ "valueString": "1" }] },
+        { "linkId": "upload_prev_health_t57_Col15", "answer": [{ "valueString": "1" }] },
+        { "linkId": "upload_prev_health_t57_Col16", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col17", "answer": [{ "valueString": "" }] },
+        { "linkId": "upload_prev_health_t57_Col18", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col20", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col42", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col43", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col44", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col45", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col46", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col47", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col48", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col49", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col50", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col51", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col52", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col53", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col54", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col55", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col56", "answer": [{ "valueString": "0" }] },
+        { "linkId": "upload_prev_health_t57_Col56Other", "answer": [{ "valueString": "" }] },
+        { "linkId": "upload_prev_health_t57_Col95", "answer": [{ "valueString": "0" }] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "resourceType": "Location",
+  "id": "cpwAHccLoc",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"] },
+  "status": "active",
+  "name": "示範區衛生所 (依附)",
+  "managingOrganization": { "reference": "Organization/cpwAHcc" }
+}

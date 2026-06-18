@@ -1,0 +1,14 @@
+{
+  "resourceType": "Location",
+  "id": "locationCopdC03",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"
+    ]
+  },
+  "status": "active",
+  "name": "胸腔內科診間",
+  "managingOrganization": {
+    "reference": "Organization/organizationCopdC03"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "resourceType": "Encounter",
+  "id": "encounterTbHivD01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "http://example.org/CodeSystem/PLACEHOLDER-EncounterOrderSeq",
+      "value": "ORDER-2026-D01"
+    },
+    {
+      "value": "ENC-2026-D01"
+    }
+  ],
+  "status": "finished",
+  "class": {
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    "code": "AMB",
+    "display": "ambulatory"
+  },
+  "subject": {
+    "reference": "Patient/tbHivD01"
+  },
+  "period": {
+    "start": "2026-05-18T10:00:00+08:00",
+    "end": "2026-05-18T11:00:00+08:00"
+  },
+  "diagnosis": [
+    {
+      "condition": { "reference": "Condition/conditionTbHivD01" },
+      "rank": 1
+    }
+  ]
+}

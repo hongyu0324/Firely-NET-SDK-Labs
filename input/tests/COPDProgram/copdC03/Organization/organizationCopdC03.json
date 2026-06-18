@@ -1,0 +1,17 @@
+{
+  "resourceType": "Organization",
+  "id": "organizationCopdC03",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Organization-twcore"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "http://nhi.gov.tw/sid/organization-code",
+      "value": "0303080033"
+    }
+  ],
+  "name": "桃園長庚醫院",
+  "active": true
+}

@@ -1,0 +1,8 @@
+{
+  "resourceType": "Location",
+  "id": "ckdALoc",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"] },
+  "status": "active",
+  "name": "腎臟科診間 A",
+  "managingOrganization": { "reference": "Organization/ckdAClinic" }
+}

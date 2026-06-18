@@ -1,0 +1,32 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "ckdDQR",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/QuestionnaireResponse-twcore"] },
+  "questionnaire": "Questionnaire/EarlyCKD-SDC",
+  "status": "completed",
+  "subject": { "reference": "Patient/ckdD" },
+  "encounter": { "reference": "Encounter/ckdDEnc" },
+  "authored": "2026-04-25T10:30:00+08:00",
+  "item": [
+    {
+      "linkId": "basic",
+      "text": "基本資料段",
+      "item": [
+        { "linkId": "segment", "answer": [{ "valueCoding": { "code": "C" } }] },
+        { "linkId": "business_group", "answer": [{ "valueCoding": { "code": "1" } }] }
+      ]
+    },
+    {
+      "linkId": "case_data",
+      "text": "收案/追蹤段（DM+CKD）",
+      "item": [
+        { "linkId": "診療階段", "answer": [{ "valueCoding": { "code": "1" } }] },
+        { "linkId": "階段", "answer": [{ "valueCoding": { "code": "20" } }] },
+        { "linkId": "comorbidity", "answer": [{ "valueCoding": { "code": "N" } }] },
+        { "linkId": "comorbidity_3", "answer": [{ "valueCoding": { "code": "Y" } }] },
+        { "linkId": "comorbidity_other", "answer": [{ "valueCoding": { "code": "N" } }] },
+        { "linkId": "抽菸", "answer": [{ "valueCoding": { "code": "2" } }] }
+      ]
+    }
+  ]
+}

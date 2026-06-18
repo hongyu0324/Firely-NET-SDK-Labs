@@ -1,0 +1,100 @@
+{
+  "resourceType": "Bundle",
+  "id": "cpwC-bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:cpwCEnc",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "cpwCEnc",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://nhi.gov.tw/fhir/identifier/nhi-order-code",
+            "value": "99"
+          }
+        ],
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "ambulatory"
+        },
+        "subject": {
+          "reference": "Patient/cpwC"
+        },
+        "period": {
+          "start": "2026-05-22T14:00:00+08:00",
+          "end": "2026-05-22T14:30:00+08:00"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/cpwCEnc"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cpwC",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "cpwC",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "use": "official",
+            "system": "http://hl7.org/fhir/sid/tw-nid",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "NI",
+                  "display": "National unique individual identifier"
+                }
+              ]
+            },
+            "value": "C220000099"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "text": "王代誤",
+            "family": "王",
+            "given": [
+              "代誤"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2023-01-15",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0912000099",
+            "use": "mobile"
+          }
+        ],
+        "address": [
+          {
+            "use": "home",
+            "city": "6500",
+            "text": "桃園市中壢區範例街99號"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/cpwC"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1064 @@
+{
+  "resourceType": "Bundle",
+  "id": "copdC03-bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:carePlanCopdC03",
+      "resource": {
+        "resourceType": "CarePlan",
+        "id": "carePlanCopdC03",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/CarePlan-twcore"
+          ]
+        },
+        "status": "active",
+        "intent": "plan",
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterCopdC03"
+        },
+        "period": {
+          "start": "2025-05-20"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "CarePlan/carePlanCopdC03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:conditionCopdC03Copd",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "conditionCopdC03Copd",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Condition-twcore"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10-cm",
+              "code": "J44.1",
+              "display": "Chronic obstructive pulmonary disease with acute exacerbation"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterCopdC03"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Condition/conditionCopdC03Copd"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:encounterCopdC03",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "encounterCopdC03",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://nhi.gov.tw/fhir/identifier/case-mgmt-code",
+            "value": "P6013C"
+          },
+          {
+            "system": "https://nhi.gov.tw/fhir/identifier/nhi-specific-treatment-code",
+            "value": "HF"
+          },
+          {
+            "system": "https://nhi.gov.tw/fhir/identifier/nhi-case-type",
+            "value": "E1"
+          }
+        ],
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "ambulatory"
+        },
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "period": {
+          "start": "2026-05-20T10:00:00+08:00",
+          "end": "2026-05-20T11:00:00+08:00"
+        },
+        "location": [
+          {
+            "location": {
+              "reference": "Location/locationCopdC03"
+            },
+            "status": "completed"
+          }
+        ],
+        "serviceProvider": {
+          "reference": "Organization/organizationCopdC03"
+        },
+        "participant": [
+          {
+            "individual": {
+              "reference": "Practitioner/practitionerCopdC03"
+            }
+          }
+        ],
+        "diagnosis": [
+          {
+            "condition": {
+              "reference": "Condition/conditionCopdC03Copd"
+            },
+            "rank": 1
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/encounterCopdC03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:locationCopdC03",
+      "resource": {
+        "resourceType": "Location",
+        "id": "locationCopdC03",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"
+          ]
+        },
+        "status": "active",
+        "name": "胸腔內科診間",
+        "managingOrganization": {
+          "reference": "Organization/organizationCopdC03"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/locationCopdC03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:observationCopdC03DiastolicBp",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observationCopdC03DiastolicBp",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"
+          ]
+        },
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8462-4",
+              "display": "Diastolic blood pressure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterCopdC03"
+        },
+        "effectiveDateTime": "2026-05-20T10:00:00+08:00",
+        "valueQuantity": {
+          "value": 90,
+          "unit": "mm[Hg]",
+          "system": "http://unitsofmeasure.org"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/observationCopdC03DiastolicBp"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:observationCopdC03Fev1",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observationCopdC03Fev1",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"
+          ]
+        },
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "19868-9",
+              "display": "FEV1"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterCopdC03"
+        },
+        "effectiveDateTime": "2026-05-20T10:00:00+08:00",
+        "valueQuantity": {
+          "value": 1.5,
+          "unit": "L",
+          "system": "http://unitsofmeasure.org"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/observationCopdC03Fev1"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:observationCopdC03Height",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observationCopdC03Height",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"
+          ]
+        },
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8302-2",
+              "display": "Body height"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterCopdC03"
+        },
+        "effectiveDateTime": "2026-05-20T10:00:00+08:00",
+        "valueQuantity": {
+          "value": 170,
+          "unit": "cm",
+          "system": "http://unitsofmeasure.org"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/observationCopdC03Height"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:observationCopdC03SystolicBp",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observationCopdC03SystolicBp",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"
+          ]
+        },
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8480-6",
+              "display": "Systolic blood pressure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterCopdC03"
+        },
+        "effectiveDateTime": "2026-05-20T10:00:00+08:00",
+        "valueQuantity": {
+          "value": 145,
+          "unit": "mm[Hg]",
+          "system": "http://unitsofmeasure.org"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/observationCopdC03SystolicBp"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:observationCopdC03Weight",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observationCopdC03Weight",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"
+          ]
+        },
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "29463-7",
+              "display": "Body weight"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterCopdC03"
+        },
+        "effectiveDateTime": "2026-05-20T10:00:00+08:00",
+        "valueQuantity": {
+          "value": 70,
+          "unit": "kg",
+          "system": "http://unitsofmeasure.org"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/observationCopdC03Weight"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:organizationCopdC03",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "organizationCopdC03",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Organization-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://nhi.gov.tw/sid/organization-code",
+            "value": "0303080033"
+          }
+        ],
+        "name": "桃園長庚醫院",
+        "active": true
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/organizationCopdC03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:copdC03",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "copdC03",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "use": "official",
+            "system": "http://hl7.org/fhir/sid/tw-nid",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "NI"
+                }
+              ]
+            },
+            "value": "C234567890"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "text": "陳志豪",
+            "family": "陳",
+            "given": [
+              "志豪"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1955-11-05",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0233002233",
+            "use": "home"
+          }
+        ],
+        "address": [
+          {
+            "use": "home",
+            "city": "6500",
+            "text": "桃園市中壢區中央西路50號"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/copdC03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:practitionerCopdC03",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "practitionerCopdC03",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Practitioner-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "use": "official",
+            "system": "http://hl7.org/fhir/sid/tw-nid",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MD"
+                }
+              ]
+            },
+            "value": "B100000030"
+          },
+          {
+            "system": "http://nhi.gov.tw/sid/practitioner-license",
+            "value": "MD32345"
+          }
+        ],
+        "name": [
+          {
+            "text": "李醫師",
+            "family": "李",
+            "given": [
+              "醫師"
+            ]
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/practitionerCopdC03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:procedureCopdC03Spirometry",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "procedureCopdC03Spirometry",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Procedure-twcore"
+          ]
+        },
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "system": "http://nhi.gov.tw/fhir/CodeSystem/nhi-order-code",
+              "code": "17004B",
+              "display": "Standard spirometry"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterCopdC03"
+        },
+        "performedDateTime": "2026-05-20T10:30:00+08:00"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Procedure/procedureCopdC03Spirometry"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:questionnaireResponseCopdC03",
+      "resource": {
+        "resourceType": "QuestionnaireResponse",
+        "id": "questionnaireResponseCopdC03",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/QuestionnaireResponse-twcore"
+          ]
+        },
+        "questionnaire": "Questionnaire/copd_program",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/copdC03"
+        },
+        "encounter": {
+          "reference": "Encounter/encounterCopdC03"
+        },
+        "authored": "2026-05-20T11:30:00+08:00",
+        "item": [
+          {
+            "linkId": "section_01",
+            "text": "基本資料",
+            "item": [
+              {
+                "linkId": "section_01_p001",
+                "answer": [
+                  {
+                    "valueString": "陳志豪"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_01_p002",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "1"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_01_p003",
+                "answer": [
+                  {
+                    "valueString": "桃園市中壢區中央西路50號"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_01_p004",
+                "answer": [
+                  {
+                    "valueString": "0233002233"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_01_p005",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "1"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_01_p006",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "2"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "linkId": "section_02",
+            "text": "照護計畫",
+            "item": [
+              {
+                "linkId": "section_02_d001",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "1"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d002",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "3",
+                      "display": "年度評估"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d003",
+                "answer": [
+                  {
+                    "valueDate": "2025-05-20"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d004",
+                "answer": [
+                  {
+                    "valueString": "B100000030"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d005",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "1"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d006",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "Y"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d007",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d008",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d009",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d010",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d011",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d012",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d013",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d014",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d015",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d016",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d017",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d018",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d020",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d021",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "Y"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d022",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d023",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d024",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d025",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "Y"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d026",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "N"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d027",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "Y"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d028",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "3"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d029",
+                "answer": [
+                  {
+                    "valueInteger": 1
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d030",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "2"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d044",
+                "answer": [
+                  {
+                    "valueDate": "2026-05-20"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d045",
+                "answer": [
+                  {
+                    "valueInteger": 55
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d046",
+                "answer": [
+                  {
+                    "valueInteger": 60
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d047",
+                "answer": [
+                  {
+                    "valueString": "1.5"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d048",
+                "answer": [
+                  {
+                    "valueDate": "2026-05-20"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d049",
+                "answer": [
+                  {
+                    "valueInteger": 20
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d050",
+                "answer": [
+                  {
+                    "valueDate": "2026-05-20"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d051",
+                "answer": [
+                  {
+                    "valueInteger": 3
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d052",
+                "answer": [
+                  {
+                    "valueInteger": 2
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d053",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "D",
+                      "display": "GOLD D"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d107",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "2",
+                      "display": "否"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d108",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "10",
+                      "display": "第四季新收案個案"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d109",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "1",
+                      "display": "是"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d110",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "2",
+                      "display": "下轉非本方案"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d111",
+                "answer": [
+                  {
+                    "valueString": "0303080088"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d112",
+                "answer": [
+                  {
+                    "valueDate": "2026-05-21"
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d117",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "2"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d118",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "1",
+                      "display": "調整藥物品項"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "section_02_d119",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "1",
+                      "display": "調整劑量"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "QuestionnaireResponse/questionnaireResponseCopdC03"
+      }
+    }
+  ]
+}

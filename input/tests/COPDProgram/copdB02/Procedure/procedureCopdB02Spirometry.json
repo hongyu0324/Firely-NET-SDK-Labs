@@ -1,0 +1,26 @@
+{
+  "resourceType": "Procedure",
+  "id": "procedureCopdB02Spirometry",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Procedure-twcore"
+    ]
+  },
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "http://nhi.gov.tw/fhir/CodeSystem/nhi-order-code",
+        "code": "17003C",
+        "display": "Flow-volume loop"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/copdB02"
+  },
+  "encounter": {
+    "reference": "Encounter/encounterCopdB02"
+  },
+  "performedDateTime": "2026-05-18T14:15:00+08:00"
+}

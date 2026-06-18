@@ -1,0 +1,50 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "questionnaireResponseCopdD04",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/QuestionnaireResponse-twcore"
+    ]
+  },
+  "questionnaire": "Questionnaire/copd_program",
+  "status": "completed",
+  "subject": {
+    "reference": "Patient/copdD04"
+  },
+  "encounter": {
+    "reference": "Encounter/encounterCopdD04"
+  },
+  "authored": "2026-05-19T08:30:00+08:00",
+  "item": [
+    {
+      "linkId": "section_01",
+      "text": "基本資料",
+      "item": [
+        {
+          "linkId": "section_01_p001",
+          "answer": [
+            {
+              "valueString": "李美玲"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "section_02",
+      "text": "照護計畫",
+      "item": [
+        {
+          "linkId": "section_02_d002",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

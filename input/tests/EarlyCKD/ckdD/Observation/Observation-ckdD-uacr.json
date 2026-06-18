@@ -1,0 +1,12 @@
+{
+  "resourceType": "Observation",
+  "id": "ckdDUacr",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"] },
+  "status": "final",
+  "category": [{ "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/observation-category", "code": "laboratory" }] }],
+  "code": { "coding": [{ "system": "http://loinc.org", "code": "9318-7", "display": "Albumin/Creatinine [Mass Ratio] in Urine" }], "text": "尿白蛋白/肌酸酐比值（UACR）" },
+  "subject": { "reference": "Patient/ckdD" },
+  "encounter": { "reference": "Encounter/ckdDEnc" },
+  "effectiveDateTime": "2026-04-25T10:15:00+08:00",
+  "valueQuantity": { "value": 45.0, "unit": "mg/g", "system": "http://unitsofmeasure.org", "code": "mg/g" }
+}

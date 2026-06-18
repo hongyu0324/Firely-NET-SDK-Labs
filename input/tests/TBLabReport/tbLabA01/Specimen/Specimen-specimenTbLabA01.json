@@ -1,0 +1,23 @@
+{
+  "resourceType": "Specimen",
+  "id": "specimenTbLabA01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Specimen-twcore"
+    ]
+  },
+  "identifier": [
+    { "value": "SAMPLE-TBLAB-A01" }
+  ],
+  "status": "available",
+  "type": {
+    "coding": [
+      { "system": "http://snomed.info/sct", "code": "119364003", "display": "Serum specimen" }
+    ],
+    "text": "血清"
+  },
+  "subject": { "reference": "Patient/tbLabA01" },
+  "collection": {
+    "collectedDateTime": "2026-05-18T09:20:00+08:00"
+  }
+}

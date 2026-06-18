@@ -1,0 +1,46 @@
+{
+  "resourceType": "MedicationRequest",
+  "id": "medicationRequestTbHivC01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/MedicationRequest-twcore"
+    ]
+  },
+  "identifier": [
+    { "value": "MED-2026-C01" }
+  ],
+  "status": "active",
+  "intent": "order",
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "system": "https://twcore.mohw.gov.tw/ig/twcore/CodeSystem/medication-nhi-tw",
+        "code": "AC00000100",
+        "display": "Acetaminophen 500mg"
+      }
+    ],
+    "text": "Acetaminophen 500mg"
+  },
+  "subject": { "reference": "Patient/tbHivC01" },
+  "encounter": { "reference": "Encounter/encounterTbHivC01" },
+  "authoredOn": "2026-05-20T14:15:00+08:00",
+  "dosageInstruction": [
+    {
+      "timing": {
+        "code": { "text": "TID" }
+      },
+      "doseAndRate": [
+        {
+          "doseQuantity": {
+            "value": 1,
+            "unit": "tablet"
+          }
+        }
+      ]
+    }
+  ],
+  "dispenseRequest": {
+    "quantity": { "value": 9, "unit": "tablet" },
+    "expectedSupplyDuration": { "value": 3, "unit": "days", "system": "http://unitsofmeasure.org", "code": "d" }
+  }
+}

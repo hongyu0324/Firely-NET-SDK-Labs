@@ -1,0 +1,50 @@
+{
+  "resourceType": "Encounter",
+  "id": "cpwDEnc",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "https://nhi.gov.tw/fhir/identifier/nhi-order-code",
+      "value": "20",
+      "extension": [
+        {
+          "url": "http://example.org/StructureDefinition/encounter-cardtype",
+          "valueString": "3"
+        },
+        {
+          "url": "http://example.org/StructureDefinition/encounter-isdepend",
+          "valueString": "0"
+        }
+      ]
+    }
+  ],
+  "status": "finished",
+  "class": {
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    "code": "AMB",
+    "display": "ambulatory"
+  },
+  "type": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "315095001",
+          "display": "Neonatal hearing screening"
+        }
+      ],
+      "text": "新生兒聽力篩檢"
+    }
+  ],
+  "subject": {
+    "reference": "Patient/cpwD"
+  },
+  "period": {
+    "start": "2026-04-25T08:30:00+08:00",
+    "end": "2026-04-25T09:00:00+08:00"
+  }
+}

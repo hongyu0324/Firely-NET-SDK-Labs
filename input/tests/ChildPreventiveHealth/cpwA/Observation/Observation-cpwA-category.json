@@ -1,0 +1,27 @@
+{
+  "resourceType": "Observation",
+  "id": "cpwACategory",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"] },
+  "status": "final",
+  "category": [
+    { "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/observation-category", "code": "exam" }] }
+  ],
+  "code": {
+    "coding": [{ "system": "http://example.org/CodeSystem/cpw-assessment", "code": "development-abnormal-category", "display": "發展異常類別" }],
+    "text": "發展異常類別"
+  },
+  "subject": { "reference": "Patient/cpwA" },
+  "encounter": { "reference": "Encounter/cpwAEnc" },
+  "effectiveDateTime": "2026-05-20T10:10:00+08:00",
+  "component": [
+    {
+      "code": {
+        "coding": [{ "system": "http://example.org/CodeSystem/cpw-assessment", "code": "category-code" }],
+        "text": "類別碼"
+      },
+      "valueCodeableConcept": {
+        "coding": [{ "system": "http://example.org/CodeSystem/dev-abnormal-category", "code": "1", "display": "動作" }]
+      }
+    }
+  ]
+}

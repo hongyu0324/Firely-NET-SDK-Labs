@@ -1,0 +1,62 @@
+{
+  "resourceType": "Encounter",
+  "id": "encounterCopdC03",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "https://nhi.gov.tw/fhir/identifier/case-mgmt-code",
+      "value": "P6013C"
+    },
+    {
+      "system": "https://nhi.gov.tw/fhir/identifier/nhi-specific-treatment-code",
+      "value": "HF"
+    },
+    {
+      "system": "https://nhi.gov.tw/fhir/identifier/nhi-case-type",
+      "value": "E1"
+    }
+  ],
+  "status": "finished",
+  "class": {
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    "code": "AMB",
+    "display": "ambulatory"
+  },
+  "subject": {
+    "reference": "Patient/copdC03"
+  },
+  "period": {
+    "start": "2026-05-20T10:00:00+08:00",
+    "end": "2026-05-20T11:00:00+08:00"
+  },
+  "location": [
+    {
+      "location": {
+        "reference": "Location/locationCopdC03"
+      },
+      "status": "completed"
+    }
+  ],
+  "serviceProvider": {
+    "reference": "Organization/organizationCopdC03"
+  },
+  "participant": [
+    {
+      "individual": {
+        "reference": "Practitioner/practitionerCopdC03"
+      }
+    }
+  ],
+  "diagnosis": [
+    {
+      "condition": {
+        "reference": "Condition/conditionCopdC03Copd"
+      },
+      "rank": 1
+    }
+  ]
+}

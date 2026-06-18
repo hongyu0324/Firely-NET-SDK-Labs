@@ -1,0 +1,8 @@
+{
+  "resourceType": "Location",
+  "id": "ckdDLoc",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"] },
+  "status": "active",
+  "name": "新陳代謝科診間 D",
+  "managingOrganization": { "reference": "Organization/ckdDClinic" }
+}

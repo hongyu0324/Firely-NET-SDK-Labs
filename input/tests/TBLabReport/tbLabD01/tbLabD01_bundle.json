@@ -1,0 +1,118 @@
+{
+  "resourceType": "Bundle",
+  "id": "tbLabD01-bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:conditionTbLabD01",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "conditionTbLabD01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Condition-twcore"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10-cm",
+              "code": "A15.0",
+              "display": "Tuberculosis of lung"
+            }
+          ],
+          "text": "肺結核"
+        },
+        "subject": {
+          "reference": "Patient/tbLabD01"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Condition/conditionTbLabD01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:diagnosticReportTbLabD01",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "diagnosticReportTbLabD01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/DiagnosticReport-twcore"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                "code": "LAB",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "1742-6",
+              "display": "ALT (GPT)"
+            }
+          ],
+          "text": "肝功能 ALT 報告"
+        },
+        "subject": {
+          "reference": "Patient/tbLabD01"
+        },
+        "effectiveDateTime": "2026-05-17T08:30:00+08:00",
+        "issued": "2026-05-17T10:00:00+08:00",
+        "conclusion": "3 天前報告 - 邊界外測試（issued 已超出 LookbackDays=2 天）"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "DiagnosticReport/diagnosticReportTbLabD01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:tbLabD01",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "tbLabD01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/tw-nid",
+            "value": "D567890123"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "text": "測試結核檢驗丁"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1972-12-10"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/tbLabD01"
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "resourceType": "Observation",
+  "id": "observationCopdA01Weight",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"
+    ]
+  },
+  "status": "final",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "29463-7",
+        "display": "Body weight"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/copdA01"
+  },
+  "encounter": {
+    "reference": "Encounter/encounterCopdA01"
+  },
+  "effectiveDateTime": "2026-05-15T09:00:00+08:00",
+  "valueQuantity": {
+    "value": 65,
+    "unit": "kg",
+    "system": "http://unitsofmeasure.org"
+  }
+}

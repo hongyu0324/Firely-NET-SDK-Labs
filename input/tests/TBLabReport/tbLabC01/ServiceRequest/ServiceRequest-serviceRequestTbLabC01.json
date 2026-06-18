@@ -1,0 +1,33 @@
+{
+  "resourceType": "ServiceRequest",
+  "id": "serviceRequestTbLabC01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/ServiceRequest-twcore"
+    ]
+  },
+  "identifier": [
+    { "value": "SR-TBLAB-2026-C01" }
+  ],
+  "status": "completed",
+  "intent": "order",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "1920-8",
+        "display": "AST [Enzymatic activity/volume] in Serum or Plasma"
+      },
+      {
+        "system": "https://twcore.mohw.gov.tw/ig/twcore/CodeSystem/medication-nhi-tw",
+        "code": "09025C",
+        "display": "血清麩胺酸苯醋酸轉氨基脢"
+      }
+    ],
+    "text": "AST (GOT)"
+  },
+  "subject": { "reference": "Patient/tbLabC01" },
+  "encounter": { "reference": "Encounter/encounterTbLabC01" },
+  "requester": { "reference": "Practitioner/practitionerTbLabC01" },
+  "authoredOn": "2026-05-19T14:15:00+08:00"
+}

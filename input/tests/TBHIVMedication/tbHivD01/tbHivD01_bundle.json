@@ -1,0 +1,108 @@
+{
+  "resourceType": "Bundle",
+  "id": "tbHivD01-bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:tbHivD01",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "tbHivD01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/tw-nid",
+            "value": "D567890123"
+          },
+          {
+            "type": {
+              "coding": [
+                { "system": "http://terminology.hl7.org/CodeSystem/v2-0203", "code": "MR" }
+              ]
+            },
+            "value": "MR-D01-44444"
+          }
+        ],
+        "name": [
+          { "use": "official", "text": "測試結核丁" }
+        ],
+        "gender": "male",
+        "birthDate": "1972-12-10"
+      },
+      "request": { "method": "PUT", "url": "Patient/tbHivD01" }
+    },
+    {
+      "fullUrl": "urn:uuid:encounterTbHivD01",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "encounterTbHivD01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org/CodeSystem/PLACEHOLDER-EncounterOrderSeq",
+            "value": "ORDER-2026-D01"
+          },
+          {
+            "value": "ENC-2026-D01"
+          }
+        ],
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "ambulatory"
+        },
+        "subject": { "reference": "Patient/tbHivD01" },
+        "period": {
+          "start": "2026-05-18T10:00:00+08:00",
+          "end": "2026-05-18T11:00:00+08:00"
+        },
+        "diagnosis": [
+          {
+            "condition": { "reference": "Condition/conditionTbHivD01" },
+            "rank": 1
+          }
+        ]
+      },
+      "request": { "method": "PUT", "url": "Encounter/encounterTbHivD01" }
+    },
+    {
+      "fullUrl": "urn:uuid:conditionTbHivD01",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "conditionTbHivD01",
+        "meta": {
+          "profile": [
+            "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Condition-twcore"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            { "system": "http://terminology.hl7.org/CodeSystem/condition-clinical", "code": "active" }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10-cm",
+              "code": "A15.0",
+              "display": "Tuberculosis of lung"
+            }
+          ],
+          "text": "肺結核"
+        },
+        "subject": { "reference": "Patient/tbHivD01" },
+        "encounter": { "reference": "Encounter/encounterTbHivD01" }
+      },
+      "request": { "method": "PUT", "url": "Condition/conditionTbHivD01" }
+    }
+  ]
+}

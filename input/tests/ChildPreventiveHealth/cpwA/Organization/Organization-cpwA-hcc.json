@@ -1,0 +1,18 @@
+{
+  "resourceType": "Organization",
+  "id": "cpwAHcc",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Organization-twcore"] },
+  "identifier": [
+    { "system": "https://twcore.mohw.gov.tw/ig/twcore/CodeSystem/nhi-organization-id", "value": "9876543210" }
+  ],
+  "active": true,
+  "name": "示範區衛生所",
+  "type": [
+    {
+      "coding": [
+        { "system": "http://terminology.hl7.org/CodeSystem/organization-type", "code": "govt", "display": "Government" }
+      ],
+      "text": "衛生所"
+    }
+  ]
+}

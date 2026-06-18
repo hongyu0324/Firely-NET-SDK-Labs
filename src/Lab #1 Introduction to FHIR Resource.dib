@@ -40,7 +40,7 @@ var client = new FhirClient("http://localhost:8080/fhir");
 
 #!csharp
 
-var location_A = new Uri("http://localhost:8080/fhir/Patient/patient-00ad3ff6a648");
+var location_A = new Uri("http://localhost:8080/fhir/Patient/fobt-B01");
 var pat_A = new Patient();
 pat_A = await client.ReadAsync<Patient>(location:location_A);
 if (pat_A != null){

@@ -1,0 +1,526 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "questionnaireResponseCopdB02",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/QuestionnaireResponse-twcore"
+    ]
+  },
+  "questionnaire": "Questionnaire/copd_program",
+  "status": "completed",
+  "subject": {
+    "reference": "Patient/copdB02"
+  },
+  "encounter": {
+    "reference": "Encounter/encounterCopdB02"
+  },
+  "authored": "2026-05-18T15:00:00+08:00",
+  "item": [
+    {
+      "linkId": "section_01",
+      "text": "基本資料",
+      "item": [
+        {
+          "linkId": "section_01_p001",
+          "answer": [
+            {
+              "valueString": "林秀芳"
+            }
+          ]
+        },
+        {
+          "linkId": "section_01_p002",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2",
+                "display": "女"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_01_p003",
+          "answer": [
+            {
+              "valueString": "新北市板橋區文化路二段200號"
+            }
+          ]
+        },
+        {
+          "linkId": "section_01_p004",
+          "answer": [
+            {
+              "valueString": "0922001122"
+            }
+          ]
+        },
+        {
+          "linkId": "section_01_p005",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_01_p006",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "section_02",
+      "text": "照護計畫",
+      "item": [
+        {
+          "linkId": "section_02_d001",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "1"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d002",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2",
+                "display": "追蹤"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d003",
+          "answer": [
+            {
+              "valueDate": "2026-03-01"
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d004",
+          "answer": [
+            {
+              "valueString": "B100000020"
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d005",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d006",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "Y"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d007",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d008",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d009",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d010",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d011",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d012",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d013",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d014",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d015",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d016",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d017",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d018",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d020",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d021",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d022",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d023",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d024",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "Y"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d025",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d026",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d027",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "N"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d028",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d030",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d044",
+          "answer": [
+            {
+              "valueDate": "2026-05-18"
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d045",
+          "answer": [
+            {
+              "valueInteger": 70
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d046",
+          "answer": [
+            {
+              "valueInteger": 75
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d047",
+          "answer": [
+            {
+              "valueString": "1.8"
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d048",
+          "answer": [
+            {
+              "valueDate": "2026-05-18"
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d049",
+          "answer": [
+            {
+              "valueInteger": 12
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d050",
+          "answer": [
+            {
+              "valueDate": "2026-05-18"
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d051",
+          "answer": [
+            {
+              "valueInteger": 1
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d052",
+          "answer": [
+            {
+              "valueInteger": 0
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d053",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "A",
+                "display": "GOLD A"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d107",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "1"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d113",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "1",
+                "display": "是"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d114",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "1",
+                "display": "上轉本方案一類"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d115",
+          "answer": [
+            {
+              "valueString": "0101080099"
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d116",
+          "answer": [
+            {
+              "valueDate": "2026-05-20"
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d117",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "1",
+                "display": "有"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d118",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "1"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "section_02_d119",
+          "answer": [
+            {
+              "valueCoding": {
+                "code": "2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

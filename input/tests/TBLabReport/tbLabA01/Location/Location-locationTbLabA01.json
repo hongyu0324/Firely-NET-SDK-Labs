@@ -1,0 +1,13 @@
+{
+  "resourceType": "Location",
+  "id": "locationTbLabA01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"
+    ]
+  },
+  "name": "胸腔內科檢驗室",
+  "managingOrganization": {
+    "reference": "Organization/organizationTbLabA01"
+  }
+}

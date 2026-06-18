@@ -1,0 +1,20 @@
+{
+  "resourceType": "Patient",
+  "id": "cpwB",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Patient-twcore"] },
+  "identifier": [
+    {
+      "use": "official",
+      "system": "http://hl7.org/fhir/sid/tw-nid",
+      "type": {
+        "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/v2-0203", "code": "NI", "display": "National unique individual identifier" }]
+      },
+      "value": "B220000079"
+    }
+  ],
+  "name": [{ "use": "official", "text": "林無記", "family": "林", "given": ["無記"] }],
+  "gender": "female",
+  "birthDate": "2021-05-01",
+  "telecom": [{ "system": "phone", "value": "0912000079", "use": "mobile" }],
+  "address": [{ "use": "home", "city": "6400", "text": "新北市板橋區範例路79號" }]
+}

@@ -1,0 +1,27 @@
+{
+  "resourceType": "DiagnosticReport",
+  "id": "diagnosticReportTbLabD01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/DiagnosticReport-twcore"
+    ]
+  },
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        { "system": "http://terminology.hl7.org/CodeSystem/v2-0074", "code": "LAB", "display": "Laboratory" }
+      ]
+    }
+  ],
+  "code": {
+    "coding": [
+      { "system": "http://loinc.org", "code": "1742-6", "display": "ALT (GPT)" }
+    ],
+    "text": "肝功能 ALT 報告"
+  },
+  "subject": { "reference": "Patient/tbLabD01" },
+  "effectiveDateTime": "2026-05-17T08:30:00+08:00",
+  "issued": "2026-05-17T10:00:00+08:00",
+  "conclusion": "3 天前報告 - 邊界外測試（issued 已超出 LookbackDays=2 天）"
+}

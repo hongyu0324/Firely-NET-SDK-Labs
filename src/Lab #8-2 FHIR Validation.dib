@@ -26,26 +26,56 @@ using System.IO;
 
 #!csharp
 
+private static  Firely.Fhir.Validation.ValidateCodeServiceFailureHandler HandleValidateCodeServiceFailure(object sender, EventArgs e)
+{
+    // Handle code validation service failures
+    return (sender, e) =>
+    {
+        return TerminologyServiceExceptionResult.Error; // Ensure a value is returned for all code paths
+    };
+}
+
 var packageSource = FhirPackageSource.CreateCorePackageSource(ModelInfo.ModelInspector, FhirRelease.R4, "https://packages.simplifier.net");
 IAsyncResourceResolver  _coreSource = new CachedResolver(packageSource);
 var directorySource1 = new CachedResolver(new DirectorySource("C:\\Hongyu\\Data\\ig\\twcore\\package",
                             new DirectorySourceSettings { IncludeSubDirectories = true }));
                             
-var directorySource2 = new CachedResolver(new DirectorySource("C:\\Hongyu\\Data\\ig\\ngs\\package",
-                            new DirectorySourceSettings { IncludeSubDirectories = true }));
+//var directorySource2 = new CachedResolver(new DirectorySource("C:\\Hongyu\\Data\\ig\\ngs\\package",
+//                            new DirectorySourceSettings { IncludeSubDirectories = true }));
 
-var profileSource = new MultiResolver(directorySource1,directorySource2, _coreSource);
+//var profileSource = new MultiResolver(directorySource1,directorySource2, _coreSource);
+var multiResolver = new MultiResolver(directorySource1, _coreSource);
 
-var terminologySource = new LocalTerminologyService(profileSource);
+var terminologySource = new LocalTerminologyService(multiResolver);
 
-var validator = new Validator(profileSource, terminologySource);
+// 設定相關參數
+ValidationSettings settings = new ValidationSettings();
+settings.SetSkipConstraintValidation(false); // Skip constraint validation for the bundle
+settings.HandleValidateCodeServiceFailure += HandleValidateCodeServiceFailure(null, EventArgs.Empty); // Handle code validation service failures
+
+validator = new Validator(multiResolver, terminologySource, null, settings);
 
 #!csharp
 
 // read patient resource from file
-var patientJson = File.ReadAllText(@"C:\Hongyu\Data\ig\ngs\package\example\Patient-pat-min.json");
 
-var patient = new FhirJsonDeserializer().Deserialize<Resource>(patientJson) as Patient;
+string fileName = @"C:\Hongyu\Project\公衛表單測試區\input\tests\AdultPreventiveHealth\adultB01\Patient\adultB01.json";
+var patientJson = File.ReadAllText(fileName);
+var parser = new FhirJsonDeserializer();
+var patient = parser.Deserialize<Patient>(patientJson);
+var validationResult = validator.Validate(patient);
+if (validationResult.Success)
+{    
+    Console.WriteLine("Validation successful!");
+}
+else
+{
+    Console.WriteLine("Validation failed with the following issues:");
+    foreach (var issue in validationResult.Issue)
+    {
+        Console.WriteLine($"- {issue.Severity}: {issue.Details.Text}");
+    }
+}
 
 #!csharp
 

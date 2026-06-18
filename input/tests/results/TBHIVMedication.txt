@@ -1,0 +1,506 @@
+CQL: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\cql
+Terminology: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\vocabulary\valueset
+Test cases:
+tbHivA01 - c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01
+tbHivB01 - c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivB01
+tbHivC01 - c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivC01
+tbHivD01 - c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivD01
+
+CaseInDate=null
+CaseOutDate=2026-05-20T11:00:00
+CaseStatus=N
+CureItemN01=null
+CureItemN02=null
+CureItemN03=null
+CureItemN04=null
+Dissource=T
+DrugDay=60
+DrugNo=A048038100
+DrugPath=QD
+DrugUse=1
+EncounterLocations=[Location(id=locationTbHivA01)]
+EncounterMedicationRequests=[MedicationRequest(id=medicationRequestTbHivA01)]
+EncounterOrganizations=[Organization(id=organizationTbHivA01)]
+FirstDosageInstruction=Dosage
+FirstDoseAndRate=Dosage.doseAndRate
+FirstLabObservation=Observation(id=observationTbHivA01Lab)
+FuncDate=2026-05-20T09:00:00
+FuncType=02
+HasEncounter=true
+HospId=1234567890
+HospSeqNo=ORDER-2026-A01-MED-2026-A01
+HospitalId=MR-A01-12345
+Icd10Cm1=A15.0
+Icd10Cm2=J96.90
+Icd10Cm3=null
+Icd10Cm4=null
+Icd10Cm5=null
+IdNumber=A234567890
+LabObsSorted=[Tuple {
+  sortKey: 2026-05-20T10:30:00
+  item: org.hl7.fhir.r4.model.Observation@746b31c6
+}]
+LabReportDate=2026-05-20T10:30:00
+LatestEncounter=Encounter(id=encounterTbHivA01)
+LatestMedicationRequest=MedicationRequest(id=medicationRequestTbHivA01)
+MedicationCodings=[Coding]
+OrderSeqNo=ORDER-2026-A01
+Patient=Patient(id=tbHivA01)
+PrsnId=M123456789
+RelevantEncounters=[Encounter(id=encounterTbHivA01)]
+ResultMemo=AST/35/U/L;;ALT/40/U/L;;Cr/0.9/mg/dL
+SampleCode=SAMPLE-2026-A01
+SeqNo=null
+Summary=Tuple {
+  SEQ_NO: null
+  HOSP_ID: 1234567890
+  ID: A234567890
+  FUNC_DATE: 2026-05-20T09:00:00
+  HospitalId: MR-A01-12345
+  Weight: 60
+  TranInHospId: null
+  CureItemN01: null
+  CureItemN02: null
+  CureItemN03: null
+  CureItemN04: null
+  Icd10Cm1: A15.0
+  Icd10Cm2: J96.90
+  Icd10Cm3: null
+  Icd10Cm4: null
+  Icd10Cm5: null
+  PrsnId: M123456789
+  CaseStatus: N
+  CaseInDate: null
+  CaseOutDate: 2026-05-20T11:00:00
+  DrugNo: A048038100
+  DrugUse: 1
+  TotalQ: 60
+  DrugPath: QD
+  DrugDay: 60
+  OrderSeqNo: ORDER-2026-A01
+  LabReportDate: 2026-05-20T10:30:00
+  ResultMemo: AST/35/U/L;;ALT/40/U/L;;Cr/0.9/mg/dL
+  Hosp_SEQ_NO: ORDER-2026-A01-MED-2026-A01
+  FUNC_TYPE: 02
+  DISSOURCE: T
+  SampleCode: SAMPLE-2026-A01
+}
+TotalQ=60
+TranInHospId=null
+Weight=60
+WeightObsSorted=[Tuple {
+  sortKey: 2026-05-20T08:50:00
+  item: org.hl7.fhir.r4.model.Observation@5e861469
+}]
+
+CaseInDate=null
+CaseOutDate=null
+CaseStatus=null
+CureItemN01=null
+CureItemN02=null
+CureItemN03=null
+CureItemN04=null
+Dissource=T
+DrugDay=null
+DrugNo=null
+DrugPath=null
+DrugUse=null
+EncounterLocations=[]
+EncounterMedicationRequests=[]
+EncounterOrganizations=[]
+FirstDosageInstruction=null
+FirstDoseAndRate=null
+FirstLabObservation=null
+FuncDate=null
+FuncType=null
+HasEncounter=false
+HospId=null
+HospSeqNo=null
+HospitalId=MR-B01-22222
+Icd10Cm1=null
+Icd10Cm2=null
+Icd10Cm3=null
+Icd10Cm4=null
+Icd10Cm5=null
+IdNumber=B345678901
+LabObsSorted=[]
+LabReportDate=null
+LatestEncounter=null
+LatestMedicationRequest=null
+MedicationCodings=null
+OrderSeqNo=null
+Patient=Patient(id=tbHivB01)
+PrsnId=null
+RelevantEncounters=[]
+ResultMemo=null
+SampleCode=null
+SeqNo=null
+Summary=Tuple {
+  SEQ_NO: null
+  HOSP_ID: null
+  ID: B345678901
+  FUNC_DATE: null
+  HospitalId: MR-B01-22222
+  Weight: null
+  TranInHospId: null
+  CureItemN01: null
+  CureItemN02: null
+  CureItemN03: null
+  CureItemN04: null
+  Icd10Cm1: null
+  Icd10Cm2: null
+  Icd10Cm3: null
+  Icd10Cm4: null
+  Icd10Cm5: null
+  PrsnId: null
+  CaseStatus: null
+  CaseInDate: null
+  CaseOutDate: null
+  DrugNo: null
+  DrugUse: null
+  TotalQ: null
+  DrugPath: null
+  DrugDay: null
+  OrderSeqNo: null
+  LabReportDate: null
+  ResultMemo: null
+  Hosp_SEQ_NO: null
+  FUNC_TYPE: null
+  DISSOURCE: T
+  SampleCode: null
+}
+TotalQ=null
+TranInHospId=null
+Weight=null
+WeightObsSorted=[]
+
+CaseInDate=null
+CaseOutDate=2026-05-20T14:30:00
+CaseStatus=N
+CureItemN01=null
+CureItemN02=null
+CureItemN03=null
+CureItemN04=null
+Dissource=T
+DrugDay=3
+DrugNo=AC00000100
+DrugPath=TID
+DrugUse=1
+EncounterLocations=[Location(id=locationTbHivC01)]
+EncounterMedicationRequests=[MedicationRequest(id=medicationRequestTbHivC01)]
+EncounterOrganizations=[Organization(id=organizationTbHivC01)]
+FirstDosageInstruction=Dosage
+FirstDoseAndRate=Dosage.doseAndRate
+FirstLabObservation=null
+FuncDate=2026-05-20T14:00:00
+FuncType=02
+HasEncounter=true
+HospId=9876543210
+HospSeqNo=ORDER-2026-C01-MED-2026-C01
+HospitalId=MR-C01-33333
+Icd10Cm1=J20.9
+Icd10Cm2=null
+Icd10Cm3=null
+Icd10Cm4=null
+Icd10Cm5=null
+IdNumber=C456789012
+LabObsSorted=[]
+LabReportDate=null
+LatestEncounter=Encounter(id=encounterTbHivC01)
+LatestMedicationRequest=MedicationRequest(id=medicationRequestTbHivC01)
+MedicationCodings=[Coding]
+OrderSeqNo=ORDER-2026-C01
+Patient=Patient(id=tbHivC01)
+PrsnId=M333333333
+RelevantEncounters=[Encounter(id=encounterTbHivC01)]
+ResultMemo=null
+SampleCode=null
+SeqNo=null
+Summary=Tuple {
+  SEQ_NO: null
+  HOSP_ID: 9876543210
+  ID: C456789012
+  FUNC_DATE: 2026-05-20T14:00:00
+  HospitalId: MR-C01-33333
+  Weight: null
+  TranInHospId: null
+  CureItemN01: null
+  CureItemN02: null
+  CureItemN03: null
+  CureItemN04: null
+  Icd10Cm1: J20.9
+  Icd10Cm2: null
+  Icd10Cm3: null
+  Icd10Cm4: null
+  Icd10Cm5: null
+  PrsnId: M333333333
+  CaseStatus: N
+  CaseInDate: null
+  CaseOutDate: 2026-05-20T14:30:00
+  DrugNo: AC00000100
+  DrugUse: 1
+  TotalQ: 9
+  DrugPath: TID
+  DrugDay: 3
+  OrderSeqNo: ORDER-2026-C01
+  LabReportDate: null
+  ResultMemo: null
+  Hosp_SEQ_NO: ORDER-2026-C01-MED-2026-C01
+  FUNC_TYPE: 02
+  DISSOURCE: T
+  SampleCode: null
+}
+TotalQ=9
+TranInHospId=null
+Weight=null
+WeightObsSorted=[]
+
+CaseInDate=null
+CaseOutDate=2026-05-18T11:00:00
+CaseStatus=N
+CureItemN01=null
+CureItemN02=null
+CureItemN03=null
+CureItemN04=null
+Dissource=T
+DrugDay=null
+DrugNo=null
+DrugPath=null
+DrugUse=null
+EncounterLocations=[]
+EncounterMedicationRequests=[]
+EncounterOrganizations=[]
+FirstDosageInstruction=null
+FirstDoseAndRate=null
+FirstLabObservation=null
+FuncDate=2026-05-18T10:00:00
+FuncType=null
+HasEncounter=true
+HospId=null
+HospSeqNo=ORDER-2026-D01-
+HospitalId=MR-D01-44444
+Icd10Cm1=A15.0
+Icd10Cm2=null
+Icd10Cm3=null
+Icd10Cm4=null
+Icd10Cm5=null
+IdNumber=D567890123
+LabObsSorted=[]
+LabReportDate=null
+LatestEncounter=Encounter(id=encounterTbHivD01)
+LatestMedicationRequest=null
+MedicationCodings=null
+OrderSeqNo=ORDER-2026-D01
+Patient=Patient(id=tbHivD01)
+PrsnId=null
+RelevantEncounters=[Encounter(id=encounterTbHivD01)]
+ResultMemo=null
+SampleCode=null
+SeqNo=null
+Summary=Tuple {
+  SEQ_NO: null
+  HOSP_ID: null
+  ID: D567890123
+  FUNC_DATE: 2026-05-18T10:00:00
+  HospitalId: MR-D01-44444
+  Weight: null
+  TranInHospId: null
+  CureItemN01: null
+  CureItemN02: null
+  CureItemN03: null
+  CureItemN04: null
+  Icd10Cm1: A15.0
+  Icd10Cm2: null
+  Icd10Cm3: null
+  Icd10Cm4: null
+  Icd10Cm5: null
+  PrsnId: null
+  CaseStatus: N
+  CaseInDate: null
+  CaseOutDate: 2026-05-18T11:00:00
+  DrugNo: null
+  DrugUse: null
+  TotalQ: null
+  DrugPath: null
+  DrugDay: null
+  OrderSeqNo: ORDER-2026-D01
+  LabReportDate: null
+  ResultMemo: null
+  Hosp_SEQ_NO: ORDER-2026-D01-
+  FUNC_TYPE: null
+  DISSOURCE: T
+  SampleCode: null
+}
+TotalQ=null
+TranInHospId=null
+Weight=null
+WeightObsSorted=[]
+
+
+Evaluation logs:
+372826 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=DIRECTORY_PER_TYPE, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=TYPE_AND_ID] 
+372831 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=FLAT, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=ID_ONLY] 
+373009 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: FHIRHelpers 
+373056 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: FHIRHelpers 
+373077 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: TWCoreCodeSystemsNHI 
+373093 [pool-2-thread-1] DEBUG o.cqframework.cql.cql2elm.utils.Log adding library to cache: TBHIVMedication 
+373093 [pool-2-thread-1] DEBUG o.o.c.c.engine.execution.CqlEngine Evaluating library: TBHIVMedication with expressions: [CaseInDate, CaseOutDate, CaseStatus, CureItemN01, CureItemN02, CureItemN03, CureItemN04, Dissource, DrugDay, DrugNo, DrugPath, DrugUse, EncounterLocations, EncounterMedicationRequests, EncounterOrganizations, FirstDosageInstruction, FirstDoseAndRate, FirstLabObservation, FuncDate, FuncType, HasEncounter, HospId, HospSeqNo, HospitalId, Icd10Cm1, Icd10Cm2, Icd10Cm3, Icd10Cm4, Icd10Cm5, IdNumber, LabObsSorted, LabReportDate, LatestEncounter, LatestMedicationRequest, MedicationCodings, ObsEffectiveDT, ObsValueQuantity, OrderSeqNo, Patient, PrsnId, RelevantEncounters, ResultMemo, SampleCode, SeqNo, Summary, TotalQ, TranInHospId, Weight, WeightObsSorted] 
+373093 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373095 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\encounter\Encounter-encounterTbHivA01.json 
+373116 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Encounter@16be3d82 
+373116 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Encounter@16be3d82 
+373118 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373118 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\patient\Patient-tbHivA01.json 
+373131 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Patient@43814432 
+373131 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Patient@43814432 
+373131 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373131 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\medicationrequest\MedicationRequest-medicationRequestTbHivA01.json 
+373164 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.MedicationRequest@66ebabe2 
+373164 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.MedicationRequest@66ebabe2 
+373165 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Location to Patient context with contextPath: null and contextValue: tbHivA01. Returning unfiltered resources. 
+373165 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373165 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\location\Location-locationTbHivA01.json 
+373180 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Location@8213ff 
+373180 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Location@8213ff 
+373182 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Organization to Patient context with contextPath: null and contextValue: tbHivA01. Returning unfiltered resources. 
+373182 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373182 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\organization\Organization-organizationTbHivA01.json 
+373196 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Organization@4fe43763 
+373196 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Organization@4fe43763 
+373199 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373199 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\observation\Observation-observationTbHivA01Lab.json 
+373206 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@746b31c6 
+373206 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@746b31c6 
+373206 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\observation\Observation-observationTbHivA01Weight.json 
+373227 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Observation@5e861469 
+373227 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Observation@5e861469 
+373227 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373227 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\condition\Condition-conditionTbHivA01Main.json 
+373227 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Condition@4e0be9ad 
+373227 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Condition@4e0be9ad 
+373227 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\condition\Condition-conditionTbHivA01Secondary.json 
+373249 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Condition@203a8020 
+373249 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Condition@203a8020 
+373250 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373251 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@4e0be9ad 
+373251 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@203a8020 
+373252 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373253 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@4e0be9ad 
+373253 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@203a8020 
+373254 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373254 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@4e0be9ad 
+373254 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@203a8020 
+373254 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373255 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@4e0be9ad 
+373255 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@203a8020 
+373255 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Practitioner to Patient context with contextPath: null and contextValue: tbHivA01. Returning unfiltered resources. 
+373255 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373257 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\practitioner\Practitioner-practitionerTbHivA01.json 
+373273 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Practitioner@df270e0 
+373274 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Practitioner@df270e0 
+373275 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373275 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivA01\specimen\Specimen-specimenTbHivA01.json 
+373294 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Specimen@63b9186b 
+373294 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Specimen@63b9186b 
+373294 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373294 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@746b31c6 
+373294 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Observation@5e861469 
+373325 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=DIRECTORY_PER_TYPE, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=TYPE_AND_ID] 
+373330 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=FLAT, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=ID_ONLY] 
+373330 [pool-2-thread-1] DEBUG o.o.c.c.engine.execution.CqlEngine Evaluating library: TBHIVMedication with expressions: [CaseInDate, CaseOutDate, CaseStatus, CureItemN01, CureItemN02, CureItemN03, CureItemN04, Dissource, DrugDay, DrugNo, DrugPath, DrugUse, EncounterLocations, EncounterMedicationRequests, EncounterOrganizations, FirstDosageInstruction, FirstDoseAndRate, FirstLabObservation, FuncDate, FuncType, HasEncounter, HospId, HospSeqNo, HospitalId, Icd10Cm1, Icd10Cm2, Icd10Cm3, Icd10Cm4, Icd10Cm5, IdNumber, LabObsSorted, LabReportDate, LatestEncounter, LatestMedicationRequest, MedicationCodings, ObsEffectiveDT, ObsValueQuantity, OrderSeqNo, Patient, PrsnId, RelevantEncounters, ResultMemo, SampleCode, SeqNo, Summary, TotalQ, TranInHospId, Weight, WeightObsSorted] 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Location to Patient context with contextPath: null and contextValue: tbHivB01. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Organization to Patient context with contextPath: null and contextValue: tbHivB01. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivB01\patient\Patient-tbHivB01.json 
+373330 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Patient@726ec330 
+373330 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Patient@726ec330 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373330 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373337 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373337 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373363 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=DIRECTORY_PER_TYPE, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=TYPE_AND_ID] 
+373371 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=FLAT, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=ID_ONLY] 
+373374 [pool-2-thread-1] DEBUG o.o.c.c.engine.execution.CqlEngine Evaluating library: TBHIVMedication with expressions: [CaseInDate, CaseOutDate, CaseStatus, CureItemN01, CureItemN02, CureItemN03, CureItemN04, Dissource, DrugDay, DrugNo, DrugPath, DrugUse, EncounterLocations, EncounterMedicationRequests, EncounterOrganizations, FirstDosageInstruction, FirstDoseAndRate, FirstLabObservation, FuncDate, FuncType, HasEncounter, HospId, HospSeqNo, HospitalId, Icd10Cm1, Icd10Cm2, Icd10Cm3, Icd10Cm4, Icd10Cm5, IdNumber, LabObsSorted, LabReportDate, LatestEncounter, LatestMedicationRequest, MedicationCodings, ObsEffectiveDT, ObsValueQuantity, OrderSeqNo, Patient, PrsnId, RelevantEncounters, ResultMemo, SampleCode, SeqNo, Summary, TotalQ, TranInHospId, Weight, WeightObsSorted] 
+373375 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373375 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivC01\encounter\Encounter-encounterTbHivC01.json 
+373392 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Encounter@7a8e35a8 
+373392 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Encounter@7a8e35a8 
+373392 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373392 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivC01\patient\Patient-tbHivC01.json 
+373411 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Patient@4369aea1 
+373411 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Patient@4369aea1 
+373414 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373414 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivC01\medicationrequest\MedicationRequest-medicationRequestTbHivC01.json 
+373432 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.MedicationRequest@62176dd 
+373432 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.MedicationRequest@62176dd 
+373434 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Location to Patient context with contextPath: null and contextValue: tbHivC01. Returning unfiltered resources. 
+373434 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373435 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivC01\location\Location-locationTbHivC01.json 
+373449 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Location@184a7389 
+373449 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Location@184a7389 
+373449 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Organization to Patient context with contextPath: null and contextValue: tbHivC01. Returning unfiltered resources. 
+373449 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373451 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivC01\organization\Organization-organizationTbHivC01.json 
+373470 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Organization@331b4aab 
+373470 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Organization@331b4aab 
+373470 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373471 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373471 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivC01\condition\Condition-conditionTbHivC01.json 
+373471 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Condition@376878bb 
+373471 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Condition@376878bb 
+373474 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373475 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@376878bb 
+373475 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373475 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@376878bb 
+373477 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373477 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@376878bb 
+373477 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373477 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@376878bb 
+373477 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Practitioner to Patient context with contextPath: null and contextValue: tbHivC01. Returning unfiltered resources. 
+373477 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373477 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivC01\practitioner\Practitioner-practitionerTbHivC01.json 
+373495 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Practitioner@3af27715 
+373495 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Practitioner@3af27715 
+373495 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373495 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373518 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=DIRECTORY_PER_TYPE, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=TYPE_AND_ID] 
+373527 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardConventions Auto-detected repository configuration: IGConventions [typeLayout=FLAT, categoryLayout=FLAT compartmentLayout=FLAT, filenameMode=ID_ONLY] 
+373530 [pool-2-thread-1] DEBUG o.o.c.c.engine.execution.CqlEngine Evaluating library: TBHIVMedication with expressions: [CaseInDate, CaseOutDate, CaseStatus, CureItemN01, CureItemN02, CureItemN03, CureItemN04, Dissource, DrugDay, DrugNo, DrugPath, DrugUse, EncounterLocations, EncounterMedicationRequests, EncounterOrganizations, FirstDosageInstruction, FirstDoseAndRate, FirstLabObservation, FuncDate, FuncType, HasEncounter, HospId, HospSeqNo, HospitalId, Icd10Cm1, Icd10Cm2, Icd10Cm3, Icd10Cm4, Icd10Cm5, IdNumber, LabObsSorted, LabReportDate, LatestEncounter, LatestMedicationRequest, MedicationCodings, ObsEffectiveDT, ObsValueQuantity, OrderSeqNo, Patient, PrsnId, RelevantEncounters, ResultMemo, SampleCode, SeqNo, Summary, TotalQ, TranInHospId, Weight, WeightObsSorted] 
+373530 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373530 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivD01\encounter\Encounter-encounterTbHivD01.json 
+373551 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Encounter@716f9df9 
+373551 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Encounter@716f9df9 
+373551 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373551 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivD01\patient\Patient-tbHivD01.json 
+373567 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Patient@18c8cf6d 
+373567 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Patient@18c8cf6d 
+373575 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373576 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Location to Patient context with contextPath: null and contextValue: tbHivD01. Returning unfiltered resources. 
+373576 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373576 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider Unable to relate Organization to Patient context with contextPath: null and contextValue: tbHivD01. Returning unfiltered resources. 
+373576 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373576 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373576 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373578 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Attempting to read resource from path: c:\Hongyu\Project\Firely-NET-SDK-Labs\input\tests\TBHIVMedication\tbHivD01\condition\Condition-conditionTbHivD01.json 
+373578 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.readResource - Returning resource: org.hl7.fhir.r4.model.Condition@48c1f011 
+373578 [ForkJoinPool.commonPool-worker-3] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning freshly loaded resource: org.hl7.fhir.r4.model.Condition@48c1f011 
+373580 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373580 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@48c1f011 
+373580 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373580 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@48c1f011 
+373580 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373580 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@48c1f011 
+373580 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373580 [pool-2-thread-1] INFO  o.o.c.c.l.s.r.i.s.IgStandardRepository IgStandardRepository.cachedReadResource - Returning cached resource: org.hl7.fhir.r4.model.Condition@48c1f011 
+373580 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+373580 [pool-2-thread-1] DEBUG o.o.c.f.c.e.r.BaseRetrieveProvider No profile-specific template id specified. Returning unfiltered resources. 
+
+elapsed: 0.803 seconds

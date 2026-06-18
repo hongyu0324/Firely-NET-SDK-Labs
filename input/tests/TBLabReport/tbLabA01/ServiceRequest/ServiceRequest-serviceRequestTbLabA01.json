@@ -1,0 +1,33 @@
+{
+  "resourceType": "ServiceRequest",
+  "id": "serviceRequestTbLabA01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/ServiceRequest-twcore"
+    ]
+  },
+  "identifier": [
+    { "value": "SR-TBLAB-2026-A01" }
+  ],
+  "status": "completed",
+  "intent": "order",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "1742-6",
+        "display": "Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma"
+      },
+      {
+        "system": "https://twcore.mohw.gov.tw/ig/twcore/CodeSystem/medication-nhi-tw",
+        "code": "09026C",
+        "display": "血清麩胺酸丙酮酸轉氨基脢"
+      }
+    ],
+    "text": "ALT (GPT)"
+  },
+  "subject": { "reference": "Patient/tbLabA01" },
+  "encounter": { "reference": "Encounter/encounterTbLabA01" },
+  "requester": { "reference": "Practitioner/practitionerTbLabA01" },
+  "authoredOn": "2026-05-18T09:15:00+08:00"
+}

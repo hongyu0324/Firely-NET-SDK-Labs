@@ -20,6 +20,39 @@ using System.Net.Http;
 using System.Text;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.Model;
+using System.IO;
+
+#!csharp
+
+string excelFilePath = @"C:\Users\hongy\OneDrive\文件\大同醫護\4個展示個案資料_0617.xlsx";
+
+private static DataSet ReadExcelFile(string filePath)
+{
+    System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+    using (var stream = System.IO.File.Open(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+    {
+        using (var reader = ExcelReaderFactory.CreateReader(stream))
+        {
+            var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+            {
+                ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                {
+                    UseHeaderRow = true
+                }
+            });
+            return result;
+        }
+    }
+}
+
+// read each row of the excel file and convert to json
+var dataSet = ReadExcelFile(excelFilePath);
+var jsonList = new List<string>();
+foreach (DataRow row in dataSet.Tables[0].Rows)
+{
+    var json = JsonConvert.SerializeObject(row);
+    jsonList.Add(json);
+}
 
 #!csharp
 

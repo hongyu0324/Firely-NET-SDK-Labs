@@ -1,0 +1,51 @@
+{
+  "resourceType": "Encounter",
+  "id": "cpw72Enc",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "https://nhi.gov.tw/fhir/identifier/nhi-order-code",
+      "value": "72"
+    }
+  ],
+  "status": "finished",
+  "class": {
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    "code": "AMB",
+    "display": "ambulatory"
+  },
+  "type": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "171048007",
+          "display": "Child health examination"
+        }
+      ],
+      "text": "兒童預防保健第2次（2-4月）"
+    }
+  ],
+  "subject": {
+    "reference": "Patient/cpw72"
+  },
+  "period": {
+    "start": "2026-05-22T09:00:00+08:00",
+    "end": "2026-05-22T09:30:00+08:00"
+  },
+  "location": [
+    {
+      "location": {
+        "reference": "Location/cpw72Loc"
+      },
+      "status": "completed"
+    }
+  ],
+  "serviceProvider": {
+    "reference": "Organization/cpw72Clinic"
+  }
+}

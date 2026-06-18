@@ -1,0 +1,21 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "cpwDQR",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/QuestionnaireResponse-twcore"] },
+  "questionnaire": "Questionnaire/ChildPreventiveHealth-SDC",
+  "status": "completed",
+  "subject": { "reference": "Patient/cpwD" },
+  "encounter": { "reference": "Encounter/cpwDEnc" },
+  "authored": "2026-04-25T08:50:00+08:00",
+  "item": [
+    {
+      "linkId": "table1_basic",
+      "text": "表一基本欄位",
+      "item": [
+        { "linkId": "Col1", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col2", "answer": [{ "valueString": "2" }] },
+        { "linkId": "Col7", "answer": [{ "valueString": "2" }] }
+      ]
+    }
+  ]
+}

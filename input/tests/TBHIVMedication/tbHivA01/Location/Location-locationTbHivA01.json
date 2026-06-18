@@ -1,0 +1,13 @@
+{
+  "resourceType": "Location",
+  "id": "locationTbHivA01",
+  "meta": {
+    "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Location-twcore"
+    ]
+  },
+  "name": "胸腔內科門診",
+  "managingOrganization": {
+    "reference": "Organization/organizationTbHivA01"
+  }
+}

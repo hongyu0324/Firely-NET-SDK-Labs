@@ -1,0 +1,25 @@
+{
+  "resourceType": "Observation",
+  "id": "cpwAHeadPercent",
+  "meta": { "profile": ["https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Observation-twcore"] },
+  "status": "final",
+  "category": [
+    { "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/observation-category", "code": "vital-signs" }] }
+  ],
+  "code": {
+    "coding": [{ "system": "http://example.org/CodeSystem/cpw-assessment", "code": "head-circumference-percentile", "display": "頭圍百分位" }],
+    "text": "頭圍百分位"
+  },
+  "subject": { "reference": "Patient/cpwA" },
+  "encounter": { "reference": "Encounter/cpwAEnc" },
+  "effectiveDateTime": "2026-05-20T10:05:00+08:00",
+  "component": [
+    {
+      "code": {
+        "coding": [{ "system": "http://example.org/CodeSystem/cpw-assessment", "code": "head-percent-value" }],
+        "text": "頭圍百分位數值"
+      },
+      "valueQuantity": { "value": 55, "unit": "%", "system": "http://unitsofmeasure.org", "code": "%" }
+    }
+  ]
+}
