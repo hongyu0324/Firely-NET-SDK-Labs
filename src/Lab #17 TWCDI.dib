@@ -56,6 +56,178 @@ foreach (DataRow row in dataSet.Tables[0].Rows)
 
 #!csharp
 
+class Cdi12Item
+{
+    public string cdi1201 { get; set; }
+    public string cdi1202 { get; set; }
+    public string cdi1203 { get; set; }
+    public string cdi1204 { get; set; }
+    public string cdi1205 { get; set; }
+    public string cdi1206 { get; set; }
+    public string cdi1207 { get; set; }
+    public string cdi1208 { get; set; }
+    public string cdi1209 { get; set; }
+    public string cdi1210 { get; set; }
+}
+
+#!csharp
+
+string twcdiRowJson = @"C:\Hongyu\Data\TWCDI\row_2.json";
+var twcdiRow = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(twcdiRowJson));
+
+string cdi1002Value = twcdiRow["CDI-10-02"].ToString();
+
+Dictionary<string,string> cdi1002 = new Dictionary<string, string>();
+
+List<string> cdi1002Items = cdi1002Value.Split(';').ToList();
+
+foreach (var item in cdi1002Items)
+{
+    var parts = item.Split('=');
+    if (parts.Length == 2)
+    {
+        string key = parts[0].Trim();
+        string value = parts[1].Trim();
+        cdi1002[key] = value;
+    }
+}
+// print the dictionary
+foreach (var kvp in cdi1002)
+{
+    //Console.WriteLine($"{kvp.Key}:{kvp.Value}");
+}
+
+List<List<string>> cdi12List = new List<List<string>>();
+int totalCdi12Items = 12; // 假设有12個CDI-12項目
+int itemCount = 0;
+for(int i=0; i<totalCdi12Items; i++)
+{
+    string key = $"CDI-12-{i+1:00}";
+    if (twcdiRow.ContainsKey(key))
+    {
+        string cdi12Value = twcdiRow[key].ToString();
+        List<string> cdi12Items = cdi12Value.Split(';').ToList();
+        if(key == "CDI-12-01")
+        {
+            itemCount = cdi12Items.Count;
+        }
+        if(cdi12Items.Count != itemCount)
+        {
+            cdi12Items = cdi12Items.Concat(Enumerable.Repeat(string.Empty, itemCount - cdi12Items.Count)).ToList();
+        }
+        cdi12List.Add(cdi12Items);
+    }
+}
+
+List<Cdi12Item> cdi12Items = new List<Cdi12Item>();
+
+for(int i=0; i<itemCount; i++)
+{
+    Cdi12Item item = new Cdi12Item
+    {
+        cdi1201 = cdi12List[0][i] ?? string.Empty,
+        cdi1202 = cdi12List[1][i] ?? string.Empty,
+        cdi1203 = cdi12List[2][i] ?? string.Empty,
+        cdi1204 = cdi12List[3][i] ?? string.Empty,
+        cdi1205 = cdi12List[4][i] ?? string.Empty,  
+        cdi1206 = cdi12List[5][i] ?? string.Empty,
+        cdi1207 = cdi12List[6][i] ?? string.Empty,
+        cdi1208 = cdi12List[7][i] ?? string.Empty,
+        cdi1209 = cdi12List[8][i] ?? string.Empty,
+        cdi1210 = cdi12List[9][i] ?? string.Empty
+    };
+    cdi12Items.Add(item);
+}
+
+// print the cdi12Items
+foreach(var item in cdi12Items)
+{
+    Console.WriteLine(JsonConvert.SerializeObject(item, Formatting.Indented));
+}
+
+#!csharp
+
+List<string> surveyKeys = new List<string>()
+{
+    "CDI-10-12",
+    "CDI-10-17",
+    "CDI-10-24",
+    "CDI-10-27",
+};
+
+Dictionary<string, string> surveyData = new Dictionary<string, string>();
+foreach(var key in surveyKeys)
+{
+    if(twcdiRow.ContainsKey(key))
+    {
+        string survey = twcdiRow[key].ToString();
+        string surveyKey = survey.Split('：').First(); // 取最後一部分作為key
+        string surveyValue = survey.Split('：').Last(); // 取最後一部分作為value
+        surveyData[surveyKey] = surveyValue;
+    }
+}
+// print the survey data
+foreach(var kvp in surveyData)
+{
+    Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+}
+
+#!csharp
+
+Dictionary<string, string> observationItems = new Dictionary<string, string>()
+{
+    {"CDI-20-01","收縮壓"},
+    {"CDI-20-02","舒張壓"},
+    {"CDI-20-03","血壓日期"},
+    {"CDI-20-08","心率"},
+    {"CDI-20-09","心率日期"},
+    {"CDI-20-12","體溫"},
+    {"CDI-20-13","體溫日期"},
+    {"CDI-20-10","呼吸頻率"},
+    {"CDI-20-11","呼吸頻率日期"},
+    {"CDI-20-18","脈衝式血氧濃度"},
+    {"CDI-20-19","脈衝式血氧濃度日期"},
+    {"CDI-20-14","身高"},
+    {"CDI-20-15","身高日期"},
+    {"CDI-20-16","體重"},
+    {"CDI-20-17","體重日期"},   
+    {"CDI-20-20","吸入氧氣濃度"},
+    {"CDI-20-21","吸入氧氣濃度日期"},
+    {"CDI-20-22","身體質量指數"},
+    {"CDI-20-23","身體質量指數日期"},
+    {"CDI-20-24","體重身長百分位數"},
+    {"CDI-20-25","體重身長百分位數日期"},
+    {"CDI-20-26","頭枕額葉周長百分位數"},
+    {"CDI-20-27","頭枕額葉周長百分位數日期"}
+};
+
+Dictionary<string, string> observationData = new Dictionary<string, string>();
+foreach(var kvp in observationItems)
+{
+    string key = kvp.Key;
+    string observationName = kvp.Value;
+    if(twcdiRow.ContainsKey(key))
+    {
+        string observationValue = twcdiRow[key].ToString();
+        if(observationName.EndsWith("日期"))
+        {
+            // 20240101000000 --> 2024-01-01T00:00:00
+            if(DateTime.TryParseExact(observationValue, "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out DateTime dateValue))
+            {
+                observationValue = dateValue.ToString("yyyy-MM-ddTHH:mm:ss");
+            }
+        }   
+        observationData[observationName] = observationValue;
+    }
+}
+// print the observation data
+foreach(var kvp in observationData)
+{
+    Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+}
+
+#!csharp
+
 // read CSV file (DataFrame.LoadCsv supports CSV input)
 string filePath = @"C:\Hongyu\Data\TWCDI\TWCDI_細部內容_V2.0.3_FHIR_PATH_1150424.xlsx";
 
