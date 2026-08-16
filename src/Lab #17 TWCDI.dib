@@ -8,6 +8,7 @@
 #r "nuget: ExcelDataReader.DataSet, 3.7.0"
 #r "nuget: Newtonsoft.Json"
 #r "nuget:hl7.fhir.r4"
+#r "nuget:csvhelper, 3.0.0"
 
 #!csharp
 
@@ -21,6 +22,183 @@ using System.Text;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.Model;
 using System.IO;
+using CsvHelper;
+using CsvHelper.Configuration;
+using System.Globalization;
+
+#!csharp
+
+string file1 = "C:\\Hongyu\\Project\\tmht-api\\fumeScript\\twcdi\\TWCDI 細部內容 V2.0.7 (釋出給醫院).xlsx";
+string file2 = "C:\\Hongyu\\Project\\tmht-api\\fumeScript\\twcdi\\TWCDI 細部內容 V2.0.6 (釋出給醫院).xlsx";
+
+// Load those two Excel files and print out the differences between them. The differences should be printed in a human-readable format, such as a table or a list.
+
+// Load the first Excel file
+System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+DataSet ReadExcel(string path)
+{
+    using var stream = File.Open(path, FileMode.Open, FileAccess.Read);
+    using var reader = ExcelReaderFactory.CreateReader(stream);
+    return reader.AsDataSet(new ExcelDataSetConfiguration
+    {
+        ConfigureDataTable = _ => new ExcelDataTableConfiguration
+        {
+            UseHeaderRow = true
+        }
+    });
+}
+
+var dataSet1 = ReadExcel(file1);
+var dataSet2 = ReadExcel(file2);
+
+var table1 = dataSet1.Tables[0];
+var table2 = dataSet2.Tables[0];
+
+int rowCount = Math.Max(table1.Rows.Count, table2.Rows.Count);
+int colCount = Math.Max(table1.Columns.Count, table2.Columns.Count);
+
+var differences = new List<string>();
+var newRows = new List<string>();
+
+int pos = 6;
+string cdiIndex = "";
+for (int i = 0; i < table1.Rows.Count ; i++)
+{
+    var row = table1.Rows[i];
+    if(row[pos] != null && !string.IsNullOrWhiteSpace(row[pos].ToString()))
+    {
+        cdiIndex = row[pos].ToString();
+    }
+    else
+    {
+        table1.Rows[i][pos] = cdiIndex;
+    }
+}
+for (int i = 0; i < table2.Rows.Count ; i++)
+{
+    var row = table2.Rows[i];
+    if(row[pos] != null && !string.IsNullOrWhiteSpace(row[pos].ToString()))
+    {
+        cdiIndex = row[pos].ToString();
+    }
+    else
+    {
+        table2.Rows[i][pos] = cdiIndex;
+    }
+}
+
+// compare the two tables and find the differences
+for (int i = 0; i < rowCount; i++)
+{
+    string cdiIndex = table1.Rows[i][pos].ToString();
+
+    // get same row from table2 with the same cdiIndex
+    var row2 = table2.AsEnumerable().FirstOrDefault(r => r[pos].ToString() == cdiIndex);
+    if (row2 == null)
+    {
+        newRows.Add($"Row {i + 1} with {cdiIndex} is new for 2.0.7");
+        continue;
+    }
+    else{
+        for (int j = 0; j < colCount; j++)
+        {
+            var cell1 = table1.Rows[i][j]?.ToString() ?? "";
+            var cell2 = row2[j]?.ToString() ?? "";
+            if (cell1 != cell2)
+            {
+                differences.Add($"Row {i + 1}, Column {j + 1} (CDI Index {cdiIndex}) differs: 2.0.7 - '{cell1}' vs 2.0.6 - '{cell2}'");
+            }
+        }
+    }
+}
+
+// print the new rows
+if (newRows.Count > 0)
+{
+    Console.WriteLine("New rows found in 2.0.7:");
+    foreach (var newRow in newRows)
+    {
+        Console.WriteLine(newRow);
+    }
+}
+
+// Print the differences
+if (differences.Count == 0)
+{
+    Console.WriteLine("No differences found.");
+}
+else
+{
+    Console.WriteLine("Differences found:");
+    foreach (var diff in differences)
+    {
+        Console.WriteLine(diff);
+    }
+}
+
+#!csharp
+
+string filePath = @"C:\Users\hongy\OneDrive\文件\大同醫護\CDI_20251001_all\CDI_20251001_all.csv";
+
+
+// Read first 10 records from the CSV file and convert it to a list of dictionaries
+// csv以sep=","開頭，表示分隔符號是逗號
+// 第二行為Header，表示欄位名稱
+// 讀取前5筆資料
+using (var reader = new StreamReader(filePath))
+using (var csv = new CsvReader(reader, new CsvHelper.Configuration.Configuration()
+{
+    HasHeaderRecord = true,
+    Delimiter = ","
+}))
+{
+    var records = csv.GetRecords<dynamic>().Take(10).ToList();
+    var json = JsonConvert.SerializeObject(records, Formatting.Indented);
+    Console.WriteLine(json);
+}
+
+#!csharp
+
+string loincFilePath = "C:\\Hongyu\\Project\\tmht-api\\fumeScript\\loinc\\附件11_全國醫事檢驗LOINC編碼對照表(健保代碼750項，LOINC_5050項).xlsx"; // Update with the actual path to your LOINC Excel file
+
+// Function to read LOINC data from Excel and convert to JSON
+// ignore the first 2 rows and read from the 3rd row onwards
+DataSet ReadLoincData(string filePath)
+{
+    System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+    using var stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+    using var reader = ExcelReaderFactory.CreateReader(stream);
+    var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+    {
+        ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+        {
+            UseHeaderRow = false // We will handle headers manually
+        }
+    });
+    return result;
+}
+DataSet loincDataSet = ReadLoincData(loincFilePath);
+DataTable loincTable = loincDataSet.Tables[0]; // Assuming the first sheet contains the LOINC data
+// Convert DataTable to JSON
+var loincList = new List<Dictionary<string, object>>();
+for (int i = 2; i < loincTable.Rows.Count; i++) // Start from the 3rd row
+{
+    var row = loincTable.Rows[i];
+    var loincEntry = new Dictionary<string, object>
+    {
+        { "Code", row[0]?.ToString() }, // Assuming Code is in the first column
+        { "Component", row[1]?.ToString() }, // Assuming Component is in the second column
+        { "Property", row[2]?.ToString() }, // Assuming Property is in the third column
+        { "TimeAspect", row[3]?.ToString() }, // Assuming Time Aspect is in the fourth column
+        { "System", row[4]?.ToString() }, // Assuming System is in the fifth column
+        { "ScaleType", row[5]?.ToString() }, // Assuming Scale Type is in the sixth column
+        { "MethodType", row[6]?.ToString() } // Assuming Method Type is in the seventh column
+    };
+    loincList.Add(loincEntry);
+}
+string loincJson = JsonConvert.SerializeObject(loincList, Formatting.Indented);
+Console.WriteLine(loincJson);
 
 #!csharp
 
@@ -50,7 +228,14 @@ var dataSet = ReadExcelFile(excelFilePath);
 var jsonList = new List<string>();
 foreach (DataRow row in dataSet.Tables[0].Rows)
 {
-    var json = JsonConvert.SerializeObject(row);
+    var tableRow = row.ItemArray
+        .Select((item, index) => new { item, index })
+        .ToDictionary(
+            x => dataSet.Tables[0].Columns[x.index].ColumnName,
+            x => x.item
+        );
+    
+    var json = JsonConvert.SerializeObject(tableRow, Formatting.Indented);
     jsonList.Add(json);
 }
 
@@ -94,7 +279,7 @@ foreach (var item in cdi1002Items)
 // print the dictionary
 foreach (var kvp in cdi1002)
 {
-    //Console.WriteLine($"{kvp.Key}:{kvp.Value}");
+    Console.WriteLine($"{kvp.Key}:{kvp.Value}");
 }
 
 List<List<string>> cdi12List = new List<List<string>>();

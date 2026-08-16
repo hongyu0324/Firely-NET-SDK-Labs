@@ -29,10 +29,8 @@ var client = new FhirClient("http://localhost:8080/fhir");
 var q = new SearchParams().Where("date=gt1900").LimitTo(10).OrderBy("date",SortOrder.Descending);
 Bundle observations = await client.SearchAsync<Observation>(q);
 
-foreach (var o in observations.Entry){
-    var r = (Observation)o.Resource;
-    Console.WriteLine( r.Effective + " " + r.Category[0].Coding[0].Code + " " + r.Code.Coding[0].System + " " +r.Code.Coding[0].Code);
-} 
+
+observations
 
 #!markdown
 

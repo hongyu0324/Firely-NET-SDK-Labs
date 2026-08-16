@@ -20,24 +20,24 @@ using Hl7.Fhir.FhirPath;
 
 #!csharp
 
-string profilePath = "..\\..\\data\\profiles\\PAS\\V1.0.1";
-string profileName = "https://twcore.mohw.gov.tw/ig/pas/ImplementationGuide";
+string profilePath = @"C:\Hongyu\Data\ig\cql";
+string profileName = "https://twcore.mohw.gov.tw/ig/cql/ImplementationGuide";
 
 #!csharp
 
-var igsPath = Path.Combine(profilePath, "package\\ImplementationGuide-tw.gov.mohw.nhi.pas.json");
-var ig = new FhirJsonParser().Parse<ImplementationGuide>(File.ReadAllText(igsPath));
+var igsPath = Path.Combine(profilePath, "package\\ImplementationGuide-tw.gov.mohw.nhi.cql.json");
+var ig = new FhirJsonDeserializer().Deserialize<ImplementationGuide>(File.ReadAllText(igsPath));
 var listResource = ig.Definition.Resource;
 
 //printing the resources in the ImplementationGuide
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
 foreach (var resource in listResource)
 {
     string profileName = resource.Reference.Url.ToString();
-    if (profileName.Contains("StructureDefinition"))
-    {
-        profileName = profileName.Substring(profileName.LastIndexOf("/") + 1);
-        Console.WriteLine(profileName);
-    }
-   
+    profileName = profileName.Substring(profileName.LastIndexOf("/") + 1);
+    Library library = new FhirJsonDeserializer().Deserialize<Library>(File.ReadAllText(Path.Combine(profilePath, "package\\Library-" + profileName + ".json")));
+    // upload the resource to the FHIR server
 
+    await client.UpdateAsync<Library>(library);
+    Console.WriteLine($"Library {library.Id} uploaded to the FHIR server.");
 }

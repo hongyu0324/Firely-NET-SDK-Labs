@@ -1,0 +1,99 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"csharp"},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"value"}]}}
+
+#!csharp
+
+#r "nuget:hl7.fhir.r4"
+
+#!csharp
+
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Rest;
+
+#!markdown
+
+連接FHIR Server
+檢查組織基本資料(organization、Practitioner、Location)內容
+
+#!csharp
+
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+// List all the resources in the server
+var capability = await client.CapabilityStatementAsync();
+var resources = capability.Rest[0].Resource;
+
+#!csharp
+
+// Load all Organization resources from the server
+var organizations = await client.SearchAsync<Organization>();
+
+Bundle organizationBundle = organizations;
+
+foreach (var entry in organizationBundle.Entry)
+{
+    var organization = (Organization)entry.Resource;
+    Console.WriteLine($"Organization: {organization.Id}, Name: {organization.Name}");
+}
+
+#!csharp
+
+var Locations = await client.SearchAsync<Location>();
+
+Bundle locationBundle = Locations;
+
+foreach (var entry in locationBundle.Entry)
+{
+    var location = (Location)entry.Resource;
+    Console.WriteLine($"Location: {location.Id}, Name: {location.Name}");
+}
+
+#!csharp
+
+var practitioneers = await client.SearchAsync<Practitioner>();
+
+Bundle practitionerBundle = practitioneers;
+
+foreach (var entry in practitionerBundle.Entry)
+{
+    var practitioner = (Practitioner)entry.Resource;
+    Console.WriteLine($"Practitioner: {practitioner.Id}, Identifier: {practitioner.Identifier[0].Value}");
+}
+
+#!csharp
+
+// Delete all Location resources from the server
+
+foreach (var entry in locationBundle.Entry)
+{
+    var location = (Location)entry.Resource;
+    await client.DeleteAsync(location);
+    Console.WriteLine($"Deleted Location: {location.Id}, Name: {location.Name}");
+}
+
+foreach (var entry in practitionerBundle.Entry)
+{
+    var practitioner = (Practitioner)entry.Resource;
+    await client.DeleteAsync(practitioner);
+    Console.WriteLine($"Deleted Practitioner: {practitioner.Id}, Name: {practitioner.Name}");
+}
+
+foreach (var entry in organizationBundle.Entry)
+{
+    var organization = (Organization)entry.Resource;
+    await client.DeleteAsync(organization);
+    Console.WriteLine($"Deleted Organization: {organization.Id}, Name: {organization.Name}");
+}
+
+#!csharp
+
+// check if all resources are deleted
+
+var organizationsAfterDeletion = await client.SearchAsync<Organization>();
+Console.WriteLine($"Organizations after deletion: {organizationsAfterDeletion.Entry.Count}");
+
+var locationsAfterDeletion = await client.SearchAsync<Location>();
+Console.WriteLine($"Locations after deletion: {locationsAfterDeletion.Entry.Count}");
+
+var practitionersAfterDeletion = await client.SearchAsync<Practitioner>();
+Console.WriteLine($"Practitioners after deletion: {practitionersAfterDeletion.Entry.Count}");

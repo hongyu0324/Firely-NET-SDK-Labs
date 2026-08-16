@@ -1,6 +1,6 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":null,"items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"html","languageName":"HTML"},{"name":"sql","languageName":"SQL"},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"http","languageName":"HTTP"},{"name":"value"}]}}
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","cs"]},{"name":"fsharp","languageName":"F#","aliases":["f#","fs"]},{"name":"html","languageName":"HTML"},{"name":"http","languageName":"HTTP"},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"kql","languageName":"KQL"},{"name":"mermaid","languageName":"Mermaid"},{"name":"pwsh","languageName":"PowerShell","aliases":["powershell"]},{"name":"sql","languageName":"SQL"},{"name":"value"}]}}
 
 #!csharp
 
@@ -20,15 +20,28 @@ using System.IO;
 
 #!csharp
 
+var pat = new Patient();
+
+var id = new Identifier();
+id.System = "http://www.moi.gov.tw";
+id.Value = "A123456789";
+pat.Identifier.Add(id);
+
+// Display the patient as JSON
+var json = new FhirJsonSerializer().SerializeToString(pat,pretty:true);
+Console.WriteLine(json);
+
+#!csharp
+
 // example Patient setup, fictional data only
 var pat = new Patient();
 
 var id = new Identifier();
-id.System = "http://hl7.org/fhir/sid/us-ssn";
-id.Value = "000-12-3456";
+id.System = "http://www.moi.gov.tw";
+id.Value = "A123456789";
 pat.Identifier.Add(id);
 
-var name =  new HumanName().WithGiven("Christopher").WithGiven("C.H.").AndFamily("Parks");
+var name =  new HumanName().WithGiven("大同").AndFamily("陳");
 name.Prefix = new string[] { "Mr." };
 name.Use = HumanName.NameUse.Official;
 
@@ -84,7 +97,9 @@ pat.Deceased = new FhirBoolean(false);
 
 #!csharp
 
-pat
+// Display the patient as JSON
+var json = new FhirJsonSerializer().SerializeToString(pat,pretty:true);
+Console.WriteLine(json);
 
 #!csharp
 

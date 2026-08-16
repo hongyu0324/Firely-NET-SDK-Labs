@@ -28,6 +28,13 @@
 
 using Hl7.Fhir.Model; 
 using Hl7.Fhir.Rest;
+using Hl7.Fhir.Serialization;
+using Hl7.Fhir.FhirPath;
+using Hl7.Fhir.ElementModel;
+using Hl7.Fhir.Specification;
+using Hl7.Fhir.Specification.Source;
+using static Hl7.Fhir.Specification.Source.ZipSource;
+using System.IO;
 
 
 var client = new FhirClient("http://localhost:8080/fhir");
@@ -40,7 +47,7 @@ var client = new FhirClient("http://localhost:8080/fhir");
 
 #!csharp
 
-var location_A = new Uri("http://localhost:8080/fhir/Patient/fobt-B01");
+var location_A = new Uri("http://localhost:8080/fhir/Patient/adultC01");
 var pat_A = new Patient();
 pat_A = await client.ReadAsync<Patient>(location:location_A);
 if (pat_A != null){
@@ -50,7 +57,28 @@ if (pat_A != null){
 
 #!csharp
 
-pat_A
+string bundlFileName = @"C:\Hongyu\Data\測試資料\大腸直腸癌Bundle\嘉基-17589765\17589765_bundle_3.json";
+
+// read json file and display it as bundle
+var parser = new Hl7.Fhir.Serialization.FhirJsonDeserializer();
+var pat_A = new Patient();
+String json = File.ReadAllText(bundlFileName); 
+try
+{
+    var bundle = parser.Deserialize<Bundle>(json);
+    Console.WriteLine(bundle.Entry.Count.ToString());
+    foreach(var r in bundle.Entry){
+        string type = r.Resource.TypeName;
+        if(r.Resource.TypeName == "Patient"){
+            pat_A = (Patient)r.Resource;
+            Console.WriteLine(pat_A.Name[0].Text);
+        }
+    }
+}
+catch (FormatException fe)
+{
+    Console.WriteLine("Exception: " + fe.Message);
+}
 
 #!markdown
 
@@ -63,14 +91,12 @@ Bundle patients = await client.SearchAsync<Patient>(q);
 
 Console.WriteLine("總計:" + patients.Entry.Count + "人");
 foreach (var p in patients.Entry){
-    var r = (Patient)p.Resource;
-    Console.WriteLine(r.Id + " : " + r.Name[0].Family + " "　+ r.Name[0].Given.First());
-    Console.WriteLine(r.Id + " " +r.Name[0].Text);
+    Console.WriteLine(p.Resource.Id + " " + ((Patient)p.Resource).Name[0].Text);
 } 
 
 #!csharp
 
-patients.Entry[0]
+patients
 
 #!markdown
 
