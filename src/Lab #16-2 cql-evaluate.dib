@@ -38,7 +38,7 @@ using Newtonsoft.Json.Linq;
 
 // Load Library from FHIR Server
 var fhirClient = new FhirClient("http://localhost:8080/fhir");
-var library = await fhirClient.ReadAsync<Library>("Library/BCCDK46Rule1");
+var library = await fhirClient.ReadAsync<Library>("Library/HypertensionControlTWCore");
 
 Console.WriteLine($"Loaded Library: {library.Name} (version: {library.Version})");
 
@@ -52,13 +52,18 @@ var applyParameters = new Parameters
         new Parameters.ParameterComponent
         {
             Name = "subject",
-            Value = new FhirString("Patient/87988f40-0649-43fb-9d26-98fed5bacfe5")
+            Value = new FhirString("Patient/1141310019D101414566")
+        },
+        new Parameters.ParameterComponent
+        {
+            Name = "expression",
+            Value = new FhirString("Denominator")
         }
     }
 };
 
 var applyResult = await fhirClient.OperationAsync(
-    new Uri("http://localhost:8080/fhir/Library/BCCDK46Rule1/$evaluate"),
+    new Uri("http://localhost:8080/fhir/Library/HypertensionControlTWCore/$evaluate"),
     applyParameters);
 
 // Serialize the apply result to JSON and print it

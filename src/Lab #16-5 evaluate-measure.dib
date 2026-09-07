@@ -37,6 +37,100 @@ using Newtonsoft.Json.Linq;
 
 #!csharp
 
+// 從FHIR Server, 取得高血壓 Condition.code.code.code = "I10" 的病患清單, 使用 _has
+var fhirClient = new FhirClient("http://127.0.0.1:8080/fhir");
+
+// GET [base]/Patient?_has:Condition:subject:code=I10
+
+var searchParams = new SearchParams()
+    .Where("_has:Condition:subject:code=I10");
+
+List<Patient> patientList = new List<Patient>();
+int count = 0;
+
+Bundle patientBundle = await fhirClient.SearchAsync<Patient>(searchParams);
+foreach(var patient in patientBundle.Entry){
+    if (patient.Resource is Patient p)
+    {
+        patientList.Add(p);
+    }
+}
+
+count += patientBundle.Entry.Count;
+
+// get all patient by link
+while(patientBundle != null){
+    patientBundle = await fhirClient.ContinueAsync(patientBundle);
+    if(patientBundle != null){
+        foreach(var patient in patientBundle.Entry){
+            if (patient.Resource is Patient p)
+            {
+                patientList.Add(p);
+            }
+        }
+        count += patientBundle.Entry.Count;
+    } 
+}
+
+Console.WriteLine($"高血壓病患總數：{count}");
+
+#!markdown
+
+    public static void CopyPatientDirectory(
+        string sourceRoot,
+        string targetRoot,
+        string patientId)
+    {
+        if (!Directory.Exists(sourceRoot))
+            throw new DirectoryNotFoundException($"Source directory not found: {sourceRoot}");
+
+        // 找到符合 {patientId}_XX 的資料夾
+        var matchedSourceDir = Directory.GetDirectories(sourceRoot)
+            .FirstOrDefault(d => Path.GetFileName(d).StartsWith($"{patientId}_"));
+
+        if (matchedSourceDir == null)
+            throw new DirectoryNotFoundException($"No folder found matching pattern: {patientId}_XX");
+
+        // 目標資料夾名稱 = {patientId}
+        string targetDir = Path.Combine(targetRoot, patientId);
+
+        CopyDirectory(matchedSourceDir, targetDir);
+    }
+
+    private static void CopyDirectory(string sourceDir, string targetDir)
+    {
+        Directory.CreateDirectory(targetDir);
+
+        foreach (var file in Directory.GetFiles(sourceDir))
+        {
+            string targetFile = Path.Combine(targetDir, Path.GetFileName(file));
+            File.Copy(file, targetFile, overwrite: true);
+        }
+
+        foreach (var subDir in Directory.GetDirectories(sourceDir))
+        {
+            string newSubDir = Path.Combine(targetDir, Path.GetFileName(subDir));
+            CopyDirectory(subDir, newSubDir);
+        }
+    }
+
+#!markdown
+
+// sourceDirectory C:\Hongyu\Data\TWCDI\奇美醫院
+// targetDirectory C:\Hongyu\Project\eCQM\input\tests\HypertensionControlTWCore
+// copy data form source to target with directory name using {pateint id}_XX
+
+string sourceDirectory = @"C:\Hongyu\Data\TWCDI\奇美醫院";
+string targetDirectory = @"C:\Hongyu\Project\eCQM\input\tests\HypertensionControlTWCore";
+
+foreach(Patient patient in patientList){
+    string patientId = patient.Id;
+    // find directory name under sourceDirectory with {patientID}_XX
+    CopyPatientDirectory(sourceDirectory,targetDirectory,patientId);
+}
+
+#!markdown
+
 // read Measure resource from FHIR Server
 var fhirClient = new FhirClient("http://127.0.0.1:8080/fhir");
 
@@ -53,38 +147,276 @@ foreach (var entry in measures.Entry)
 
 #!csharp
 
-// 執行 evaluate-measure operation
-var parameters = new Parameters();
-parameters.Add("periodStart", new Date("2023-01-01"));
-parameters.Add("periodEnd", new Date("2023-12-31"));
-parameters.Add("reportType", new Code("subject-list"));
+var fhirClient = new FhirClient("http://localhost:8080/fhir");
 
+// 3. 建立 evaluate-measure 的 Parameters
+var parameters = new Parameters
+{
+    Parameter = new List<Parameters.ParameterComponent>
+    {
+        new Parameters.ParameterComponent
+        {
+            Name = "periodStart",
+            Value = new FhirString("2025-01-01")
+        },
+        new Parameters.ParameterComponent
+        {
+            Name = "periodEnd",
+            Value = new FhirString("2025-12-31")
+        },
+        new Parameters.ParameterComponent
+        {
+            Name = "subject",
+            Value = new FhirString("Patient/1141310019D101373391")
+        },
+        new Parameters.ParameterComponent
+        {
+            Name = "subject",
+            Value = new FhirString("Patient/1141310019D10141456")
+        },
+        new Parameters.ParameterComponent
+        {
+            Name = "subject",
+            Value = new FhirString("Patient/1141310019D120140287")
+        }
+    }
+};
+
+parameters.Add("reportType", new FhirString("subject-list"));
+// 4. 執行 evaluate-measure
 var result = await fhirClient.OperationAsync(
-    new Uri("http://localhost:8080/fhir/Measure/MetabolicSyndrome-40-60/$evaluate-measure"),
-    parameters: parameters);
+    new Uri("http://localhost:8080/fhir/Measure/HypertensionControlCohort/$evaluate-measure"),
+    parameters);
+
+var serializer = new FhirJsonSerializer();
+//Console.WriteLine(serializer.SerializeToString(result, pretty: true));
 
 MeasureReport measureReport = (MeasureReport)result;
 
-// print the measure report
-//Console.WriteLine($"Measure Report Id: {measureReport.Id}");
-//Console.WriteLine($"Measure Report Status: {measureReport.Status}");
-//Console.WriteLine($"Measure Report Type: {measureReport.Type}");    
+// 5. 印出 MeasureReport 基本資訊
+Console.WriteLine($"Measure Report Id: {measureReport.Id}");
+Console.WriteLine($"Measure Report Status: {measureReport.Status}");
+Console.WriteLine($"Measure Report Type: {measureReport.Type}");
 
-// print patient list in ContainedResource
-if (measureReport.Contained != null)
+#!csharp
+
+measureReport
+
+#!csharp
+
+private static async Task<MeasureReport> EvaluateMeasureOperation(Parameters parameters,string measureType)
 {
-    foreach (var resource in measureReport.Contained)
+
+    MeasureReport report = new MeasureReport();
+    var handler = new System.Net.Http.HttpClientHandler()
     {
-        if (resource is List patientList)
+        ServerCertificateCustomValidationCallback = (msg, cert, chain, errors) => true
+    };
+
+    var httpClient = new System.Net.Http.HttpClient(handler)
+    {
+        Timeout = TimeSpan.FromMinutes(30)
+    };
+
+    var fhirClient = new FhirClient("http://localhost:8080/fhir", httpClient);
+
+    try
+    {
+        string uriPath = $"http://localhost:8080/fhir/Measure/{measureType}/$evaluate-measure";
+        var result = await fhirClient.OperationAsync(
+            new Uri(uriPath),
+            parameters);
+
+        report = (MeasureReport)result;
+
+        Console.WriteLine($"Measure Report Id: {report.Id}");
+        Console.WriteLine($"Status: {report.Status}");
+        Console.WriteLine($"Type: {report.Type}");
+
+        foreach (var group in report.Group)
         {
-            Console.WriteLine($"Patient List Id: {patientList.Id}");
-            foreach (var entry in patientList.Entry)
+            Console.WriteLine($"=== Group: {group.Code?.Coding?[0]?.Code} ===");
+
+            foreach (var pop in group.Population)
             {
-                if (entry.Item is ResourceReference patientRef)
+                Console.WriteLine($"Population Code: {pop.Code?.Coding?[0]?.Code}");
+                Console.WriteLine($"Count: {pop.Count}");
+
+                if (pop.SubjectResults == null)
                 {
-                    Console.WriteLine($"Patient Reference: {patientRef.Reference}");
+                    Console.WriteLine("No subjectResults");
+                    continue;
+                }
+
+                var listRef = pop.SubjectResults.Reference;
+                var containedId = listRef.Replace("#", "");
+
+                var containedList = report.Contained
+                    .OfType<List>()
+                    .FirstOrDefault(l => l.Id == containedId);
+
+                if (containedList == null)
+                {
+                    Console.WriteLine($"ERROR: Contained List {containedId} not found");
+                    continue;
+                }
+
+                Console.WriteLine($"Contained List Id: {containedList.Id}");
+
+                foreach (var entry in containedList.Entry)
+                {
+                    var patientRef = entry.Item.Reference;
+
+                    if (!patientRef.Contains("/"))
+                        patientRef = $"Patient/{patientRef}";
+
+                    var patient = await fhirClient.ReadAsync<Patient>(patientRef);
+                    Console.WriteLine($"Patient Id: {patient.Id}");
                 }
             }
         }
+        foreach (var group in report.Group)
+        {
+
+            // 顯示 Stratifier
+            if (group.Stratifier != null)
+            {
+                foreach (var strat in group.Stratifier)
+                {
+                    Console.WriteLine($"\n--- Stratifier: {strat.ElementId} ---");
+
+                    if (strat.Stratum != null)
+                    {
+                        foreach (var stratum in strat.Stratum)
+                        {
+                            string stratumValue = string.Empty;
+                            foreach(var compoment in stratum.Component)
+                            {
+                                stratumValue += compoment.Value.Text;
+                                stratumValue += " & ";
+                            }
+                            
+                            stratumValue = stratumValue.Remove(stratumValue.Length - 3);
+                            Console.WriteLine($"Stratum Value: {stratumValue}");
+
+                            // 顯示每個 stratum 的 numerator / denominator
+                            foreach (var pop in stratum.Population)
+                            {
+                                Console.WriteLine($"  Population Code: {pop.Code?.Coding?[0]?.Code}");
+                                Console.WriteLine($"  Count: {pop.Count}");
+
+                                if (pop.SubjectResults != null)
+                                {
+                                    var listRef = pop.SubjectResults.Reference.Replace("#", "");
+                                    var containedList = report.Contained
+                                        .OfType<List>()
+                                        .FirstOrDefault(l => l.Id == listRef);
+
+                                    if (containedList != null)
+                                    {
+                                        Console.WriteLine($"  Patient List Id: {containedList.Id}");
+
+                                        foreach (var entry in containedList.Entry)
+                                        {
+                                            var patientRef = entry.Item.Reference;
+
+                                            if (!patientRef.Contains("/"))
+                                                patientRef = $"Patient/{patientRef}";
+
+                                            Console.WriteLine($"    Patient Ref: {patientRef}");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"  ERROR: Contained List {listRef} not found");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No stratum found");
+                    }
+                }
+            }
+        }
+        return report;
+    }
+    catch (FhirOperationException ex)
+    {
+        Console.WriteLine("=== OperationOutcome ===");
+        Console.WriteLine(ex.Outcome.ToJson());
+        return report;
     }
 }
+
+#!csharp
+
+var group = new Group
+{
+    Id = "my-patient-group",
+    Type = Group.GroupType.Person,
+    Actual = true,
+    Member = new List<Group.MemberComponent>
+    {
+        new Group.MemberComponent
+        {
+            Entity = new ResourceReference("Patient/1141310019D101373391")
+        },
+        new Group.MemberComponent
+        {
+            Entity = new ResourceReference("Patient/1141310019R202143327")
+        },
+        new Group.MemberComponent
+        {
+            Entity = new ResourceReference("Patient/1141310019R201123438")
+        }
+    }
+};
+
+
+FhirClient client = new FhirClient("http://localhost:8080/fhir");
+var groupResult = await client.CreateAsync<Group>(group);
+
+#!csharp
+
+// 3. 建立 evaluate-measure 的 Parameters
+var parameters = new Parameters
+{
+    Parameter = new List<Parameters.ParameterComponent>
+    {
+        new Parameters.ParameterComponent
+        {
+            Name = "periodStart",
+            Value = new FhirString("2025-01-01")
+        },
+        new Parameters.ParameterComponent
+        {
+            Name = "periodEnd",
+            Value = new FhirString("2025-12-31")
+        }
+    }
+};
+
+parameters.Add("subject", new FhirString("Group/171053"));
+parameters.Add("reportType", new FhirString("subject-list"));
+MeasureReport measureReport = await EvaluateMeasureOperation(parameters,"HypertensionControlProportion");
+
+#!csharp
+
+measureReport
+
+#!csharp
+
+// 2. 建立 evaluate-measure 的 Parameters
+var parameters = new Parameters();
+parameters.Add("periodStart", new FhirDateTime("2025-01-01"));
+parameters.Add("periodEnd", new FhirDateTime("2025-12-31"));
+parameters.Add("reportType", new FhirString("subject-list"));
+
+MeasureReport report = await EvaluateMeasureOperation(parameters,"HypertensionControlProportion");
+
+#!csharp
+
+report
